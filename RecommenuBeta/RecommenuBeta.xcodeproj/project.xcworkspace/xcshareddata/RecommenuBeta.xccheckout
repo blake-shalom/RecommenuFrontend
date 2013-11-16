@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>622F75C8-1534-413E-862E-207D86AC283D</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RecommenuBeta</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6D4F7C12-4418-4A07-928B-47C6C3F9B371</key>
+		<string>https://github.com/blake-shalom/RecommenuBeta.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RecommenuBeta/RecommenuBeta.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6D4F7C12-4418-4A07-928B-47C6C3F9B371</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/blake-shalom/RecommenuBeta.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6D4F7C12-4418-4A07-928B-47C6C3F9B371</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6D4F7C12-4418-4A07-928B-47C6C3F9B371</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RecommenuBeta</string>
+		</dict>
+	</array>
+</dict>
+</plist>
