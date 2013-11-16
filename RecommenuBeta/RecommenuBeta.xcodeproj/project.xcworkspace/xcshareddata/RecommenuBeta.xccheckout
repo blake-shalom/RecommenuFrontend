@@ -10,6 +10,8 @@
 	<string>RecommenuBeta</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>5D754F54-53D4-4209-B8FE-0866042759F4</key>
+		<string>https://github.com/AFNetworking/AFNetworking.git</string>
 		<key>6D4F7C12-4418-4A07-928B-47C6C3F9B371</key>
 		<string>https://github.com/blake-shalom/RecommenuBeta.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>RecommenuBeta/RecommenuBeta.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>5D754F54-53D4-4209-B8FE-0866042759F4</key>
+		<string>../../AFNetworking</string>
 		<key>6D4F7C12-4418-4A07-928B-47C6C3F9B371</key>
 		<string>../../..</string>
 	</dict>
@@ -28,6 +32,14 @@
 	<string>6D4F7C12-4418-4A07-928B-47C6C3F9B371</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5D754F54-53D4-4209-B8FE-0866042759F4</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AFNetworking</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
