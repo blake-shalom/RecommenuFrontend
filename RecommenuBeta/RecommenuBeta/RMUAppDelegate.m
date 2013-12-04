@@ -12,6 +12,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Customize the Appearance of the TabBar
+    UITabBarController *tabBarVC = (UITabBarController*)self.window.rootViewController;
+    UITabBar *tabBar = tabBarVC.tabBar;
+    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
     // Override point for customization after application launch.
     return YES;
 }
