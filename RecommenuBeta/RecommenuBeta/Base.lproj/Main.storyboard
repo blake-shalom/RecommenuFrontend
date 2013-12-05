@@ -19,7 +19,7 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dE4-jx-lZL">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Nn-KS-Cp7">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
@@ -41,6 +41,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Locate" image="icon_home.png" id="S5W-VX-7wy"/>
+                    <connections>
+                        <outlet property="mapFrameView" destination="dE4-jx-lZL" id="yZd-gR-GYz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dnR-78-PjR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -187,12 +190,6 @@
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

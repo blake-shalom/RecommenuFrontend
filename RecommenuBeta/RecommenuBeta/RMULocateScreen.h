@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RMULocateScreen : UIViewController
+<CLLocationManagerDelegate, UIAlertViewDelegate>
 
 @end
