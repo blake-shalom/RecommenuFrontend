@@ -7,9 +7,6 @@
 //
 
 #import "RMULocateScreen.h"
-#import "MapBox/MapBox.h"
-#import "RMUButton.h"
-#import "RMUAnimationClass.h"
 
 @interface RMULocateScreen ()
 @property (weak, nonatomic) IBOutlet UIView *mapFrameView;
@@ -20,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet RMUButton *noButton;
 @property (weak, nonatomic) IBOutlet UIImageView *gradientImage;
 @property (weak, nonatomic) IBOutlet UIView *popupView;
+@property (weak, nonatomic) IBOutlet UILabel *restaurantLabel;
+@property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 
 @end
 
@@ -83,13 +82,62 @@
     [self.mapView setCenterCoordinate:coord animated:YES];
     
     // Drop a pin
-#warning - TODO customized user annotation and queue popup
+#warning - TODO customized user annotation
     RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView
                                                                         coordinate:coord
                                                                           andTitle:@"YOU ARE HERE"];
     [self.mapView addAnnotation:userAnnotation];
     [self animateInGradient];
     [self.locationManager stopUpdatingLocation];
+}
+
+#pragma mark - Networking
+
+/*
+ *  Finds the current restaurant you are at
+ */
+
+- (void)findRestaurantWithRadius:(NSInteger)radius withCoordinate: (CLLocationCoordinate2D)coord
+{
+    NSString *latLongString = [NSString stringWithFormat:@"%f,%f", coord.latitude, coord.longitude];
+    NSURL *foursquareURL = [[NSURL alloc]initWithString:[NSString
+                                                         stringWithFormat: (@"https://api.foursquare.com/v2/venues/search?ll=%@&limit=15&intent=browse&radius=%i&categoryId=4d4b7105d754a06374d81259&client_id=%@&client_secret=%@&v=20130918"),
+                                                         latLongString,
+                                                         radius,
+                                                         [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareID"],
+                                                         [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareSecret"]]];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:<#(NSString *)#>
+      parameters:<#(NSDictionary *)#>
+         success:<#^(AFHTTPRequestOperation *operation, id responseObject)success#>
+         failure:<#^(AFHTTPRequestOperation *operation, NSError *error)failure#>];
+//    AFJSONRequestOperation *operation = [AFJSONRequestOperation
+//                                         JSONRequestOperationWithRequest:request
+//                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+//                                             [self.findMenuButton setUserInteractionEnabled:YES];
+//                                             NSDictionary *newDictionary = [JSON objectForKey:@"response"];
+//                                             NSArray *newArray = [newDictionary objectForKey:@"venues"];
+//                                             if (newArray.count == 0) {
+//                                                 [self findRestaurantWithRadius:radius * 2];
+//                                             }
+//                                             else {
+//                                                 self.restName = [newArray[0] objectForKey:@"name"];
+//                                                 
+//                                                 UIAlertView *restaurantCheckAlert = [[UIAlertView alloc] initWithTitle:@"Restaurant Found!"
+//                                                                                                                message:[NSString stringWithFormat:(@"Are you at %@?"), self.restName]
+//                                                                                                               delegate:self
+//                                                                                                      cancelButtonTitle:@"NO"
+//                                                                                                      otherButtonTitles:@"YES", nil];
+//                                                 [restaurantCheckAlert show];
+//                                             }
+//                                             
+//                                         }
+//                                         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+//                                             [self.findMenuButton setUserInteractionEnabled:YES];
+//                                             NSLog(@"Request Failed with Error: %@, %@", error, error.userInfo);
+//                                         }];
+//    [operation start];
+
 }
 
 #pragma mark - Animation Methods

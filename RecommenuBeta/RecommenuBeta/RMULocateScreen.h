@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MapBox/MapBox.h"
+#import "RMUButton.h"
+#import "RMUAnimationClass.h"
+#import "AFNetworking.h"
 
 @interface RMULocateScreen : UIViewController
 <CLLocationManagerDelegate, UIAlertViewDelegate>

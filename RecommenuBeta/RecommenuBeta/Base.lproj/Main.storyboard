@@ -162,10 +162,12 @@
                     <tabBarItem key="tabBarItem" title="Locate" image="icon_home.png" id="S5W-VX-7wy"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="addressLabel" destination="gEf-ja-MUm" id="ObU-ft-8aY"/>
                         <outlet property="gradientImage" destination="Pos-um-Q4p" id="z5J-Z8-F8g"/>
                         <outlet property="mapFrameView" destination="dE4-jx-lZL" id="yZd-gR-GYz"/>
                         <outlet property="noButton" destination="bFa-xI-4SM" id="c9b-QW-dbN"/>
                         <outlet property="popupView" destination="45m-f4-5eF" id="MQg-W6-Atb"/>
+                        <outlet property="restaurantLabel" destination="5UG-MP-zmH" id="Zbf-zc-63o"/>
                         <outlet property="yesButton" destination="g42-c1-YtQ" id="IU5-iE-2VD"/>
                     </connections>
                 </viewController>
