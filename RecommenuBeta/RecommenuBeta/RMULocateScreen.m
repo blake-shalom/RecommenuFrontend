@@ -9,6 +9,7 @@
 #import "RMULocateScreen.h"
 #import "MapBox/MapBox.h"
 #import "RMUButton.h"
+#import "RMUAnimationClass.h"
 
 @interface RMULocateScreen ()
 @property (weak, nonatomic) IBOutlet UIView *mapFrameView;
@@ -101,8 +102,6 @@
 {
     [self.gradientImage setAlpha:0.0f];
     [self.gradientImage setHidden:NO];
-    [self.popupView setAlpha:0.0f];
-    [self.popupView setHidden:NO];
     [UIView animateWithDuration:0.3f
                           delay:1.0f
                         options:UIViewAnimationOptionCurveEaseInOut
@@ -110,7 +109,8 @@
                          [self.gradientImage setAlpha:1.0f];
                          [self.popupView setAlpha:1.0f];
                      } completion:^(BOOL finished) {
-                         NSLog(@"poop");
+                         [self.popupView setHidden:NO];
+                         [self animatePopup];
                      }];
 }
 
@@ -120,7 +120,12 @@
 
 - (void)animatePopup
 {
-    
+    [RMUAnimationClass animateFlyInView:self.popupView
+                           withDuration:0.1f
+                              withDelay:0.0f
+                          fromDirection:buttonAnimationDirectionTop
+                         withCompletion:Nil
+                             withBounce:YES];
 }
 
 @end
