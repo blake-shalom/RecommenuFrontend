@@ -8,12 +8,17 @@
 
 #import "RMULocateScreen.h"
 #import "MapBox/MapBox.h"
+#import "RMUButton.h"
 
 @interface RMULocateScreen ()
 @property (weak, nonatomic) IBOutlet UIView *mapFrameView;
 @property (strong, nonatomic) RMMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *location;
+@property (weak, nonatomic) IBOutlet RMUButton *yesButton;
+@property (weak, nonatomic) IBOutlet RMUButton *noButton;
+@property (weak, nonatomic) IBOutlet UIImageView *gradientImage;
+@property (weak, nonatomic) IBOutlet UIView *popupView;
 
 @end
 
@@ -31,6 +36,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Hide yo wife
+    [self.popupView setHidden:YES];
+    [self.gradientImage setHidden:YES];
+    
     // Make the mapBox View
     RMMapBoxSource *tileSource = [[RMMapBoxSource alloc]initWithMapID:@"recommenu.gd0lbham"];
     self.mapView = [[RMMapView alloc]initWithFrame:self.mapFrameView.bounds andTilesource:tileSource];
@@ -46,6 +56,11 @@
     self.location = [[CLLocation alloc]init];
     [self.locationManager startUpdatingLocation];
 
+    // Connfigure the buttons
+    self.yesButton.isBlue = YES;
+    self.noButton.isBlue = NO;
+    [self.yesButton setBackgroundColor:[UIColor RMULogoBlueColor]];
+    [self.noButton setBackgroundColor:[UIColor whiteColor]];
     
 	// Do any additional setup after loading the view.
 }
@@ -72,6 +87,40 @@
                                                                         coordinate:coord
                                                                           andTitle:@"YOU ARE HERE"];
     [self.mapView addAnnotation:userAnnotation];
+    [self animateInGradient];
     [self.locationManager stopUpdatingLocation];
 }
+
+#pragma mark - Animation Methods
+
+/*
+ *  Animates in the gradient and then calls animate popup
+ */
+
+- (void)animateInGradient
+{
+    [self.gradientImage setAlpha:0.0f];
+    [self.gradientImage setHidden:NO];
+    [self.popupView setAlpha:0.0f];
+    [self.popupView setHidden:NO];
+    [UIView animateWithDuration:0.3f
+                          delay:1.0f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         [self.gradientImage setAlpha:1.0f];
+                         [self.popupView setAlpha:1.0f];
+                     } completion:^(BOOL finished) {
+                         NSLog(@"poop");
+                     }];
+}
+
+/*
+ *  Animates in the popup to the right location
+ */
+
+- (void)animatePopup
+{
+    
+}
+
 @end

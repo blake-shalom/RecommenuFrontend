@@ -11,5 +11,7 @@
 @interface UIColor (RMUColors)
 
 +(UIColor*) RMULogoBlueColor;
++(UIColor*) RMUGrayPressedColor;
++(UIColor*) RMUBluePressedColor;
 
 @end
