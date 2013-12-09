@@ -5,8 +5,10 @@
 //  Created by Blake Ellingham on 11/29/13.
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
+#define NUMBER_OF_FALLBACK 15
 
 #import "RMULocateScreen.h"
+#import "RMUFallbackScreen.h"
 
 @interface RMULocateScreen ()
 @property (weak, nonatomic) IBOutlet UIView *mapFrameView;
@@ -19,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIView *popupView;
 @property (weak, nonatomic) IBOutlet UILabel *restaurantLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
+@property (strong,nonatomic) NSMutableArray *fallbackRest;
 
 @end
 
@@ -36,6 +39,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.fallbackRest = [[NSMutableArray alloc]init];
     
     // Hide yo wife
     [self.popupView setHidden:YES];
@@ -77,6 +82,7 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     // Find Your Location
+    [self.locationManager stopUpdatingLocation];
     self.location = locations[0];
     CLLocationCoordinate2D coord = self.location.coordinate;
     [self.mapView setCenterCoordinate:coord animated:YES];
@@ -87,8 +93,7 @@
                                                                         coordinate:coord
                                                                           andTitle:@"YOU ARE HERE"];
     [self.mapView addAnnotation:userAnnotation];
-    [self animateInGradient];
-    [self.locationManager stopUpdatingLocation];
+    [self findRestaurantWithRadius:10.0f];
 }
 
 #pragma mark - Networking
@@ -97,47 +102,105 @@
  *  Finds the current restaurant you are at
  */
 
-- (void)findRestaurantWithRadius:(NSInteger)radius withCoordinate: (CLLocationCoordinate2D)coord
+- (void)findRestaurantWithRadius:(NSInteger)radius
 {
+    NSLog(@"%d", radius);
+    CLLocationCoordinate2D coord = self.location.coordinate;
     NSString *latLongString = [NSString stringWithFormat:@"%f,%f", coord.latitude, coord.longitude];
-    NSURL *foursquareURL = [[NSURL alloc]initWithString:[NSString
-                                                         stringWithFormat: (@"https://api.foursquare.com/v2/venues/search?ll=%@&limit=15&intent=browse&radius=%i&categoryId=4d4b7105d754a06374d81259&client_id=%@&client_secret=%@&v=20130918"),
-                                                         latLongString,
-                                                         radius,
-                                                         [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareID"],
-                                                         [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareSecret"]]];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:<#(NSString *)#>
-      parameters:<#(NSDictionary *)#>
-         success:<#^(AFHTTPRequestOperation *operation, id responseObject)success#>
-         failure:<#^(AFHTTPRequestOperation *operation, NSError *error)failure#>];
-//    AFJSONRequestOperation *operation = [AFJSONRequestOperation
-//                                         JSONRequestOperationWithRequest:request
-//                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-//                                             [self.findMenuButton setUserInteractionEnabled:YES];
-//                                             NSDictionary *newDictionary = [JSON objectForKey:@"response"];
-//                                             NSArray *newArray = [newDictionary objectForKey:@"venues"];
-//                                             if (newArray.count == 0) {
-//                                                 [self findRestaurantWithRadius:radius * 2];
-//                                             }
-//                                             else {
-//                                                 self.restName = [newArray[0] objectForKey:@"name"];
-//                                                 
-//                                                 UIAlertView *restaurantCheckAlert = [[UIAlertView alloc] initWithTitle:@"Restaurant Found!"
-//                                                                                                                message:[NSString stringWithFormat:(@"Are you at %@?"), self.restName]
-//                                                                                                               delegate:self
-//                                                                                                      cancelButtonTitle:@"NO"
-//                                                                                                      otherButtonTitles:@"YES", nil];
-//                                                 [restaurantCheckAlert show];
-//                                             }
-//                                             
-//                                         }
-//                                         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-//                                             [self.findMenuButton setUserInteractionEnabled:YES];
-//                                             NSLog(@"Request Failed with Error: %@, %@", error, error.userInfo);
-//                                         }];
-//    [operation start];
+    NSDictionary *paramDic = @{@"ll" : latLongString,
+                               @"limit": @15,
+                               @"intent" : @"browse",
+                               @"radius" : [NSString stringWithFormat:@"%d", radius],
+                               @"categoryId" : @"4d4b7105d754a06374d81259",
+                               @"client_id" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareID"],
+                               @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
+                               @"v" : @20131017
+                               };
+    [manager GET:@"https://api.foursquare.com/v2/venues/search"
+      parameters:paramDic
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSArray *respArray = [[responseObject objectForKey:@"response"] objectForKey:@"venues"];
+             if (respArray.count ==0)
+                 [self findRestaurantWithRadius:radius * 3 / 2];
+             else {
+                 [self.restaurantLabel setText:[respArray[0] objectForKey:@"name"]];
+                 [self.addressLabel setText:[[respArray[0] objectForKey:@"location"] objectForKey:@"address"]];
+                 [self animateInGradient];
+            }
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"error: %@", error);
+         }];
+}
 
+/*
+ *  Finds a list of restaurants that the user could be at
+ */
+
+- (void)findFallbacksWithRadius:(NSInteger)radius
+{
+    CLLocationCoordinate2D coord = self.location.coordinate;
+    NSString *latLongString = [NSString stringWithFormat:@"%f,%f", coord.latitude, coord.longitude];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *paramDic = @{@"ll" : latLongString,
+                               @"limit": @15,
+                               @"intent" : @"browse",
+                               @"radius" : [NSString stringWithFormat:@"%d", radius],
+                               @"categoryId" : @"4d4b7105d754a06374d81259",
+                               @"client_id" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareID"],
+                               @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
+                               @"v" : @20131017
+                               };
+    [manager GET:@"https://api.foursquare.com/v2/venues/search"
+      parameters:paramDic
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSArray *respArray = [[responseObject objectForKey:@"response"] objectForKey:@"venues"];
+             if (respArray.count < 15)
+                 [self findFallbacksWithRadius:radius * 3 / 2];
+             else {
+                 NSLog(@"");
+                 for (int i = 0; i < NUMBER_OF_FALLBACK; i++) {
+                     [self.fallbackRest addObject:@{@"name": [respArray[i] objectForKey:@"name"],
+                                                    @"address" : [[respArray[0] objectForKey:@"location"] objectForKey:@"address"]}];
+                     [self performSegueWithIdentifier:@"locateToFallback" sender:self];
+                 }
+             }
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"error: %@", error);
+         }];
+}
+
+
+#pragma mark - Interactivity Methods
+
+/*
+ *  Finds a list of other fallback options for the location of the user
+ */
+
+- (IBAction)findFallbackLocations:(id)sender
+{
+    [self findFallbacksWithRadius:25];
+}
+
+#pragma mark - segue methods
+
+/*
+ *  Readies the VC's for a segue
+ */
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"locateToFallback"]) {
+        RMUFallbackScreen *nextScreen = (RMUFallbackScreen*) segue.destinationViewController;
+        [nextScreen setFallbackRestaurants:self.fallbackRest];
+    }
+    else {
+        NSLog(@"ERROR: UNKNOWN SEGUE %@", segue.identifier);
+    }
+        
+        
 }
 
 #pragma mark - Animation Methods
@@ -177,3 +240,17 @@
 }
 
 @end
+
+
+//[manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", [respArray[0] objectForKey:@"id"]]
+//  parameters: @{@"VENUE_ID": [respArray[0] objectForKey:@"id"],
+//                @"client_id" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareID"],
+//                @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
+//                @"v" : @20131017}
+//     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//         NSLog(@"%@", responseObject);
+//     }
+//     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//         NSLog(@"fail %@", error);
+//     }];
+

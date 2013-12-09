@@ -53,6 +53,7 @@
 		9D419C081854E1640097C6CA /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419BFD1854E1640097C6CA /* AFURLRequestSerialization.m */; };
 		9D419C091854E1640097C6CA /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419BFF1854E1640097C6CA /* AFURLResponseSerialization.m */; };
 		9D419C0A1854E1640097C6CA /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419C011854E1640097C6CA /* AFURLSessionManager.m */; };
+		9D7736EB18562BD700A84E14 /* RMUFallbackScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736EA18562BD700A84E14 /* RMUFallbackScreen.m */; };
 		9DF155DE1841C30E00222403 /* MapBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF155DD1841C30E00222403 /* MapBox.framework */; };
 		9DF155E01841C42900222403 /* MapBox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9DF155DF1841C42900222403 /* MapBox.bundle */; };
 		9DF1ABE418370702006DF0B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1ABE318370702006DF0B3 /* Foundation.framework */; };
@@ -155,6 +156,8 @@
 		9D419BFF1854E1640097C6CA /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		9D419C001854E1640097C6CA /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		9D419C011854E1640097C6CA /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		9D7736E918562BD700A84E14 /* RMUFallbackScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUFallbackScreen.h; sourceTree = "<group>"; };
+		9D7736EA18562BD700A84E14 /* RMUFallbackScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUFallbackScreen.m; sourceTree = "<group>"; };
 		9DF155DD1841C30E00222403 /* MapBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MapBox.framework; sourceTree = "<group>"; };
 		9DF155DF1841C42900222403 /* MapBox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MapBox.bundle; sourceTree = "<group>"; };
 		9DF1ABE018370702006DF0B3 /* RecommenuBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecommenuBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +273,8 @@
 				9D419BD418493CF30097C6CA /* RMUProfileScreen.m */,
 				9D419BD018493C1E0097C6CA /* RMULocateScreen.h */,
 				9D419BD118493C1E0097C6CA /* RMULocateScreen.m */,
+				9D7736E918562BD700A84E14 /* RMUFallbackScreen.h */,
+				9D7736EA18562BD700A84E14 /* RMUFallbackScreen.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -298,6 +303,33 @@
 				9D419C011854E1640097C6CA /* AFURLSessionManager.m */,
 			);
 			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		9D7736EC18562BDE00A84E14 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9D419BE6185441640097C6CA /* RMUButton.h */,
+				9D419BE7185441640097C6CA /* RMUButton.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		9D7736ED18562BED00A84E14 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				9D419BE2184EE1B40097C6CA /* UIColor+RMUColors.h */,
+				9D419BE3184EE1B40097C6CA /* UIColor+RMUColors.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		9D7736EE18562BFB00A84E14 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				9D419BE9185454960097C6CA /* RMUAnimationClass.h */,
+				9D419BEA185454960097C6CA /* RMUAnimationClass.m */,
+			);
+			name = Objects;
 			sourceTree = "<group>";
 		};
 		9DF1ABD718370702006DF0B3 = {
@@ -347,14 +379,11 @@
 		9DF1ABE918370702006DF0B3 /* RecommenuBeta */ = {
 			isa = PBXGroup;
 			children = (
-				9D419BE9185454960097C6CA /* RMUAnimationClass.h */,
-				9D419BEA185454960097C6CA /* RMUAnimationClass.m */,
-				9D419BE6185441640097C6CA /* RMUButton.h */,
-				9D419BE7185441640097C6CA /* RMUButton.m */,
+				9D7736EE18562BFB00A84E14 /* Objects */,
+				9D7736EC18562BDE00A84E14 /* Views */,
 				9DF1ABF218370702006DF0B3 /* RMUAppDelegate.h */,
 				9DF1ABF318370702006DF0B3 /* RMUAppDelegate.m */,
-				9D419BE2184EE1B40097C6CA /* UIColor+RMUColors.h */,
-				9D419BE3184EE1B40097C6CA /* UIColor+RMUColors.m */,
+				9D7736ED18562BED00A84E14 /* Categories */,
 				9DF1ABF518370702006DF0B3 /* Main.storyboard */,
 				9D419BE5185436810097C6CA /* View Controllers */,
 				9DF1ABFB18370702006DF0B3 /* Images.xcassets */,
@@ -529,6 +558,7 @@
 				9D419C061854E1640097C6CA /* AFSecurityPolicy.m in Sources */,
 				9D419BEB185454960097C6CA /* RMUAnimationClass.m in Sources */,
 				9D419C051854E1640097C6CA /* AFNetworkReachabilityManager.m in Sources */,
+				9D7736EB18562BD700A84E14 /* RMUFallbackScreen.m in Sources */,
 				9D419BD218493C1E0097C6CA /* RMULocateScreen.m in Sources */,
 				9D419C071854E1640097C6CA /* AFURLConnectionOperation.m in Sources */,
 				9D419C021854E1640097C6CA /* AFHTTPRequestOperation.m in Sources */,
@@ -597,7 +627,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -636,7 +666,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
