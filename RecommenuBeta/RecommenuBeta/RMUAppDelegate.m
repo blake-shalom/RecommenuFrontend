@@ -18,7 +18,7 @@
     [tabBar setTintColor:[UIColor RMULogoBlueColor]];
     
     // Save some user defaults for Foursquare
-    NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT"; // TODO save as USERDEFAULTS
+    NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";
     NSUserDefaults *currentDefaults = [NSUserDefaults standardUserDefaults];
     [currentDefaults setObject:idString forKey:@"foursquareID"];

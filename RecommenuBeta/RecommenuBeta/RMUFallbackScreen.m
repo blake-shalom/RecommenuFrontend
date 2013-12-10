@@ -20,7 +20,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        self.fallbackRestaurants = [[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -43,18 +43,25 @@
  *  A setter for the fallbacks
  */
 
-- (void) setFallbackRestaurants:(NSMutableArray *)fallbacks
+- (void) pushFallbackRestaurants:(NSMutableArray *)fallbacks
 {
-    self.fallbackRestaurants = [[NSMutableArray alloc]init];
     self.fallbackRestaurants = fallbacks;
 }
 
 #pragma mark - UITableview Delegate
 
+/*
+ *  returns number of rows
+ */
+
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.fallbackRestaurants.count;
 }
+
+/*
+ *  Accessses specific cell at an index path
+ */
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -65,8 +72,26 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     [cell.textLabel setText:[self.fallbackRestaurants[[indexPath row]] objectForKey:@"name"]];
-    [cell.detailTextLabel setText:[self.fallbackRestaurants[[indexPath row]] objectForKey:@"name"]];
+    [cell.detailTextLabel setText:[[self.fallbackRestaurants[[indexPath row]] objectForKey:@"location"]objectForKey:@"address"]];
     return cell;
+}
+
+/*
+ *  Return one section fo the table
+ */
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+/*
+ *  Maintains transition to the menu page
+ */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"%@", [self.fallbackRestaurants[[indexPath row]] objectForKey:@"id"]);
 }
 
 @end

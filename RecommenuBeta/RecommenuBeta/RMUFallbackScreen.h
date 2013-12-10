@@ -10,6 +10,6 @@
 
 @interface RMUFallbackScreen : UITableViewController
 
-- (void)setFallbackRestaurants:(NSMutableArray*)fallbacks;
+- (void) pushFallbackRestaurants:(NSMutableArray *)fallbacks;
 
 @end

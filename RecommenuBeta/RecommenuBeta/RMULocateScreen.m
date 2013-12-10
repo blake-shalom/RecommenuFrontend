@@ -161,10 +161,12 @@
              else {
                  NSLog(@"");
                  for (int i = 0; i < NUMBER_OF_FALLBACK; i++) {
-                     [self.fallbackRest addObject:@{@"name": [respArray[i] objectForKey:@"name"],
-                                                    @"address" : [[respArray[0] objectForKey:@"location"] objectForKey:@"address"]}];
-                     [self performSegueWithIdentifier:@"locateToFallback" sender:self];
+                     [self.fallbackRest addObject:respArray[i]];
+//                     [self.fallbackRest addObject:@{@"name": [respArray[i] objectForKey:@"name"],
+//                                                    @"address" : [[respArray[i] objectForKey:@"location"] objectForKey:@"address"],
+//                                                    @"id" : [respArray[i] objectForKey:@"id"]}];
                  }
+                 [self performSegueWithIdentifier:@"locateToFallback" sender:self];
              }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -194,7 +196,7 @@
 {
     if ([segue.identifier isEqualToString:@"locateToFallback"]) {
         RMUFallbackScreen *nextScreen = (RMUFallbackScreen*) segue.destinationViewController;
-        [nextScreen setFallbackRestaurants:self.fallbackRest];
+        [nextScreen pushFallbackRestaurants:self.fallbackRest];
     }
     else {
         NSLog(@"ERROR: UNKNOWN SEGUE %@", segue.identifier);
@@ -253,4 +255,5 @@
 //     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //         NSLog(@"fail %@", error);
 //     }];
+//  https://api.foursquare.com/v2/venues/4e4d0539bd413c4cc66e0b48/menu?format=JSON&VENUE_ID=4e4d0539bd413c4cc66e0b48&client_id=YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT&client_secret=2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN&v=20131017
 
