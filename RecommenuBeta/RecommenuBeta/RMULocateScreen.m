@@ -162,9 +162,6 @@
                  NSLog(@"");
                  for (int i = 0; i < NUMBER_OF_FALLBACK; i++) {
                      [self.fallbackRest addObject:respArray[i]];
-//                     [self.fallbackRest addObject:@{@"name": [respArray[i] objectForKey:@"name"],
-//                                                    @"address" : [[respArray[i] objectForKey:@"location"] objectForKey:@"address"],
-//                                                    @"id" : [respArray[i] objectForKey:@"id"]}];
                  }
                  [self performSegueWithIdentifier:@"locateToFallback" sender:self];
              }
@@ -244,16 +241,4 @@
 @end
 
 
-//[manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", [respArray[0] objectForKey:@"id"]]
-//  parameters: @{@"VENUE_ID": [respArray[0] objectForKey:@"id"],
-//                @"client_id" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareID"],
-//                @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
-//                @"v" : @20131017}
-//     success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//         NSLog(@"%@", responseObject);
-//     }
-//     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//         NSLog(@"fail %@", error);
-//     }];
-//  https://api.foursquare.com/v2/venues/4e4d0539bd413c4cc66e0b48/menu?format=JSON&VENUE_ID=4e4d0539bd413c4cc66e0b48&client_id=YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT&client_secret=2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN&v=20131017
 

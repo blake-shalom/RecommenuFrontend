@@ -19,4 +19,6 @@
 @property NSNumber *friendLikes;
 @property NSNumber *expertLikes;
 
+- (id)initWithDictionary:(NSDictionary*) mealDictionary;
+
 @end

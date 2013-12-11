@@ -7,17 +7,22 @@
 //
 
 #import "RMUMenu.h"
+#import "RMUCourse.h"
 
 @implementation RMUMenu
 
-- (id)initWithFoursquareID:(NSNumber*)foursquareID
+- (id)initWithDictionary:(NSDictionary*) menu
 {
-    self = [[RMUMenu alloc]init];
+    self = [super init];
     if (self) {
+        self.menuName = [menu objectForKey:@"name"];
         self.courses = [[NSMutableArray alloc]init];
-        
+        for (NSDictionary* course in [menu objectForKey:@"items"]) {
+            [self.courses addObject:[[RMUMeal alloc]initWithDictionary:course]];
+        }
     }
     return self;
 }
 
 @end
+

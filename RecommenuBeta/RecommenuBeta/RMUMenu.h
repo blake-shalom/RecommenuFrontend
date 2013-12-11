@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AFNetworking.h"
 
 @interface RMUMenu : NSObject
 
-@property NSString *restaurantName;
-@property NSString *restaurantAddress;
+@property NSString *menuName;
 @property NSMutableArray *courses;
 
-- (id)initWithFoursquareID:(NSNumber*)foursquareID;
+- (id)initWithDictionary:(NSDictionary*) menu;
 
 @end

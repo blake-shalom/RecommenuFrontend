@@ -10,4 +10,17 @@
 
 @implementation RMUCourse
 
+- (id)initWithDictionary:(NSDictionary*) course
+{
+    self = [super init];
+    if (self) {
+        self.courseName = [course objectForKey:@"name"];
+        self.meals = [[NSMutableArray alloc]init];
+        for (NSDictionary* meal in [course objectForKey:@"items"]) {
+            [self.meals addObject:[[RMUMeal alloc]initWithDictionary:meal]];
+        }
+    }
+    return self;
+}
+
 @end

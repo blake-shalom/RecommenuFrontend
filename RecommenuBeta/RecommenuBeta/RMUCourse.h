@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RMUMeal.h"
 
 @interface RMUCourse : NSObject
 
 @property NSString *courseName;
 @property NSMutableArray *meals;
+
+- (id)initWithDictionary:(NSDictionary*) course;
 
 @end

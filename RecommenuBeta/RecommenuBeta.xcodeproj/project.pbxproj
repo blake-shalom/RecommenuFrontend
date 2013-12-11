@@ -57,6 +57,7 @@
 		9D7736F11857A4C700A84E14 /* RMUMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F01857A4C700A84E14 /* RMUMenu.m */; };
 		9D7736F41857A59200A84E14 /* RMUMeal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F31857A59200A84E14 /* RMUMeal.m */; };
 		9D7736F71857C40A00A84E14 /* RMUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F61857C40A00A84E14 /* RMUCourse.m */; };
+		9D7736FA1858E62400A84E14 /* RMURestaurant.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F91858E62400A84E14 /* RMURestaurant.m */; };
 		9DF155DE1841C30E00222403 /* MapBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF155DD1841C30E00222403 /* MapBox.framework */; };
 		9DF155E01841C42900222403 /* MapBox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9DF155DF1841C42900222403 /* MapBox.bundle */; };
 		9DF1ABE418370702006DF0B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1ABE318370702006DF0B3 /* Foundation.framework */; };
@@ -167,6 +168,8 @@
 		9D7736F31857A59200A84E14 /* RMUMeal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUMeal.m; sourceTree = "<group>"; };
 		9D7736F51857C40A00A84E14 /* RMUCourse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUCourse.h; sourceTree = "<group>"; };
 		9D7736F61857C40A00A84E14 /* RMUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUCourse.m; sourceTree = "<group>"; };
+		9D7736F81858E62400A84E14 /* RMURestaurant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURestaurant.h; sourceTree = "<group>"; };
+		9D7736F91858E62400A84E14 /* RMURestaurant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURestaurant.m; sourceTree = "<group>"; };
 		9DF155DD1841C30E00222403 /* MapBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MapBox.framework; sourceTree = "<group>"; };
 		9DF155DF1841C42900222403 /* MapBox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MapBox.bundle; sourceTree = "<group>"; };
 		9DF1ABE018370702006DF0B3 /* RecommenuBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecommenuBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -343,6 +346,8 @@
 				9D7736F01857A4C700A84E14 /* RMUMenu.m */,
 				9D7736F21857A59200A84E14 /* RMUMeal.h */,
 				9D7736F31857A59200A84E14 /* RMUMeal.m */,
+				9D7736F81858E62400A84E14 /* RMURestaurant.h */,
+				9D7736F91858E62400A84E14 /* RMURestaurant.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -580,6 +585,7 @@
 				9D419C041854E1640097C6CA /* AFHTTPSessionManager.m in Sources */,
 				9D419C081854E1640097C6CA /* AFURLRequestSerialization.m in Sources */,
 				9DF1ABF018370702006DF0B3 /* main.m in Sources */,
+				9D7736FA1858E62400A84E14 /* RMURestaurant.m in Sources */,
 				9D419C0A1854E1640097C6CA /* AFURLSessionManager.m in Sources */,
 				9D7736F71857C40A00A84E14 /* RMUCourse.m in Sources */,
 				9D419BD518493CF30097C6CA /* RMUProfileScreen.m in Sources */,

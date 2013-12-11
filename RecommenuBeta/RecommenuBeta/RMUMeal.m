@@ -12,7 +12,7 @@
 
 - (id)initWithDictionary:(NSDictionary*) mealDictionary
 {
-    self = [[RMUMeal alloc]init];
+    self = [super init];
     if (self) {
         self.mealName = [mealDictionary objectForKey:@"name"];
         self.mealDescription = [mealDictionary objectForKey:@"description"];
