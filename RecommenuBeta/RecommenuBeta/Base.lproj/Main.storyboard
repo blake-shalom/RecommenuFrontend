@@ -397,7 +397,14 @@
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
         <image name="popup_location.png" width="264" height="200"/>
+        <image name="popup_location.png" width="264" height="200"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
