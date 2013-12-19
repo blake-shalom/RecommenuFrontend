@@ -11,6 +11,7 @@
 #import "RMUButton.h"
 #import "RMUAnimationClass.h"
 #import "AFNetworking.h"
+#import "RMURestaurant.h"
 
 @interface RMULocateScreen : UIViewController
 <CLLocationManagerDelegate, UIAlertViewDelegate>

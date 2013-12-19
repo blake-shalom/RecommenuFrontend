@@ -11,17 +11,23 @@
 #import "RMUFallbackScreen.h"
 
 @interface RMULocateScreen ()
+
+// IBOutlets
 @property (weak, nonatomic) IBOutlet UIView *mapFrameView;
-@property (strong, nonatomic) RMMapView *mapView;
-@property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) CLLocation *location;
 @property (weak, nonatomic) IBOutlet RMUButton *yesButton;
 @property (weak, nonatomic) IBOutlet RMUButton *noButton;
 @property (weak, nonatomic) IBOutlet UIImageView *gradientImage;
 @property (weak, nonatomic) IBOutlet UIView *popupView;
 @property (weak, nonatomic) IBOutlet UILabel *restaurantLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
+
+// Regular properties
 @property (strong,nonatomic) NSMutableArray *fallbackRest;
+@property (strong, nonatomic) RMMapView *mapView;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocation *location;
+@property (strong,nonatomic) NSNumber *restID;
+@property (strong,nonatomic) NSString *restString;
 
 @end
 
@@ -60,6 +66,8 @@
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.location = [[CLLocation alloc]init];
     [self.locationManager startUpdatingLocation];
+    self.restID = [[NSNumber alloc]init];
+    self.restString = [[NSString alloc]init];
 
     // Connfigure the buttons
     self.yesButton.isBlue = YES;
@@ -104,7 +112,6 @@
 
 - (void)findRestaurantWithRadius:(NSInteger)radius
 {
-    NSLog(@"%d", radius);
     CLLocationCoordinate2D coord = self.location.coordinate;
     NSString *latLongString = [NSString stringWithFormat:@"%f,%f", coord.latitude, coord.longitude];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -124,7 +131,9 @@
              if (respArray.count ==0)
                  [self findRestaurantWithRadius:radius * 3 / 2];
              else {
-                 [self.restaurantLabel setText:[respArray[0] objectForKey:@"name"]];
+                 self.restString =[respArray[0] objectForKey:@"name"];
+                 self.restID = [respArray[0] objectForKey:@"id"];
+                 [self.restaurantLabel setText:self.restString];
                  [self.addressLabel setText:[[respArray[0] objectForKey:@"location"] objectForKey:@"address"]];
                  [self animateInGradient];
             }
@@ -159,7 +168,6 @@
              if (respArray.count < 15)
                  [self findFallbacksWithRadius:radius * 3 / 2];
              else {
-                 NSLog(@"");
                  for (int i = 0; i < NUMBER_OF_FALLBACK; i++) {
                      [self.fallbackRest addObject:respArray[i]];
                  }
@@ -173,6 +181,29 @@
 
 
 #pragma mark - Interactivity Methods
+
+/*
+ *  If restaurant guessed is correct then report it's foursquare id and obtain a menu
+ */
+
+- (IBAction)confirmRestaurant:(id)sender
+{
+    NSLog(@"%@", self.restID);
+//    RMURestaurant *restaurant = [[RMURestaurant alloc]initWithFoursquareID:self.restID andRestaurantName:self.restString];
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", self.restID]
+      parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", self.restID],
+                   @"client_id" : [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareID"],
+                   @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
+                   @"v" : @20131017}
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"%@", responseObject);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"error : %@", error);
+         }];
+}
+
 
 /*
  *  Finds a list of other fallback options for the location of the user
