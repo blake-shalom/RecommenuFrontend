@@ -188,20 +188,6 @@
 
 - (IBAction)confirmRestaurant:(id)sender
 {
-    NSLog(@"%@", self.restID);
-//    RMURestaurant *restaurant = [[RMURestaurant alloc]initWithFoursquareID:self.restID andRestaurantName:self.restString];
-    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", self.restID]
-      parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", self.restID],
-                   @"client_id" : [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareID"],
-                   @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
-                   @"v" : @20131017}
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             NSLog(@"%@", responseObject);
-         }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             NSLog(@"error : %@", error);
-         }];
 }
 
 
@@ -211,6 +197,8 @@
 
 - (IBAction)findFallbackLocations:(id)sender
 {
+    [self.noButton setUserInteractionEnabled:NO];
+    [self.yesButton setUserInteractionEnabled:NO];
     [self findFallbacksWithRadius:25];
 }
 
@@ -222,15 +210,22 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    [self.yesButton setUserInteractionEnabled:NO];
+    [self.noButton setUserInteractionEnabled:NO];
     if ([segue.identifier isEqualToString:@"locateToFallback"]) {
         RMUFallbackScreen *nextScreen = (RMUFallbackScreen*) segue.destinationViewController;
         [nextScreen pushFallbackRestaurants:self.fallbackRest];
     }
+    else if ([segue.identifier isEqualToString:@"locateToMenu"]) {
+        RMUMenuScreen *nextScreen = (RMUMenuScreen*) segue.destinationViewController;
+        [nextScreen getRestaurantWithFoursquareID:self.restID andName:self.restString];
+    }
     else {
         NSLog(@"ERROR: UNKNOWN SEGUE %@", segue.identifier);
     }
-        
-        
+    [self.yesButton setUserInteractionEnabled:YES];
+    [self.noButton setUserInteractionEnabled:YES];
+
 }
 
 #pragma mark - Animation Methods

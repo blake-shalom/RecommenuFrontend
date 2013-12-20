@@ -10,7 +10,7 @@
 
 @interface RMUMenuScreen ()
 
-@property RMUMenu *currentMenu;
+@property RMURestaurant *currentRestaurant;
 
 @end
 
@@ -37,4 +37,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+/*
+ *  Gets Restaurant from foursquare and sets the underlying data structure up. also hides the table view until the load finishes
+ */
+
+- (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name
+{
+    // TODO hide the table view
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
+      parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", foursquareID],
+                   @"client_id" : [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareID"],
+                   @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
+                   @"v" : @20131017}
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             // TODO reveal the table
+             self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:responseObject
+                                                             andRestaurantName:name];
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"error : %@", error);
+         }];
+}
 @end

@@ -16,6 +16,7 @@
     self = [super init];
     if (self) {
         self.menuName = [menu objectForKey:@"name"];
+        NSLog(@"menu member %@", self.menuName);
         self.courses = [[NSMutableArray alloc]init];
         for (NSDictionary* course in [menu objectForKey:@"items"]) {
             [self.courses addObject:[[RMUMeal alloc]initWithDictionary:course]];

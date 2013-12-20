@@ -132,6 +132,7 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="findFallbackLocations:" destination="WW4-31-mjr" eventType="touchUpInside" id="CQP-NR-z0D"/>
+                                                    <segue destination="Aa8-Db-N0V" kind="modal" identifier="locateToMenu" id="PaK-xv-5Ro"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gEf-ja-MUm">
@@ -226,10 +227,10 @@
             </objects>
             <point key="canvasLocation" x="1134" y="274"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu Screen-->
         <scene sceneID="DR5-mX-nwr">
             <objects>
-                <viewController id="Aa8-Db-N0V" sceneMemberID="viewController">
+                <viewController id="Aa8-Db-N0V" customClass="RMUMenuScreen" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GPH-4H-bvM"/>
                         <viewControllerLayoutGuide type="bottom" id="Ggr-K7-eCR"/>

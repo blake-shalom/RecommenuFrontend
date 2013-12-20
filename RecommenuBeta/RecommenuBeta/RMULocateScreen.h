@@ -12,6 +12,7 @@
 #import "RMUAnimationClass.h"
 #import "AFNetworking.h"
 #import "RMURestaurant.h"
+#import "RMUMenuScreen.h"
 
 @interface RMULocateScreen : UIViewController
 <CLLocationManagerDelegate, UIAlertViewDelegate>

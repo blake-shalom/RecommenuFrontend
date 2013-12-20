@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "iCarousel.h"
-#import "RMUMenu.h"
+#import "RMURestaurant.h"
 
 @interface RMUMenuScreen : UIViewController
+
+- (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;
 
 @end

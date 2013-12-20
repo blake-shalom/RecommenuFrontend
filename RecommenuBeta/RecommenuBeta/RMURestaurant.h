@@ -14,6 +14,6 @@
 @property NSMutableArray *menus;
 @property NSString *restName;
 
--(id) initWithFoursquareID:(NSNumber *)foursquareID andRestaurantName:(NSString*) name;
+-(id) initWithDictionary:(NSDictionary *)restaurantDictionary andRestaurantName:(NSString*) name;
 
 @end
