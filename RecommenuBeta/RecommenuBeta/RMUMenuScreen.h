@@ -11,6 +11,7 @@
 #import "RMURestaurant.h"
 
 @interface RMUMenuScreen : UIViewController
+<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
 
 - (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;
 

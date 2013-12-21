@@ -11,6 +11,12 @@
 @interface RMUMenuScreen ()
 
 @property RMURestaurant *currentRestaurant;
+@property (weak, nonatomic) IBOutlet UILabel *restName;
+@property (weak, nonatomic) IBOutlet UILabel *currMenu;
+@property (weak, nonatomic) IBOutlet UILabel *leftSection;
+@property (weak, nonatomic) IBOutlet UILabel *currSection;
+@property (weak, nonatomic) IBOutlet UILabel *rightSection;
+
 
 @end
 
@@ -28,7 +34,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 	// Do any additional setup after loading the view.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidLoad];
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,6 +56,7 @@
 - (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name
 {
     // TODO hide the table view
+    [self.view setHidden:YES];
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
       parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", foursquareID],
@@ -52,11 +65,34 @@
                    @"v" : @20131017}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              // TODO reveal the table
+             [self.view setHidden:NO];
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:responseObject
                                                              andRestaurantName:name];
+             [self.restName setText:self.currentRestaurant.restName];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"error : %@", error);
          }];
 }
+
+#pragma mark - interactivity
+
+/*
+ *  Views other avalable menus at the restaurant
+ */
+
+- (IBAction)viewMenus:(id)sender
+{
+
+}
+
+/*
+ *  Sees the ratings for all dishes, toggle-able
+ */
+
+- (IBAction)seeRatings:(id)sender
+{
+
+}
+
 @end
