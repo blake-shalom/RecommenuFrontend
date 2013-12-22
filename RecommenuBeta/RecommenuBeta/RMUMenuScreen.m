@@ -10,13 +10,21 @@
 
 @interface RMUMenuScreen ()
 
+// Regular properties
 @property RMURestaurant *currentRestaurant;
-@property (weak, nonatomic) IBOutlet UILabel *restName;
-@property (weak, nonatomic) IBOutlet UILabel *currMenu;
-@property (weak, nonatomic) IBOutlet UILabel *leftSection;
-@property (weak, nonatomic) IBOutlet UILabel *currSection;
-@property (weak, nonatomic) IBOutlet UILabel *rightSection;
+@property (weak,nonatomic) RMUMenu *currentMenu;
+@property (weak,nonatomic) RMUCourse *currentCourse;
 
+// IBOutlets
+@property (weak, nonatomic) IBOutlet UILabel *restNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currMenuLabel;
+@property (weak, nonatomic) IBOutlet UILabel *leftSectionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currSectionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rightSectionLabel;
+@property (weak, nonatomic) IBOutlet UITableView *menuTable;
+
+
+#warning TODO popup when restaurant menu is not supported
 
 @end
 
@@ -34,7 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.menuTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
 	// Do any additional setup after loading the view.
 }
 
@@ -47,6 +55,25 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setupViews
+{
+    [self.restNameLabel setText:[self.currentRestaurant.restName uppercaseString]];
+    [self.currMenuLabel setText:self.currentMenu.menuName];
+    [self.currSectionLabel setText:self.currentCourse.courseName];
+    // If there are more than one course set the label to each of the two courses to the left and right
+    if (self.currentMenu.courses.count > 1) {
+        RMUCourse *course = self.currentMenu.courses[self.currentMenu.courses.count -1 ];
+        [self.leftSectionLabel setText:course.courseName];
+        course = self.currentMenu.courses[1];
+        [self.rightSectionLabel setText:course.courseName];
+    }
+    else {
+        [self.leftSectionLabel setText:@""];
+        [self.rightSectionLabel setText:@""];
+    }
+
 }
 
 /*
@@ -68,7 +95,11 @@
              [self.view setHidden:NO];
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:responseObject
                                                              andRestaurantName:name];
-             [self.restName setText:self.currentRestaurant.restName];
+             if (self.currentRestaurant.menus.count > 0) {
+                 self.currentMenu = self.currentRestaurant.menus[0];
+                 self.currentCourse = self.currentMenu.courses[0];
+             }
+             [self setupViews];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"error : %@", error);
@@ -94,5 +125,61 @@
 {
 
 }
+
+#pragma mark - UITableViewDelagate
+
+/*
+ *  Returns appropriate height for individual rows, depdning on text etc
+ */
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 72.0f;
+}
+
+/*
+ *  Manages Selection of cells by checkbox
+ */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"%i", indexPath.row);
+}
+
+/*
+ *  Deselection of cells by unchecking checkbox
+ */
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+#pragma mark - UITableViewDataSource
+
+/*
+ *  Cell for row at index path, oh shizz
+ */
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    return cell;
+}
+
+/*
+ *  Returns the number of rows in each section of the table
+ */
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.currentCourse.meals.count;
+}
+
 
 @end

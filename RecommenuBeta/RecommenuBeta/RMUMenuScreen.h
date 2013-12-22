@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "iCarousel.h"
 #import "RMURestaurant.h"
+#import "RMUCourse.h"
 
 @interface RMUMenuScreen : UIViewController
-<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
+<UITableViewDataSource, UITableViewDelegate/*, iCarouselDataSource, iCarouselDelegate*/>
 
 - (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;
 

@@ -13,5 +13,12 @@
 +(UIColor*) RMULogoBlueColor;
 +(UIColor*) RMUGrayPressedColor;
 +(UIColor*) RMUBluePressedColor;
++(UIColor*) RMUTitleColor;
++(UIColor*) RMUDividingGrayColor;
++(UIColor*) RMUDescriptionGrayColor;
++(UIColor*) RMUGoodGreenColor;
++(UIColor*) RMUBadRedColor;
++(UIColor*) RMULikeBlueColor;
++(UIColor*) RMUSelectGrayColor;
 
 @end
