@@ -92,8 +92,9 @@
                    @"v" : @20131017}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              // TODO reveal the table
+             NSLog(@"%@", responseObject);
              [self.view setHidden:NO];
-             self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:responseObject
+             self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
                                                              andRestaurantName:name];
              if (self.currentRestaurant.menus.count > 0) {
                  self.currentMenu = self.currentRestaurant.menus[0];

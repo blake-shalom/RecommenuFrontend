@@ -18,8 +18,8 @@
         self.menuName = [menu objectForKey:@"name"];
         NSLog(@"menu member %@", self.menuName);
         self.courses = [[NSMutableArray alloc]init];
-        for (NSDictionary* course in [menu objectForKey:@"items"]) {
-            [self.courses addObject:[[RMUMeal alloc]initWithDictionary:course]];
+        for (NSDictionary* course in [[menu objectForKey:@"entries"] objectForKey:@"items"]) {
+            [self.courses addObject:[[RMUCourse alloc]initWithDictionary:course]];
         }
     }
     return self;

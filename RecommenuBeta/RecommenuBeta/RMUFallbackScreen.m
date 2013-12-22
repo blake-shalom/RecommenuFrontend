@@ -11,7 +11,7 @@
 @interface RMUFallbackScreen ()
 
 @property (nonatomic)  NSMutableArray *fallbackRestaurants;
-
+@property NSDictionary *selectedFallback;
 @end
 
 @implementation RMUFallbackScreen
@@ -86,12 +86,26 @@
 }
 
 /*
- *  Maintains transition to the menu page
+ *  selects a row and sets an instance variable to the selected dictionary
  */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"%@", [self.fallbackRestaurants[[indexPath row]] objectForKey:@"id"]);
+    self.selectedFallback = self.fallbackRestaurants[indexPath.row];
+    [self performSegueWithIdentifier:@"fallbackToMenu" sender:self];
+}
+
+/*
+ *  Sets up menu screen upon activation of segue
+ */
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"fallbackToMenu"]){
+        RMUMenuScreen *menuScreen = (RMUMenuScreen*)segue.destinationViewController;
+        [menuScreen getRestaurantWithFoursquareID:[self.selectedFallback objectForKey:@"id"] andName:[self.selectedFallback objectForKey:@"name"]];
+    }
 }
 
 @end
