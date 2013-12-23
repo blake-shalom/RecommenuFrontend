@@ -26,4 +26,11 @@
     // Configure the view for the selected state
 }
 
+- (void)layoutSubviews
+{
+    [self.mealLabel setTextColor:[UIColor RMUTitleColor]];
+    [self.descriptionLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
+    [self.priceLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
+}
+
 @end

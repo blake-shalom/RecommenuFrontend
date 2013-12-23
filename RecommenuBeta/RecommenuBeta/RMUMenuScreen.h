@@ -10,6 +10,7 @@
 #import "iCarousel.h"
 #import "RMURestaurant.h"
 #import "RMUCourse.h"
+#import "RMUMenuCell.h"
 
 @interface RMUMenuScreen : UIViewController
 <UITableViewDataSource, UITableViewDelegate/*, iCarouselDataSource, iCarouselDelegate*/>

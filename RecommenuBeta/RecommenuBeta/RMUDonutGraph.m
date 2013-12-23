@@ -60,9 +60,9 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
     CGFloat likesToRadians = 2 * M_PI * ( self.likes / (self.likes + self.dislikes)) - M_PI/2.0f;
     if (self.likes != 0) {
         CGContextSaveGState(context);
-        CGMutablePathRef likePath = createHoopPathFromCenterOfView(rect, 37.0f, 31.0f, likesToRadians, 0);
+        CGMutablePathRef likePath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - 3.0f, likesToRadians, 0);
         CGContextAddPath(context, likePath);
-        CGContextSetFillColorWithColor(context, [UIColor RMUBluePressedColor].CGColor);
+        CGContextSetFillColorWithColor(context, [UIColor RMUGoodGreenColor].CGColor);
         CGContextFillPath(context);
         CGContextRestoreGState(context);
         CFRelease(likePath);
@@ -70,12 +70,19 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
     
     if (self.dislikes != 0) {
         CGContextSaveGState(context);
-        CGMutablePathRef dislikePath = createHoopPathFromCenterOfView(rect, 37.0f, 31.0f, likesToRadians, 1);
+        CGMutablePathRef dislikePath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - 3.0f, likesToRadians + .05, 1);
         CGContextAddPath(context, dislikePath);
-        CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
+        CGContextSetFillColorWithColor(context, [UIColor RMUBadRedColor].CGColor);
         CGContextFillPath(context);
         CGContextRestoreGState(context);
         CFRelease(dislikePath);
+        CGContextSaveGState(context);
+        CGMutablePathRef blankPath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - 3.0f, .05 - M_PI/2.0, 0);
+        CGContextAddPath(context, blankPath);
+        CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+        CGContextFillPath(context);
+        CGContextRestoreGState(context);
+        CFRelease(blankPath);
     }
 }
 

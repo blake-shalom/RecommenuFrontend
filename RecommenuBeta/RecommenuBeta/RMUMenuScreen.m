@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *rightSectionLabel;
 @property (weak, nonatomic) IBOutlet UITableView *menuTable;
 
-
 #warning TODO popup when restaurant menu is not supported
 
 @end
@@ -43,6 +42,11 @@
 {
     [super viewDidLoad];
     self.menuTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [self.restNameLabel setTextColor:[UIColor RMUTitleColor]];
+    [self.currMenuLabel setTextColor:[UIColor RMUTitleColor]];
+    [self.leftSectionLabel setTextColor:[UIColor RMUDividingGrayColor]];
+    [self.rightSectionLabel setTextColor:[UIColor RMUDividingGrayColor]];
+    [self.currSectionLabel setTextColor:[UIColor RMULogoBlueColor]];
 	// Do any additional setup after loading the view.
 }
 
@@ -73,7 +77,7 @@
         [self.leftSectionLabel setText:@""];
         [self.rightSectionLabel setText:@""];
     }
-
+    [self.menuTable reloadData];
 }
 
 /*
@@ -165,11 +169,16 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    RMUMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[RMUMenuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    RMUMeal *currentMeal = self.currentCourse.meals[indexPath.row];
+    [cell.mealLabel setText:currentMeal.mealName];
+    [cell.descriptionLabel setText:currentMeal.mealDescription];
+    [cell.priceLabel setText:currentMeal.mealPrice];
+    [cell.donutGraph displayLikes:12 dislikes:12];
     return cell;
 }
 
