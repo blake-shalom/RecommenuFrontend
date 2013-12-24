@@ -82,7 +82,6 @@
         [self.leftSectionLabel setText:@""];
         [self.rightSectionLabel setText:@""];
     }
-//    [self.menuTable reloadData];
     [self.carousel reloadData];
 }
 
@@ -245,6 +244,21 @@
 {
     UITableView *currentTable = (UITableView*) carousel.currentItemView;
     [currentTable reloadData];
+}
+
+- (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
+{
+    switch (option)
+    {
+        case iCarouselOptionSpacing:
+        {
+            return 1.2;
+        }
+        default:
+        {
+            return value;
+        }
+    }
 }
 
 @end
