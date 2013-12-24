@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         self.courseName = [course objectForKey:@"name"];
-        NSLog(@"course member: %@", self.courseName);
+//        NSLog(@"course member: %@", self.courseName);
         self.meals = [[NSMutableArray alloc]init];
         for (NSDictionary* meal in [[course objectForKey:@"entries"] objectForKey:@"items"]) {
             [self.meals addObject:[[RMUMeal alloc]initWithDictionary:meal]];

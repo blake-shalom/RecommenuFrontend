@@ -14,6 +14,7 @@
 @property RMURestaurant *currentRestaurant;
 @property (weak,nonatomic) RMUMenu *currentMenu;
 @property (weak,nonatomic) RMUCourse *currentCourse;
+@property BOOL isRatingVisible;
 
 // IBOutlets
 @property (weak, nonatomic) IBOutlet UILabel *restNameLabel;
@@ -21,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *leftSectionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currSectionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rightSectionLabel;
-@property (weak, nonatomic) IBOutlet UITableView *menuTable;
+@property (weak, nonatomic) IBOutlet iCarousel *carousel;
 
 #warning TODO popup when restaurant menu is not supported
 
@@ -41,12 +42,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.menuTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+//    self.menuTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.restNameLabel setTextColor:[UIColor RMUTitleColor]];
     [self.currMenuLabel setTextColor:[UIColor RMUTitleColor]];
     [self.leftSectionLabel setTextColor:[UIColor RMUDividingGrayColor]];
     [self.rightSectionLabel setTextColor:[UIColor RMUDividingGrayColor]];
     [self.currSectionLabel setTextColor:[UIColor RMULogoBlueColor]];
+    self.carousel.type = iCarouselTypeLinear;
+    self.carousel.delegate = self;
+    self.carousel.dataSource = self;
+
 	// Do any additional setup after loading the view.
 }
 
@@ -77,7 +82,8 @@
         [self.leftSectionLabel setText:@""];
         [self.rightSectionLabel setText:@""];
     }
-    [self.menuTable reloadData];
+//    [self.menuTable reloadData];
+    [self.carousel reloadData];
 }
 
 /*
@@ -128,7 +134,8 @@
 
 - (IBAction)seeRatings:(id)sender
 {
-
+    self.isRatingVisible = !self.isRatingVisible;
+//    [self.menuTable reloadData];
 }
 
 #pragma mark - UITableViewDelagate
@@ -169,16 +176,28 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+    NSInteger index = tableView.tag;
+    RMUCourse *course = self.currentMenu.courses[index];
+    [tableView registerNib:[UINib nibWithNibName:@"menuTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellIdentifier];
     RMUMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     if (cell == nil) {
         cell = [[RMUMenuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    RMUMeal *currentMeal = self.currentCourse.meals[indexPath.row];
+    RMUMeal *currentMeal = course.meals[indexPath.row];
     [cell.mealLabel setText:currentMeal.mealName];
     [cell.descriptionLabel setText:currentMeal.mealDescription];
     [cell.priceLabel setText:currentMeal.mealPrice];
     [cell.donutGraph displayLikes:12 dislikes:12];
+    
+    if (self.isRatingVisible) {
+        [cell.descView setHidden:YES];
+        [cell.likeView setHidden:NO];
+    }
+    else {
+        [cell.descView setHidden:NO];
+        [cell.likeView setHidden:YES];
+    }
     return cell;
 }
 
@@ -188,8 +207,44 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.currentCourse.meals.count;
+    NSInteger index = tableView.tag;
+    RMUCourse *indexedCourse = self.currentMenu.courses[index];
+    return indexedCourse.meals.count;
 }
 
+#pragma mark -  iCarousel Methods
+
+/*
+ *  Returns the number of views necessary in the carousel
+ */
+
+- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
+{
+    return self.currentMenu.courses.count;
+}
+
+/*
+ *  Returns the view for each carousel, similar to CellForRow
+ */
+
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
+{
+    if (view == nil) {
+        RMUMenuTable *tableView = [[RMUMenuTable alloc] initWithFrame:self.carousel.frame];
+        tableView.delegate = self;
+        tableView.dataSource = self;
+        view = tableView;
+    }
+    view.tag = index;
+    
+    return view;
+
+}
+
+- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
+{
+    UITableView *currentTable = (UITableView*) carousel.currentItemView;
+    [currentTable reloadData];
+}
 
 @end

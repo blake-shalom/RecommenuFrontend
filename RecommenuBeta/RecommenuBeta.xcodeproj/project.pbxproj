@@ -18,7 +18,6 @@
 		9D275A061860A53E003BF004 /* icon_foodies.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759F21860A53E003BF004 /* icon_foodies.png */; };
 		9D275A071860A53E003BF004 /* icon_foodies@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759F31860A53E003BF004 /* icon_foodies@2x.png */; };
 		9D275A081860A53E003BF004 /* icon_friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759F41860A53E003BF004 /* icon_friends.png */; };
-		9D275A091860A53E003BF004 /* icon_friends@sx.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759F51860A53E003BF004 /* icon_friends@sx.png */; };
 		9D275A0A1860A53E003BF004 /* icon_graph_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759F61860A53E003BF004 /* icon_graph_select.png */; };
 		9D275A0B1860A53E003BF004 /* icon_graph_select@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759F71860A53E003BF004 /* icon_graph_select@2x.png */; };
 		9D275A0C1860A53E003BF004 /* icon_graph.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759F81860A53E003BF004 /* icon_graph.png */; };
@@ -84,6 +83,9 @@
 		9D7736F41857A59200A84E14 /* RMUMeal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F31857A59200A84E14 /* RMUMeal.m */; };
 		9D7736F71857C40A00A84E14 /* RMUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F61857C40A00A84E14 /* RMUCourse.m */; };
 		9D7736FA1858E62400A84E14 /* RMURestaurant.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F91858E62400A84E14 /* RMURestaurant.m */; };
+		9DB9C27C18691748003CD478 /* icon_friends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DB9C27B18691748003CD478 /* icon_friends@2x.png */; };
+		9DB9C27F186A03A5003CD478 /* RMUMenuTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9C27E186A03A5003CD478 /* RMUMenuTable.m */; };
+		9DB9C281186A11DE003CD478 /* menuTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9DB9C280186A11DE003CD478 /* menuTableCell.xib */; };
 		9DF155DE1841C30E00222403 /* MapBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF155DD1841C30E00222403 /* MapBox.framework */; };
 		9DF155E01841C42900222403 /* MapBox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9DF155DF1841C42900222403 /* MapBox.bundle */; };
 		9DF1ABE418370702006DF0B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1ABE318370702006DF0B3 /* Foundation.framework */; };
@@ -134,7 +136,6 @@
 		9D2759F21860A53E003BF004 /* icon_foodies.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_foodies.png; sourceTree = "<group>"; };
 		9D2759F31860A53E003BF004 /* icon_foodies@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_foodies@2x.png"; sourceTree = "<group>"; };
 		9D2759F41860A53E003BF004 /* icon_friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_friends.png; sourceTree = "<group>"; };
-		9D2759F51860A53E003BF004 /* icon_friends@sx.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_friends@sx.png"; sourceTree = "<group>"; };
 		9D2759F61860A53E003BF004 /* icon_graph_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_graph_select.png; sourceTree = "<group>"; };
 		9D2759F71860A53E003BF004 /* icon_graph_select@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_graph_select@2x.png"; sourceTree = "<group>"; };
 		9D2759F81860A53E003BF004 /* icon_graph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_graph.png; sourceTree = "<group>"; };
@@ -226,6 +227,10 @@
 		9D7736F61857C40A00A84E14 /* RMUCourse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUCourse.m; sourceTree = "<group>"; };
 		9D7736F81858E62400A84E14 /* RMURestaurant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURestaurant.h; sourceTree = "<group>"; };
 		9D7736F91858E62400A84E14 /* RMURestaurant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURestaurant.m; sourceTree = "<group>"; };
+		9DB9C27B18691748003CD478 /* icon_friends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_friends@2x.png"; sourceTree = "<group>"; };
+		9DB9C27D186A03A5003CD478 /* RMUMenuTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUMenuTable.h; sourceTree = "<group>"; };
+		9DB9C27E186A03A5003CD478 /* RMUMenuTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUMenuTable.m; sourceTree = "<group>"; };
+		9DB9C280186A11DE003CD478 /* menuTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = menuTableCell.xib; sourceTree = "<group>"; };
 		9DF155DD1841C30E00222403 /* MapBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MapBox.framework; sourceTree = "<group>"; };
 		9DF155DF1841C42900222403 /* MapBox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MapBox.bundle; sourceTree = "<group>"; };
 		9DF1ABE018370702006DF0B3 /* RecommenuBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecommenuBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -318,7 +323,7 @@
 				9D2759F21860A53E003BF004 /* icon_foodies.png */,
 				9D2759F31860A53E003BF004 /* icon_foodies@2x.png */,
 				9D2759F41860A53E003BF004 /* icon_friends.png */,
-				9D2759F51860A53E003BF004 /* icon_friends@sx.png */,
+				9DB9C27B18691748003CD478 /* icon_friends@2x.png */,
 				9D2759F61860A53E003BF004 /* icon_graph_select.png */,
 				9D2759F71860A53E003BF004 /* icon_graph_select@2x.png */,
 				9D2759F81860A53E003BF004 /* icon_graph.png */,
@@ -415,6 +420,8 @@
 				9D419BE7185441640097C6CA /* RMUButton.m */,
 				9D275A1E18668173003BF004 /* RMUMenuCell.h */,
 				9D275A1F18668173003BF004 /* RMUMenuCell.m */,
+				9DB9C27D186A03A5003CD478 /* RMUMenuTable.h */,
+				9DB9C27E186A03A5003CD478 /* RMUMenuTable.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -501,6 +508,7 @@
 				9DF1ABF518370702006DF0B3 /* Main.storyboard */,
 				9D419BE5185436810097C6CA /* View Controllers */,
 				9DF1ABFB18370702006DF0B3 /* Images.xcassets */,
+				9DB9C280186A11DE003CD478 /* menuTableCell.xib */,
 				9DF1ABEA18370702006DF0B3 /* Supporting Files */,
 			);
 			path = RecommenuBeta;
@@ -617,7 +625,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D419BC51845E6220097C6CA /* nav_bar@2x.png in Resources */,
-				9D275A091860A53E003BF004 /* icon_friends@sx.png in Resources */,
 				9D275A0F1860A53E003BF004 /* icon_list_select@2x.png in Resources */,
 				9D419BC41845E6220097C6CA /* logo.png in Resources */,
 				9D275A1918625652003BF004 /* menu_list_line.png in Resources */,
@@ -653,12 +660,14 @@
 				9D275A0E1860A53E003BF004 /* icon_list_select.png in Resources */,
 				9D419BC61845E6220097C6CA /* nav_bar.png in Resources */,
 				9D419BCC1845E6220097C6CA /* popup_location.png in Resources */,
+				9DB9C27C18691748003CD478 /* icon_friends@2x.png in Resources */,
 				9D419BC21845E6220097C6CA /* icon_settings.png in Resources */,
 				9D419BB81845E6220097C6CA /* icon_profile@2x.png in Resources */,
 				9D419BB11845E6220097C6CA /* gradient.png in Resources */,
 				9DF1ABEE18370702006DF0B3 /* InfoPlist.strings in Resources */,
 				9D275A0D1860A53E003BF004 /* icon_graph@2x.png in Resources */,
 				9D275A0B1860A53E003BF004 /* icon_graph_select@2x.png in Resources */,
+				9DB9C281186A11DE003CD478 /* menuTableCell.xib in Resources */,
 				9D419BC01845E6220097C6CA /* icon_settings_select@2x.png in Resources */,
 				9D275A111860A53E003BF004 /* icon_list@2x.png in Resources */,
 				9D275A051860A53E003BF004 /* icon_crowd@2x.png in Resources */,
@@ -713,6 +722,7 @@
 				9D419C091854E1640097C6CA /* AFURLResponseSerialization.m in Sources */,
 				9D419BE4184EE1B40097C6CA /* UIColor+RMUColors.m in Sources */,
 				9D7736F41857A59200A84E14 /* RMUMeal.m in Sources */,
+				9DB9C27F186A03A5003CD478 /* RMUMenuTable.m in Sources */,
 				9DF1ABF418370702006DF0B3 /* RMUAppDelegate.m in Sources */,
 				9D275A151862069D003BF004 /* iCarousel.m in Sources */,
 				9D275A2018668173003BF004 /* RMUMenuCell.m in Sources */,

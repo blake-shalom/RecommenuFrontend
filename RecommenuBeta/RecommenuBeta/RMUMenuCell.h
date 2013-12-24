@@ -18,5 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *expertLikeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *crowdLikeLabel;
 @property (weak, nonatomic) IBOutlet RMUDonutGraph *donutGraph;
+@property (weak, nonatomic) IBOutlet UIView *likeView;
+@property (weak, nonatomic) IBOutlet UIView *descView;
 
 @end
