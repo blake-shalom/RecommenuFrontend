@@ -42,7 +42,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.menuTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.restNameLabel setTextColor:[UIColor RMUTitleColor]];
     [self.currMenuLabel setTextColor:[UIColor RMUTitleColor]];
     [self.leftSectionLabel setTextColor:[UIColor RMUDividingGrayColor]];
@@ -74,7 +73,7 @@
     // If there are more than one course set the label to each of the two courses to the left and right
     if (self.currentMenu.courses.count > 1) {
         RMUCourse *course = self.currentMenu.courses[self.currentMenu.courses.count -1 ];
-        [self.leftSectionLabel setText:course.courseName];
+        [self.leftSectionLabel setText:@""];
         course = self.currentMenu.courses[1];
         [self.rightSectionLabel setText:course.courseName];
     }
@@ -243,7 +242,25 @@
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
 {
     UITableView *currentTable = (UITableView*) carousel.currentItemView;
+    NSInteger index = currentTable.tag;
+    RMUCourse *course = self.currentMenu.courses[index];
+    [self.currSectionLabel setText:course.courseName];
+    if (index > 0) {
+        course = self.currentMenu.courses[index-1];
+        [self.leftSectionLabel setText:course.courseName];
+    }
+    else
+        [self.leftSectionLabel setText:@""];
+    
+    if (index < self.currentMenu.courses.count - 1) {
+        course = self.currentMenu.courses[index+1];
+        [self.rightSectionLabel setText:course.courseName];
+    }
+    else
+        [self.rightSectionLabel setText:@""];
     [currentTable reloadData];
+        
+    
 }
 
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
