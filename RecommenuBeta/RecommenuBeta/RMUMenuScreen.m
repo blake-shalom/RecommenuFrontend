@@ -11,7 +11,7 @@
 @interface RMUMenuScreen ()
 
 // Regular properties
-@property RMURestaurant *currentRestaurant;
+@property (weak,nonatomic) RMURestaurant *currentRestaurant;
 @property (weak,nonatomic) RMUMenu *currentMenu;
 @property (weak,nonatomic) RMUCourse *currentCourse;
 @property BOOL isRatingVisible;
@@ -54,6 +54,7 @@
 	// Do any additional setup after loading the view.
 }
 
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidLoad];
@@ -84,35 +85,14 @@
     [self.carousel reloadData];
 }
 
-/*
- *  Gets Restaurant from foursquare and sets the underlying data structure up. also hides the table view until the load finishes
- */
-
-- (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name
+- (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant
 {
-    // TODO hide the table view
-    [self.view setHidden:YES];
-    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
-      parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", foursquareID],
-                   @"client_id" : [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareID"],
-                   @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
-                   @"v" : @20131017}
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             // TODO reveal the table
-             NSLog(@"%@", responseObject);
-             [self.view setHidden:NO];
-             self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
-                                                             andRestaurantName:name];
-             if (self.currentRestaurant.menus.count > 0) {
-                 self.currentMenu = self.currentRestaurant.menus[0];
-                 self.currentCourse = self.currentMenu.courses[0];
-             }
-             [self setupViews];
-         }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             NSLog(@"error : %@", error);
-         }];
+    self.currentRestaurant = restaurant;
+    if (self.currentRestaurant.menus.count > 0) {
+        self.currentMenu = self.currentRestaurant.menus[0];
+        self.currentCourse = self.currentMenu.courses[0];
+    }
+    
 }
 
 #pragma mark - interactivity
@@ -132,8 +112,17 @@
 
 - (IBAction)seeRatings:(id)sender
 {
-    self.isRatingVisible = !self.isRatingVisible;
-//    [self.menuTable reloadData];
+    UIButton *button = (UIButton*)sender;
+    if (self.isRatingVisible) {
+        self.isRatingVisible = NO;
+        [button setImage:[UIImage imageNamed:@"icon_graph"] forState:UIControlStateNormal];
+    }
+    else {
+        self.isRatingVisible = YES;
+        [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
+    }    
+    UITableView *tableView = (UITableView*) self.carousel.currentItemView;
+    [tableView reloadData];
 }
 
 #pragma mark - UITableViewDelagate

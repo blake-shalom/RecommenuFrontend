@@ -12,7 +12,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.manager = [[AFHTTPRequestOperationManager alloc]init];
     
     // Customize the Appearance of the TabBar
     UITabBarController *tabBarVC = (UITabBarController*)self.window.rootViewController;

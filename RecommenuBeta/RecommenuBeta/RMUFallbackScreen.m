@@ -103,7 +103,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"fallbackToMenu"]){
-        RMUMenuScreen *menuScreen = (RMUMenuScreen*)segue.destinationViewController;
+        RMURevealViewController *menuScreen = (RMURevealViewController*)segue.destinationViewController;
         [menuScreen getRestaurantWithFoursquareID:[self.selectedFallback objectForKey:@"id"] andName:[self.selectedFallback objectForKey:@"name"]];
     }
 }

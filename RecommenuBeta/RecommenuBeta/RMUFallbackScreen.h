@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AFNetworking.h"
 #import "RMUMenuScreen.h"
+#import "RMURevealViewController.h"
 
 @interface RMUFallbackScreen : UITableViewController
 

@@ -8,7 +8,6 @@
 #define NUMBER_OF_FALLBACK 15
 
 #import "RMULocateScreen.h"
-#import "RMUFallbackScreen.h"
 
 @interface RMULocateScreen ()
 
@@ -217,7 +216,7 @@
         [nextScreen pushFallbackRestaurants:self.fallbackRest];
     }
     else if ([segue.identifier isEqualToString:@"locateToMenu"]) {
-        RMUMenuScreen *nextScreen = (RMUMenuScreen*) segue.destinationViewController;
+        RMURevealViewController *nextScreen = (RMURevealViewController*) segue.destinationViewController;
         [nextScreen getRestaurantWithFoursquareID:self.restID andName:self.restString];
     }
     else {

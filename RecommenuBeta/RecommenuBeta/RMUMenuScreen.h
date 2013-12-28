@@ -16,6 +16,8 @@
 @interface RMUMenuScreen : UIViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
 
-- (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;
+//- (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;
+- (void)setupViews;
+- (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant;
 
 @end

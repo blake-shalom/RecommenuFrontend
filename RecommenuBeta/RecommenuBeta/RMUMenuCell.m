@@ -41,6 +41,9 @@
     [self.mealLabel setTextColor:[UIColor RMUTitleColor]];
     [self.descriptionLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
     [self.priceLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
+    [self.crowdLikeLabel setTextColor:[UIColor RMULikeBlueColor]];
+    [self.friendLikeLabel setTextColor:[UIColor RMULikeBlueColor]];
+    [self.expertLikeLabel setTextColor:[UIColor RMULikeBlueColor]];
 }
 
 @end
