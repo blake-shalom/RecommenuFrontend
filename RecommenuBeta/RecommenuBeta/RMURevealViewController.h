@@ -9,9 +9,10 @@
 #import "SWRevealViewController.h"
 #import "RMURestaurant.h"
 #import "RMUMenuScreen.h"
+#import "RMUSideMenuScreen.h"
 
 @interface RMURevealViewController : SWRevealViewController
-
+<RMUSideMenuScreenDelegate>
 @property (strong,nonatomic) RMURestaurant *currentRestaurant;
 
 - (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;

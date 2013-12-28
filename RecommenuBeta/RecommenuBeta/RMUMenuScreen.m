@@ -15,6 +15,7 @@
 @property (weak,nonatomic) RMUMenu *currentMenu;
 @property (weak,nonatomic) RMUCourse *currentCourse;
 @property BOOL isRatingVisible;
+@property BOOL isMenuVisible;
 
 // IBOutlets
 @property (weak, nonatomic) IBOutlet UILabel *restNameLabel;
@@ -50,7 +51,10 @@
     self.carousel.type = iCarouselTypeLinear;
     self.carousel.delegate = self;
     self.carousel.dataSource = self;
-
+    self.carousel.decelerationRate = 0.5;
+    [self.revealViewController panGestureRecognizer];
+    [self.revealViewController tapGestureRecognizer];
+    self.carousel.clipsToBounds = YES;
 	// Do any additional setup after loading the view.
 }
 
@@ -95,6 +99,13 @@
     
 }
 
+- (void)loadMenu: (RMUMenu*)menu
+{
+    self.currentMenu = menu;
+    self.currentCourse = self.currentMenu.courses[0];
+    [self.carousel reloadData];
+}
+
 #pragma mark - interactivity
 
 /*
@@ -103,7 +114,16 @@
 
 - (IBAction)viewMenus:(id)sender
 {
-
+    UIButton *button = (UIButton*) sender;
+    if (self.isMenuVisible) {
+        self.isMenuVisible = NO;
+        [button setImage:[UIImage imageNamed:@"icon_list"] forState:UIControlStateNormal];
+    }
+    else {
+        self.isMenuVisible = YES;
+        [button setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
+    }
+    [self.revealViewController performSelectorOnMainThread:@selector(revealToggle:) withObject:self waitUntilDone:NO];
 }
 
 /*
@@ -112,15 +132,15 @@
 
 - (IBAction)seeRatings:(id)sender
 {
-    UIButton *button = (UIButton*)sender;
-    if (self.isRatingVisible) {
-        self.isRatingVisible = NO;
-        [button setImage:[UIImage imageNamed:@"icon_graph"] forState:UIControlStateNormal];
-    }
-    else {
-        self.isRatingVisible = YES;
-        [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
-    }    
+//    UIButton *button = (UIButton*)sender;
+//    if (self.isRatingVisible) {
+//        self.isRatingVisible = NO;
+//        [button setImage:[UIImage imageNamed:@"icon_graph"] forState:UIControlStateNormal];
+//    }
+//    else {
+//        self.isRatingVisible = YES;
+//        [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
+//    }    
     UITableView *tableView = (UITableView*) self.carousel.currentItemView;
     [tableView reloadData];
 }
@@ -217,7 +237,9 @@
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
 {
     if (view == nil) {
-        RMUMenuTable *tableView = [[RMUMenuTable alloc] initWithFrame:self.carousel.frame];
+        CGRect oldFrame = self.carousel.frame;
+        CGRect newFrame = CGRectMake(oldFrame.origin.x + 8, oldFrame.origin.y + 8, oldFrame.size.width - 16, oldFrame.size.height -16);
+        RMUMenuTable *tableView = [[RMUMenuTable alloc] initWithFrame:newFrame];
         tableView.delegate = self;
         tableView.dataSource = self;
         view = tableView;
@@ -259,6 +281,10 @@
         case iCarouselOptionSpacing:
         {
             return 1.2;
+        }
+        case iCarouselOptionVisibleItems:
+        {
+            return 2;
         }
         default:
         {

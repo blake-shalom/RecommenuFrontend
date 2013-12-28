@@ -88,6 +88,7 @@
 		9DB9C281186A11DE003CD478 /* menuTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9DB9C280186A11DE003CD478 /* menuTableCell.xib */; };
 		9DB9C284186D15F2003CD478 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9C283186D15F2003CD478 /* SWRevealViewController.m */; };
 		9DB9C28D186DC62E003CD478 /* RMURevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9C28C186DC62E003CD478 /* RMURevealViewController.m */; };
+		9DC2C4B7186E8FE5001BF7DA /* RMUSideMenuScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC2C4B6186E8FE5001BF7DA /* RMUSideMenuScreen.m */; };
 		9DF155DE1841C30E00222403 /* MapBox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF155DD1841C30E00222403 /* MapBox.framework */; };
 		9DF155E01841C42900222403 /* MapBox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9DF155DF1841C42900222403 /* MapBox.bundle */; };
 		9DF1ABE418370702006DF0B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1ABE318370702006DF0B3 /* Foundation.framework */; };
@@ -237,6 +238,8 @@
 		9DB9C283186D15F2003CD478 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		9DB9C28B186DC62E003CD478 /* RMURevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURevealViewController.h; sourceTree = "<group>"; };
 		9DB9C28C186DC62E003CD478 /* RMURevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURevealViewController.m; sourceTree = "<group>"; };
+		9DC2C4B5186E8FE5001BF7DA /* RMUSideMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUSideMenuScreen.h; sourceTree = "<group>"; };
+		9DC2C4B6186E8FE5001BF7DA /* RMUSideMenuScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUSideMenuScreen.m; sourceTree = "<group>"; };
 		9DF155DD1841C30E00222403 /* MapBox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MapBox.framework; sourceTree = "<group>"; };
 		9DF155DF1841C42900222403 /* MapBox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MapBox.bundle; sourceTree = "<group>"; };
 		9DF1ABE018370702006DF0B3 /* RecommenuBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RecommenuBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -387,6 +390,8 @@
 				9D7736EA18562BD700A84E14 /* RMUFallbackScreen.m */,
 				9D275A1B18625788003BF004 /* RMUMenuScreen.h */,
 				9D275A1C18625788003BF004 /* RMUMenuScreen.m */,
+				9DC2C4B5186E8FE5001BF7DA /* RMUSideMenuScreen.h */,
+				9DC2C4B6186E8FE5001BF7DA /* RMUSideMenuScreen.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -745,6 +750,7 @@
 				9DB9C284186D15F2003CD478 /* SWRevealViewController.m in Sources */,
 				9DF1ABF418370702006DF0B3 /* RMUAppDelegate.m in Sources */,
 				9D275A151862069D003BF004 /* iCarousel.m in Sources */,
+				9DC2C4B7186E8FE5001BF7DA /* RMUSideMenuScreen.m in Sources */,
 				9D275A2018668173003BF004 /* RMUMenuCell.m in Sources */,
 				9D419BE8185441640097C6CA /* RMUButton.m in Sources */,
 				9D419BD818493D720097C6CA /* RMUSearchScreen.m in Sources */,

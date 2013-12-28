@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setFrontViewPosition:FrontViewPositionLeftSideMostRemoved animated:YES];
 	// Do any additional setup after loading the view.
 }
 
@@ -37,7 +38,7 @@
 }
 
 /*
- *  Sets a property that the children can use
+ *  Sets a property that the children VC's use to fill their data structures
  */
 
 - (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name
@@ -57,11 +58,25 @@
              RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
              [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
              [menuScreen setupViews];
+             
+             RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
+             [sideMenu loadCurrentRestaurant:self.currentRestaurant];
+             sideMenu.delegate = self;
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"error : %@", error);
          }];
 }
 
+/*
+ *  Loads Menu Screen with a different menu selection
+ */
+
+- (void)loadMenuScreenWithMenu:(RMUMenu *)menu
+{
+    RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
+    [menuScreen loadMenu:menu];
+    // TODO some sort of load
+}
 
 @end
