@@ -13,7 +13,6 @@
 #import "AFNetworking.h"
 #import "RMURestaurant.h"
 #import "RMUMenuScreen.h"
-#import "RMUFallbackScreen.h"
 #import "RMURevealViewController.h"
 
 @interface RMULocateScreen : UIViewController

@@ -217,11 +217,7 @@
 {
     [self.yesButton setUserInteractionEnabled:NO];
     [self.noButton setUserInteractionEnabled:NO];
-    if ([segue.identifier isEqualToString:@"locateToFallback"]) {
-        RMUFallbackScreen *nextScreen = (RMUFallbackScreen*) segue.destinationViewController;
-        [nextScreen pushFallbackRestaurants:self.fallbackRest];
-    }
-    else if ([segue.identifier isEqualToString:@"locateToMenu"]) {
+    if ([segue.identifier isEqualToString:@"locateToMenu"]) {
         RMURevealViewController *nextScreen = (RMURevealViewController*) segue.destinationViewController;
         [nextScreen getRestaurantWithFoursquareID:self.restID andName:self.restString];
     }

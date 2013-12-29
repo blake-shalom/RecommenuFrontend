@@ -1,8 +1,8 @@
 //
-//  RMUMenuScreen.h
+//  RMURatingScreen.h
 //  RecommenuBeta
 //
-//  Created by Blake Ellingham on 12/18/13.
+//  Created by Blake Ellingham on 12/29/13.
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
@@ -14,7 +14,7 @@
 #import "RMUMenuTable.h"
 #import "RMURevealViewController.h"
 
-@interface RMUMenuScreen : UIViewController
+@interface RMURatingScreen : UIViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
 
 - (void)setupViews;
