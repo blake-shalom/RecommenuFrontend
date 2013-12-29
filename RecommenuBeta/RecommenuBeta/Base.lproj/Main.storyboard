@@ -530,10 +530,10 @@
             </objects>
             <point key="canvasLocation" x="420" y="772"/>
         </scene>
-        <!--Menu Screen-->
+        <!--Rating Screen-->
         <scene sceneID="uOw-Z0-tW0">
             <objects>
-                <viewController id="qtX-wL-D1d" customClass="RMUMenuScreen" sceneMemberID="viewController">
+                <viewController id="qtX-wL-D1d" customClass="RMURatingScreen" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="N3u-VO-3Sl"/>
                         <viewControllerLayoutGuide type="bottom" id="A86-ZO-u2p"/>
@@ -570,6 +570,9 @@
                                             <color key="titleColor" red="0.17254901959999999" green="0.79607843140000001" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <segue destination="MhZ-4q-dlO" kind="modal" id="N8u-Ey-9g2"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -651,22 +654,55 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Wo-7E-KAu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1782" y="88"/>
+            <point key="canvasLocation" x="1782" y="56"/>
+        </scene>
+        <!--Reveal View Controller-->
+        <scene sceneID="vKG-cC-NPl">
+            <objects>
+                <viewController id="59y-sm-h19" customClass="SWRevealViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PKa-Fd-1YB"/>
+                        <viewControllerLayoutGuide type="bottom" id="rE2-TA-GQx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9ef-sX-1Lm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="qtX-wL-D1d" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegue" id="BEn-Nf-xmK"/>
+                        <segue destination="d2G-sg-s9V" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegue" id="1ex-Vq-BDP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m2U-LU-Hzu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1188" y="376"/>
         </scene>
     </scenes>
     <resources>
+        <image name="filter_bar.png" width="321" height="39"/>
         <image name="filter_bar.png" width="321" height="39"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_graph.png" width="16" height="16"/>
         <image name="icon_home.png" width="31" height="29"/>
         <image name="icon_list.png" width="16" height="11"/>
+        <image name="icon_list.png" width="16" height="11"/>
         <image name="icon_profile.png" width="30" height="29"/>
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
         <image name="overlay_card.png" width="264" height="402"/>
         <image name="pattern_fullscreen.png" width="320" height="548"/>
+        <image name="pattern_fullscreen.png" width="320" height="548"/>
+        <image name="pattern_fullscreen.png" width="320" height="548"/>
+        <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="popup_location.png" width="264" height="200"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -674,4 +710,8 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="qTF-6T-aZv"/>
+        <segue reference="1ex-Vq-BDP"/>
+    </inferredMetricsTieBreakers>
 </document>
