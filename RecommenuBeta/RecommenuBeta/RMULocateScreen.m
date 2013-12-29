@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIView *popupView;
 @property (weak, nonatomic) IBOutlet UILabel *restaurantLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
+@property (weak, nonatomic) IBOutlet UIView *falloutPopup;
+@property (weak, nonatomic) IBOutlet UITableView *fallbackTable;
 
 // Regular properties
 @property (strong,nonatomic) NSMutableArray *fallbackRest;
@@ -74,6 +76,7 @@
     [self.yesButton setBackgroundColor:[UIColor RMULogoBlueColor]];
     [self.noButton setBackgroundColor:[UIColor whiteColor]];
     
+    self.fallbackTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
 	// Do any additional setup after loading the view.
 }
 
@@ -164,13 +167,16 @@
       parameters:paramDic
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSArray *respArray = [[responseObject objectForKey:@"response"] objectForKey:@"venues"];
-             if (respArray.count < 15)
+             if (respArray.count < NUMBER_OF_FALLBACK)
                  [self findFallbacksWithRadius:radius * 3 / 2];
              else {
                  for (int i = 0; i < NUMBER_OF_FALLBACK; i++) {
                      [self.fallbackRest addObject:respArray[i]];
                  }
-                 [self performSegueWithIdentifier:@"locateToFallback" sender:self];
+                 [self.falloutPopup setHidden:NO];
+                 [self animateFallbackPopup];
+                 [self.fallbackTable reloadData];
+                 
              }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -227,6 +233,57 @@
 
 }
 
+#pragma mark - UITableview Delegate
+
+/*
+ *  returns number of rows
+ */
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.fallbackRest.count;
+}
+
+/*
+ *  Accessses specific cell at an index path
+ */
+
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    [cell.textLabel setText:[self.fallbackRest[[indexPath row]] objectForKey:@"name"]];
+    [cell.detailTextLabel setText:[[self.fallbackRest[[indexPath row]] objectForKey:@"location"]objectForKey:@"address"]];
+    return cell;
+}
+
+/*
+ *  Return one section fo the table
+ */
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+/*
+ *  selects a row and sets an instance variable to the selected dictionary
+ */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"%@", [self.fallbackRest[[indexPath row]] objectForKey:@"id"]);
+    NSDictionary *selRest = self.fallbackRest[indexPath.row];
+    self.restID = [selRest objectForKey:@"id"];
+    self.restString = [selRest objectForKey:@"name"];
+    [self performSegueWithIdentifier:@"locateToMenu" sender:self];
+}
+
+
 #pragma mark - Animation Methods
 
 /*
@@ -263,6 +320,15 @@
                              withBounce:YES];
 }
 
+- (void)animateFallbackPopup
+{
+    [RMUAnimationClass animateFlyInView:self.falloutPopup
+                           withDuration:0.1f
+                              withDelay:0.0f
+                          fromDirection:buttonAnimationDirectionTop
+                         withCompletion:Nil
+                             withBounce:YES];
+}
 @end
 
 
