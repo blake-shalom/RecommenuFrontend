@@ -61,8 +61,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     RMUMenu *menu = self.currentRestaurant.menus[indexPath.row];
     [cell.textLabel setText:menu.menuName];
+    [cell.textLabel setTextColor:[UIColor RMUSelectGrayColor]];
     // Configure the cell...
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

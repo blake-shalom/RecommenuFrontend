@@ -10,6 +10,7 @@
 #import "RMURestaurant.h"
 #import "RMUMenuScreen.h"
 #import "RMUSideMenuScreen.h"
+#import "RMURatingScreen.h"
 
 @interface RMURevealViewController : SWRevealViewController
 <RMUSideMenuScreenDelegate>
@@ -18,3 +19,6 @@
 - (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;
 
 @end
+
+
+// IDEA for passing restaurant to Rating Screen, save property on the RMURevealViewController and override prepare for segue and add code to pass the reveal along to the rating screen

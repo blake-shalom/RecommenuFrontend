@@ -16,6 +16,7 @@
     if (self) {
         self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         [self setBackgroundColor:[UIColor clearColor]];
+        
         // Initialization code
     }
     return self;

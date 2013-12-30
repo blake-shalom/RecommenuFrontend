@@ -18,6 +18,8 @@
 @property NSNumber *crowdDislikes;
 @property NSNumber *friendLikes;
 @property NSNumber *expertLikes;
+@property BOOL isLiked;
+@property BOOL isDisliked;
 
 - (id)initWithDictionary:(NSDictionary*) mealDictionary;
 

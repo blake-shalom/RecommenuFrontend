@@ -13,6 +13,7 @@
 #import "RMUMenuCell.h"
 #import "RMUMenuTable.h"
 #import "RMURevealViewController.h"
+#import "RMURatingCell.h"
 
 @interface RMURatingScreen : UIViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>

@@ -112,36 +112,10 @@
 
 - (IBAction)viewMenus:(id)sender
 {
-    UIButton *button = (UIButton*) sender;
-    if (self.isMenuVisible) {
-        self.isMenuVisible = NO;
-        [button setImage:[UIImage imageNamed:@"icon_list"] forState:UIControlStateNormal];
-    }
-    else {
-        self.isMenuVisible = YES;
-        [button setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
-    }
+    
     [self.revealViewController performSelectorOnMainThread:@selector(revealToggle:) withObject:self waitUntilDone:NO];
 }
 
-/*
- *  Sees the ratings for all dishes, toggle-able
- */
-
-- (IBAction)seeRatings:(id)sender
-{
-    //    UIButton *button = (UIButton*)sender;
-    //    if (self.isRatingVisible) {
-    //        self.isRatingVisible = NO;
-    //        [button setImage:[UIImage imageNamed:@"icon_graph"] forState:UIControlStateNormal];
-    //    }
-    //    else {
-    //        self.isRatingVisible = YES;
-    //        [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
-    //    }
-    UITableView *tableView = (UITableView*) self.carousel.currentItemView;
-    [tableView reloadData];
-}
 
 #pragma mark - UITableViewDelagate
 
@@ -151,26 +125,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 72.0f;
+    return 100.0f;
 }
 
-/*
- *  Manages Selection of cells by checkbox
- */
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"%i", indexPath.row);
-}
-
-/*
- *  Deselection of cells by unchecking checkbox
- */
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
 
 #pragma mark - UITableViewDataSource
 
@@ -180,29 +137,30 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"rCell";
     NSInteger index = tableView.tag;
     RMUCourse *course = self.currentMenu.courses[index];
-    [tableView registerNib:[UINib nibWithNibName:@"menuTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellIdentifier];
-    RMUMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    [tableView registerNib:[UINib nibWithNibName:@"ratingTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellIdentifier];
+    RMURatingCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     if (cell == nil) {
-        cell = [[RMUMenuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[RMURatingCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     RMUMeal *currentMeal = course.meals[indexPath.row];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     [cell.mealLabel setText:currentMeal.mealName];
     [cell.descriptionLabel setText:currentMeal.mealDescription];
     [cell.priceLabel setText:currentMeal.mealPrice];
-    [cell.donutGraph displayLikes:12 dislikes:12];
     
-    if (self.isRatingVisible) {
-        [cell.descView setHidden:YES];
-        [cell.likeView setHidden:NO];
-    }
-    else {
-        [cell.descView setHidden:NO];
-        [cell.likeView setHidden:YES];
-    }
+    cell.likeButton.tag = indexPath.row;
+    cell.dislikeButton.tag = indexPath.row;
+    [cell.likeButton addTarget:self action:@selector(likeEntree:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.dislikeButton addTarget:self action:@selector(dislikeEntree:) forControlEvents:UIControlEventTouchUpInside];
+    cell.likeButton.selected = currentMeal.isLiked;
+    cell.dislikeButton.selected = currentMeal.isDisliked;
+    
     return cell;
 }
 
@@ -216,6 +174,35 @@
     RMUCourse *indexedCourse = self.currentMenu.courses[index];
     return indexedCourse.meals.count;
 }
+
+#pragma mark - like methods
+
+/*
+ *  Likes an entree dudeee
+ */
+
+- (void)likeEntree:(UIButton*)button
+{
+    RMUMeal *meal = (RMUMeal*) self.currentCourse.meals[button.tag];
+    if (!meal.isLiked && !meal.isDisliked){
+        button.selected = !button.selected;
+        meal.isLiked = YES;
+    }
+}
+
+/*
+ *  Dislikes an entree
+ */
+
+- (void)dislikeEntree:(UIButton*)button
+{
+    RMUMeal *meal = (RMUMeal*) self.currentCourse.meals[button.tag];
+    if (!meal.isLiked && !meal.isDisliked){
+        button.selected = !button.selected;
+        meal.isDisliked = YES;
+    }
+}
+
 
 #pragma mark -  iCarousel Methods
 
@@ -243,16 +230,15 @@
         view = tableView;
     }
     view.tag = index;
-    
     return view;
-    
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
 {
     UITableView *currentTable = (UITableView*) carousel.currentItemView;
     NSInteger index = currentTable.tag;
-    RMUCourse *course = self.currentMenu.courses[index];
+    self.currentCourse = self.currentMenu.courses[index];
+    RMUCourse *course = self.currentCourse;
     [self.currSectionLabel setText:course.courseName];
     if (index > 0) {
         course = self.currentMenu.courses[index-1];
@@ -268,8 +254,6 @@
     else
         [self.rightSectionLabel setText:@""];
     [currentTable reloadData];
-    
-    
 }
 
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value

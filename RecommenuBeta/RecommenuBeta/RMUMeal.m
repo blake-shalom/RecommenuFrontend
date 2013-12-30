@@ -18,7 +18,8 @@
         self.mealDescription = [mealDictionary objectForKey:@"description"];
         self.mealID = [mealDictionary objectForKey:@"entryId"];
         self.mealPrice = [mealDictionary objectForKey:@"price"];
-//        NSLog(@"meal members: %@, %@, %@, %@", self.mealName, self.mealDescription, self.mealID, self.mealPrice);
+        self.isLiked = NO;
+        self.isDisliked = NO;
     }
     return self;
 }

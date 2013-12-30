@@ -60,7 +60,6 @@
     [self.view sendSubviewToBack:self.mapView];
     self.mapView.draggingEnabled = NO;
     
-    
     // Center the view around your location
     self.locationManager = [[CLLocationManager alloc]init];
     self.locationManager.delegate = self;
@@ -133,11 +132,13 @@
              if (respArray.count ==0)
                  [self findRestaurantWithRadius:radius * 3 / 2];
              else {
-                 self.restString =[respArray[0] objectForKey:@"name"];
-                 self.restID = [respArray[0] objectForKey:@"id"];
-                 [self.restaurantLabel setText:self.restString];
-                 [self.addressLabel setText:[[respArray[0] objectForKey:@"location"] objectForKey:@"address"]];
-                 [self animateInGradient];
+                 if ([self.restString isEqualToString:@""]) {
+                     self.restString =[respArray[0] objectForKey:@"name"];
+                     self.restID = [respArray[0] objectForKey:@"id"];
+                     [self.restaurantLabel setText:self.restString];
+                     [self.addressLabel setText:[[respArray[0] objectForKey:@"location"] objectForKey:@"address"]];
+                     [self animateInGradient];
+                 }
             }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -253,7 +254,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     [cell.textLabel setText:[self.fallbackRest[[indexPath row]] objectForKey:@"name"]];
-    [cell.detailTextLabel setText:[[self.fallbackRest[[indexPath row]] objectForKey:@"location"]objectForKey:@"address"]];
+    [cell.textLabel setTextColor:[UIColor RMUSelectGrayColor]];
     return cell;
 }
 

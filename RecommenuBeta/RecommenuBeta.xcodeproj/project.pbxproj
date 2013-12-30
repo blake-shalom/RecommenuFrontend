@@ -129,6 +129,9 @@
 		9DF1ACCC18371590006DF0B3 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1ACCB1837158F006DF0B3 /* FacebookSDK.framework */; };
 		9DF1ACCE183715A5006DF0B3 /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9DF1ACCD183715A5006DF0B3 /* FBUserSettingsViewResources.bundle */; };
 		9DF1ACD218371723006DF0B3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DF1ACD118371723006DF0B3 /* MobileCoreServices.framework */; };
+		9DF8008A18711F4F000A08BA /* Icon_58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF8008718711F4F000A08BA /* Icon_58x58.png */; };
+		9DF8008B18711F4F000A08BA /* Icon_80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF8008818711F4F000A08BA /* Icon_80x80.png */; };
+		9DF8008C18711F4F000A08BA /* Icon_120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF8008918711F4F000A08BA /* Icon_120x120.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -299,6 +302,9 @@
 		9DF1ACCB1837158F006DF0B3 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		9DF1ACCD183715A5006DF0B3 /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
 		9DF1ACD118371723006DF0B3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		9DF8008718711F4F000A08BA /* Icon_58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_58x58.png; sourceTree = "<group>"; };
+		9DF8008818711F4F000A08BA /* Icon_80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_80x80.png; sourceTree = "<group>"; };
+		9DF8008918711F4F000A08BA /* Icon_120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_120x120.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +354,9 @@
 		9D419B911845E5EA0097C6CA /* Image Assets */ = {
 			isa = PBXGroup;
 			children = (
+				9DF8008718711F4F000A08BA /* Icon_58x58.png */,
+				9DF8008818711F4F000A08BA /* Icon_80x80.png */,
+				9DF8008918711F4F000A08BA /* Icon_120x120.png */,
 				9DC2C4C2186FF773001BF7DA /* thumbs_down_red.png */,
 				9DC2C4C3186FF773001BF7DA /* thumbs_down_red@2x.png */,
 				9DC2C4C4186FF773001BF7DA /* thumbs_down.png */,
@@ -708,6 +717,7 @@
 				9DC2C4D1186FF773001BF7DA /* thumbs_up@2x.png in Resources */,
 				9D275A1A18625652003BF004 /* menu_list_line@2x.png in Resources */,
 				9D419BC71845E6220097C6CA /* nav_select@2x.png in Resources */,
+				9DF8008B18711F4F000A08BA /* Icon_80x80.png in Resources */,
 				9D419BC81845E6220097C6CA /* nav_select.png in Resources */,
 				9D419BCB1845E6220097C6CA /* popup_location@2x.png in Resources */,
 				9D275A081860A53E003BF004 /* icon_friends.png in Resources */,
@@ -725,6 +735,7 @@
 				9DC2C4BD186FD84D001BF7DA /* list_line@2x.png in Resources */,
 				9DC2C4BE186FD84D001BF7DA /* overlay_card.png in Resources */,
 				9D419BB21845E6220097C6CA /* gradient@2x.png in Resources */,
+				9DF8008C18711F4F000A08BA /* Icon_120x120.png in Resources */,
 				9D275A0C1860A53E003BF004 /* icon_graph.png in Resources */,
 				9DF1ABFC18370702006DF0B3 /* Images.xcassets in Resources */,
 				9D2759FE1860A53E003BF004 /* ellipse_select_@2x.png in Resources */,
@@ -750,6 +761,7 @@
 				9D275A111860A53E003BF004 /* icon_list@2x.png in Resources */,
 				9D275A051860A53E003BF004 /* icon_crowd@2x.png in Resources */,
 				9D419BC31845E6220097C6CA /* logo@2x.png in Resources */,
+				9DF8008A18711F4F000A08BA /* Icon_58x58.png in Resources */,
 				9D419BCF1845E6220097C6CA /* top_bar.png in Resources */,
 				9D419BBA1845E6220097C6CA /* icon_profile.png in Resources */,
 				9DF1ABF718370702006DF0B3 /* Main.storyboard in Resources */,

@@ -24,10 +24,21 @@
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if ([self.frontViewController isKindOfClass:[RMURatingScreen class]]) {
+        RMURatingScreen *ratingScreen = (RMURatingScreen*) self.frontViewController;
+        [ratingScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
+        [ratingScreen setupViews];
+        RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
+        sideMenu.delegate = self;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setFrontViewPosition:FrontViewPositionLeftSideMostRemoved animated:YES];
 	// Do any additional setup after loading the view.
 }
 
@@ -76,7 +87,6 @@
 {
     RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
     [menuScreen loadMenu:menu];
-    // TODO some sort of load
 }
 
 @end

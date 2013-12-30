@@ -96,7 +96,6 @@
         self.currentMenu = self.currentRestaurant.menus[0];
         self.currentCourse = self.currentMenu.courses[0];
     }
-    
 }
 
 - (void)loadMenu: (RMUMenu*)menu
@@ -104,6 +103,7 @@
     self.currentMenu = menu;
     self.currentCourse = self.currentMenu.courses[0];
     [self.carousel reloadData];
+    [self setupViews];
 }
 
 #pragma mark - interactivity
@@ -114,15 +114,15 @@
 
 - (IBAction)viewMenus:(id)sender
 {
-    UIButton *button = (UIButton*) sender;
-    if (self.isMenuVisible) {
-        self.isMenuVisible = NO;
-        [button setImage:[UIImage imageNamed:@"icon_list"] forState:UIControlStateNormal];
-    }
-    else {
-        self.isMenuVisible = YES;
-        [button setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
-    }
+//    UIButton *button = (UIButton*) sender;
+//    if (self.isMenuVisible) {
+//        self.isMenuVisible = NO;
+//        [button setImage:[UIImage imageNamed:@"icon_list"] forState:UIControlStateNormal];
+//    }
+//    else {
+//        self.isMenuVisible = YES;
+//        [button setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
+//    }
     [self.revealViewController performSelectorOnMainThread:@selector(revealToggle:) withObject:self waitUntilDone:NO];
 }
 
@@ -132,15 +132,15 @@
 
 - (IBAction)seeRatings:(id)sender
 {
-//    UIButton *button = (UIButton*)sender;
-//    if (self.isRatingVisible) {
-//        self.isRatingVisible = NO;
-//        [button setImage:[UIImage imageNamed:@"icon_graph"] forState:UIControlStateNormal];
-//    }
-//    else {
-//        self.isRatingVisible = YES;
-//        [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
-//    }    
+    UIButton *button = (UIButton*)sender;
+    if (self.isRatingVisible) {
+        self.isRatingVisible = NO;
+        [button setImage:[UIImage imageNamed:@"icon_graph"] forState:UIControlStateNormal];
+    }
+    else {
+        self.isRatingVisible = YES;
+        [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
+    }    
     UITableView *tableView = (UITableView*) self.carousel.currentItemView;
     [tableView reloadData];
 }
@@ -196,7 +196,7 @@
     [cell.descriptionLabel setText:currentMeal.mealDescription];
     [cell.priceLabel setText:currentMeal.mealPrice];
     [cell.donutGraph displayLikes:12 dislikes:12];
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self.isRatingVisible) {
         [cell.descView setHidden:YES];
         [cell.likeView setHidden:NO];
@@ -245,9 +245,7 @@
         view = tableView;
     }
     view.tag = index;
-    
     return view;
-
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
@@ -290,6 +288,16 @@
         {
             return value;
         }
+    }
+}
+
+#pragma mark - segue methods
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"menuToRating"]){
+        RMURevealViewController  *ratingScreen = (RMURevealViewController*)segue.destinationViewController;
+        ratingScreen.currentRestaurant = self.currentRestaurant;
     }
 }
 
