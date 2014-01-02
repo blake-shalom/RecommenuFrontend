@@ -731,28 +731,17 @@
     </scenes>
     <resources>
         <image name="filter_bar.png" width="321" height="39"/>
-        <image name="filter_bar.png" width="321" height="39"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_graph.png" width="16" height="16"/>
         <image name="icon_home.png" width="31" height="29"/>
-        <image name="icon_list.png" width="16" height="11"/>
         <image name="icon_list.png" width="16" height="11"/>
         <image name="icon_profile.png" width="30" height="29"/>
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
         <image name="overlay_card.png" width="264" height="402"/>
         <image name="pattern_fullscreen.png" width="320" height="548"/>
-        <image name="pattern_fullscreen.png" width="320" height="548"/>
-        <image name="pattern_fullscreen.png" width="320" height="548"/>
-        <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="popup_location.png" width="264" height="200"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

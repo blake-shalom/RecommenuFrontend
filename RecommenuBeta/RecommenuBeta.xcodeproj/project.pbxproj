@@ -132,6 +132,9 @@
 		9DF8008A18711F4F000A08BA /* Icon_58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF8008718711F4F000A08BA /* Icon_58x58.png */; };
 		9DF8008B18711F4F000A08BA /* Icon_80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF8008818711F4F000A08BA /* Icon_80x80.png */; };
 		9DF8008C18711F4F000A08BA /* Icon_120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF8008918711F4F000A08BA /* Icon_120x120.png */; };
+		9DF800901875D72F000A08BA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9DF8008E1875D72F000A08BA /* Model.xcdatamodeld */; };
+		9DF800931875DBAD000A08BA /* RMUSavedRecommendation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF800921875DBAD000A08BA /* RMUSavedRecommendation.m */; };
+		9DF800961875DBD5000A08BA /* RMUSavedUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF800951875DBD5000A08BA /* RMUSavedUser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -305,6 +308,11 @@
 		9DF8008718711F4F000A08BA /* Icon_58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_58x58.png; sourceTree = "<group>"; };
 		9DF8008818711F4F000A08BA /* Icon_80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_80x80.png; sourceTree = "<group>"; };
 		9DF8008918711F4F000A08BA /* Icon_120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_120x120.png; sourceTree = "<group>"; };
+		9DF8008F1875D72F000A08BA /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		9DF800911875DBAD000A08BA /* RMUSavedRecommendation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUSavedRecommendation.h; sourceTree = "<group>"; };
+		9DF800921875DBAD000A08BA /* RMUSavedRecommendation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUSavedRecommendation.m; sourceTree = "<group>"; };
+		9DF800941875DBD5000A08BA /* RMUSavedUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUSavedUser.h; sourceTree = "<group>"; };
+		9DF800951875DBD5000A08BA /* RMUSavedUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUSavedUser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -573,19 +581,18 @@
 		9DF1ABE918370702006DF0B3 /* RecommenuBeta */ = {
 			isa = PBXGroup;
 			children = (
+				9DF1ABF218370702006DF0B3 /* RMUAppDelegate.h */,
+				9DF1ABF318370702006DF0B3 /* RMUAppDelegate.m */,
 				9DB9C285186D15F8003CD478 /* Reveal View Controller */,
 				9D275A16186206A3003BF004 /* iCarousel */,
 				9D7736EE18562BFB00A84E14 /* Objects */,
 				9D7736EC18562BDE00A84E14 /* Views */,
-				9DF1ABF218370702006DF0B3 /* RMUAppDelegate.h */,
-				9DF1ABF318370702006DF0B3 /* RMUAppDelegate.m */,
 				9D7736ED18562BED00A84E14 /* Categories */,
-				9DF1ABF518370702006DF0B3 /* Main.storyboard */,
-				9DB9C280186A11DE003CD478 /* menuTableCell.xib */,
-				9DC2C4C0186FF6B5001BF7DA /* ratingTableCell.xib */,
+				9DF8008D1875D42C000A08BA /* User Interfaces */,
 				9D419BE5185436810097C6CA /* View Controllers */,
 				9DF1ABFB18370702006DF0B3 /* Images.xcassets */,
 				9DF1ABEA18370702006DF0B3 /* Supporting Files */,
+				9DF800971875DBDB000A08BA /* Core Data */,
 			);
 			path = RecommenuBeta;
 			sourceTree = "<group>";
@@ -618,6 +625,28 @@
 				9DF1AC0B18370702006DF0B3 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9DF8008D1875D42C000A08BA /* User Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				9DF1ABF518370702006DF0B3 /* Main.storyboard */,
+				9DB9C280186A11DE003CD478 /* menuTableCell.xib */,
+				9DC2C4C0186FF6B5001BF7DA /* ratingTableCell.xib */,
+			);
+			name = "User Interfaces";
+			sourceTree = "<group>";
+		};
+		9DF800971875DBDB000A08BA /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				9DF8008E1875D72F000A08BA /* Model.xcdatamodeld */,
+				9DF800941875DBD5000A08BA /* RMUSavedUser.h */,
+				9DF800951875DBD5000A08BA /* RMUSavedUser.m */,
+				9DF800911875DBAD000A08BA /* RMUSavedRecommendation.h */,
+				9DF800921875DBAD000A08BA /* RMUSavedRecommendation.m */,
+			);
+			name = "Core Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -811,13 +840,16 @@
 				9D7736F71857C40A00A84E14 /* RMUCourse.m in Sources */,
 				9D419BD518493CF30097C6CA /* RMUProfileScreen.m in Sources */,
 				9D419C031854E1640097C6CA /* AFHTTPRequestOperationManager.m in Sources */,
+				9DF800961875DBD5000A08BA /* RMUSavedUser.m in Sources */,
 				9D7736F11857A4C700A84E14 /* RMUMenu.m in Sources */,
+				9DF800901875D72F000A08BA /* Model.xcdatamodeld in Sources */,
 				9D419BDB18493DDC0097C6CA /* RMUSettingsScreen.m in Sources */,
 				9D419C091854E1640097C6CA /* AFURLResponseSerialization.m in Sources */,
 				9D419BE4184EE1B40097C6CA /* UIColor+RMUColors.m in Sources */,
 				9D7736F41857A59200A84E14 /* RMUMeal.m in Sources */,
 				9DB9C27F186A03A5003CD478 /* RMUMenuTable.m in Sources */,
 				9DB9C284186D15F2003CD478 /* SWRevealViewController.m in Sources */,
+				9DF800931875DBAD000A08BA /* RMUSavedRecommendation.m in Sources */,
 				9DF1ABF418370702006DF0B3 /* RMUAppDelegate.m in Sources */,
 				9D275A151862069D003BF004 /* iCarousel.m in Sources */,
 				9DC2C4B7186E8FE5001BF7DA /* RMUSideMenuScreen.m in Sources */,
@@ -1058,6 +1090,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9DF8008E1875D72F000A08BA /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9DF8008F1875D72F000A08BA /* Model.xcdatamodel */,
+			);
+			currentVersion = 9DF8008F1875D72F000A08BA /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9DF1ABD818370702006DF0B3 /* Project object */;
 }
