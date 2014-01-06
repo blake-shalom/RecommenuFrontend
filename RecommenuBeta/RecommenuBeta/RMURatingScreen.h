@@ -16,7 +16,7 @@
 #import "RMURatingCell.h"
 
 @interface RMURatingScreen : UIViewController
-<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
+<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate>
 
 - (void)setupViews;
 - (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant;

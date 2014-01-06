@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="RMUSavedRecommendation" representedClassName="RMUSavedRecommendation" syncable="YES">
+        <attribute name="entreeFoursquareID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isRecommendPositive" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="restFoursquareID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeRated" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="userForRecommedation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RMUSavedUser" inverseName="ratingsForUser" inverseEntity="RMUSavedUser" syncable="YES"/>
+    </entity>
+    <entity name="RMUSavedUser" representedClassName="RMUSavedUser" syncable="YES">
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateLogged" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="facebookID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="foodieID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasLoggedIn" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userURI" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="ratingsForUser" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RMUSavedRecommendation" inverseName="userForRecommedation" inverseEntity="RMUSavedRecommendation" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="RMUSavedUser" positionX="160" positionY="192" width="128" height="193"/>
+        <element name="RMUSavedRecommendation" positionX="529" positionY="222" width="128" height="118"/>
+    </elements>
+</model>

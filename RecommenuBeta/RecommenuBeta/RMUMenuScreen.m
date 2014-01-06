@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *currSectionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *rightSectionLabel;
 @property (weak, nonatomic) IBOutlet iCarousel *carousel;
+@property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
 #warning TODO popup when restaurant menu is not supported
 
@@ -54,7 +55,9 @@
     self.carousel.decelerationRate = 0.5;
     [self.revealViewController panGestureRecognizer];
     [self.revealViewController tapGestureRecognizer];
+    self.revealViewController.delegate = self;
     self.carousel.clipsToBounds = YES;
+    self.carousel.pagingEnabled = YES;
 	// Do any additional setup after loading the view.
 }
 
@@ -114,15 +117,6 @@
 
 - (IBAction)viewMenus:(id)sender
 {
-//    UIButton *button = (UIButton*) sender;
-//    if (self.isMenuVisible) {
-//        self.isMenuVisible = NO;
-//        [button setImage:[UIImage imageNamed:@"icon_list"] forState:UIControlStateNormal];
-//    }
-//    else {
-//        self.isMenuVisible = YES;
-//        [button setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
-//    }
     [self.revealViewController performSelectorOnMainThread:@selector(revealToggle:) withObject:self waitUntilDone:NO];
 }
 
@@ -237,21 +231,28 @@
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
 {
     if (view == nil) {
+        // if the view is nil, create a new view
         CGRect oldFrame = self.carousel.frame;
         CGRect newFrame = CGRectMake(oldFrame.origin.x + 8, oldFrame.origin.y + 8, oldFrame.size.width - 16, oldFrame.size.height -16);
         RMUMenuTable *tableView = [[RMUMenuTable alloc] initWithFrame:newFrame];
         tableView.delegate = self;
         tableView.dataSource = self;
         view = tableView;
+        // Tag is assigned at the bottom to give the initial views a tag
+        view.tag = index;
     }
-    view.tag = index;
+    else {
+        // View was already created, just refresh the table. Tag is assigned at the beginning before table can reload data
+        view.tag = index;
+        RMUMenuTable *tableview = (RMUMenuTable*) view;
+        [tableview reloadData];
+    }
     return view;
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
 {
-    UITableView *currentTable = (UITableView*) carousel.currentItemView;
-    NSInteger index = currentTable.tag;
+    NSInteger index = carousel.currentItemView.tag;
     RMUCourse *course = self.currentMenu.courses[index];
     [self.currSectionLabel setText:course.courseName];
     if (index > 0) {
@@ -267,8 +268,6 @@
     }
     else
         [self.rightSectionLabel setText:@""];
-    [currentTable reloadData];
-        
     
 }
 
@@ -282,7 +281,7 @@
         }
         case iCarouselOptionVisibleItems:
         {
-            return 2;
+            return 3;
         }
         default:
         {
@@ -298,6 +297,24 @@
     if ([segue.identifier isEqualToString:@"menuToRating"]){
         RMURevealViewController  *ratingScreen = (RMURevealViewController*)segue.destinationViewController;
         ratingScreen.currentRestaurant = self.currentRestaurant;
+    }
+}
+
+#pragma mark - SWReveal Delegate
+
+/*
+ *  Freezes controls on the main page when you navigate to the rear page
+ */
+
+- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position
+{
+    if (position == 3) {
+        [self.carousel setUserInteractionEnabled:YES];
+        [self.menuButton setImage:[UIImage imageNamed:@"icon_list"] forState:UIControlStateNormal];
+    }
+    else if (position == 4) {
+        [self.carousel setUserInteractionEnabled:NO];
+        [self.menuButton setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
     }
 }
 

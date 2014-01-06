@@ -15,7 +15,7 @@
 #import "RMURevealViewController.h"
 
 @interface RMUMenuScreen : UIViewController
-<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
+<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate>
 
 - (void)setupViews;
 - (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant;
