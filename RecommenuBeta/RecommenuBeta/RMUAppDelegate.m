@@ -77,10 +77,54 @@
     NSUserDefaults *currentDefaults = [NSUserDefaults standardUserDefaults];
     [currentDefaults setObject:idString forKey:@"foursquareID"];
     [currentDefaults setObject:secretString forKey:@"foursquareSecret"];
-    // Override point for customization after application launch.
+    
+    // Set up a user on Recommenu
+//    NSFetchRequest *request = [[NSFetchRequest alloc]init];
+//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.managedObjectContext];
+//    [request setEntity:entity];
+//    NSError *error;
+//    NSArray *fetchedArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+//    RMUSavedUser *currentUser;
+//    if (fetchedArray.count == 0){
+//        // User hasn't been created, create a user and attempt to extract a URI from the RMU DB
+//        currentUser = (RMUSavedUser*) [NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedUser"
+//                                                                    inManagedObjectContext:self.managedObjectContext];
+//        currentUser.hasLoggedIn = NO;
+//        currentUser.dateLogged = [NSDate date];
+//        [self obtainUserURIForUser:currentUser];
+//    }
+//    else {
+//        // User has been created
+//        currentUser = fetchedArray[0];
+//        if (currentUser.hasLoggedIn) {
+//            // User was created and has logged in and obtained a user URI, do nothing
+//        }
+//        else {
+//            // User was created and has not logged in, attempt to log in and obtain a user ID
+//            [self obtainUserURIForUser:currentUser];
+//        }
+//    }
     return YES;
 }
-							
+
+/*
+ *  Attempts to log in and obtain a user URI for a given user by it's device id
+ */
+
+- (void)obtainUserURIForUser:(RMUSavedUser*)user
+{
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    [manager GET:<#(NSString *)#>
+//      parameters:<#(NSDictionary *)#>
+//         success:<#^(AFHTTPRequestOperation *operation, id responseObject)success#>
+//         failure:<#^(AFHTTPRequestOperation *operation, NSError *error)failure#>];
+    // Save user
+    NSError *error;
+    if (![self.managedObjectContext save:&error])
+        NSLog(@"Error Saving %@", error);
+
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
