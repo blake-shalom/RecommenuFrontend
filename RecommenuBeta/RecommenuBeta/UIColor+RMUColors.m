@@ -52,7 +52,7 @@
 
 +(UIColor*) RMULikeBlueColor
 {
-    return [UIColor colorWithRed:92 / 256.0f green:223 / 256.0f blue:263 / 256.0f alpha:1.0f];
+    return [UIColor colorWithRed:92 / 256.0f green:223 / 256.0f blue:163 / 256.0f alpha:1.0f];
 }
 +(UIColor*) RMUSelectGrayColor
 {

@@ -65,12 +65,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    // Customize the Appearance of the TabBar
-    UITabBarController *tabBarVC = (UITabBarController*)self.window.rootViewController;
-    UITabBar *tabBar = tabBarVC.tabBar;
-    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
-    
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";
@@ -114,10 +108,14 @@
 - (void)obtainUserURIForUser:(RMUSavedUser*)user
 {
 //    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    [manager GET:<#(NSString *)#>
-//      parameters:<#(NSDictionary *)#>
-//         success:<#^(AFHTTPRequestOperation *operation, id responseObject)success#>
-//         failure:<#^(AFHTTPRequestOperation *operation, NSError *error)failure#>];
+//    [manager GET:@"http://dry-tor-2401.herokuapp.com/api/v1/create_user/"
+//      parameters:@{<#key#>: <#object, ...#>}
+//         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//             <#code#>
+//         }
+//         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//             <#code#>
+//         }];
     // Save user
     NSError *error;
     if (![self.managedObjectContext save:&error])

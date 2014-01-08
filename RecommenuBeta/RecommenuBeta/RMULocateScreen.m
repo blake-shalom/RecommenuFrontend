@@ -9,6 +9,9 @@
 
 #import "RMULocateScreen.h"
 
+#warning TODO implement push notifications
+#warning TODO Google Analytics
+
 @interface RMULocateScreen ()
 
 // IBOutlets
@@ -29,6 +32,7 @@
 @property (strong, nonatomic) CLLocation *location;
 @property (strong,nonatomic) NSNumber *restID;
 @property (strong,nonatomic) NSString *restString;
+@property BOOL hasDroppedPin;
 
 @end
 
@@ -46,8 +50,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.hasDroppedPin =NO;
     self.fallbackRest = [[NSMutableArray alloc]init];
+    
+    // Customize the Appearance of the TabBar
+    UITabBarController *tabBarVC = self.tabBarController;
+    UITabBar *tabBar = tabBarVC.tabBar;
+    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
     
     // Hide yo wife
     [self.popupView setHidden:YES];
@@ -73,6 +82,7 @@
     self.yesButton.isBlue = YES;
     self.noButton.isBlue = NO;
     [self.yesButton setBackgroundColor:[UIColor RMULogoBlueColor]];
+    [self.yesButton.titleLabel setTextColor:[UIColor whiteColor]];
     [self.noButton setBackgroundColor:[UIColor whiteColor]];
     
     self.fallbackTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
@@ -98,10 +108,13 @@
     
     // Drop a pin
 #warning - TODO customized user annotation
-    RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView
+    if (!self.hasDroppedPin){
+        RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView
                                                                         coordinate:coord
                                                                           andTitle:@"YOU ARE HERE"];
-    [self.mapView addAnnotation:userAnnotation];
+        [self.mapView addAnnotation:userAnnotation];
+        self.hasDroppedPin = YES;
+    }
     [self findRestaurantWithRadius:10.0f];
 }
 
