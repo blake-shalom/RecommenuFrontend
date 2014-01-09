@@ -68,36 +68,38 @@
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";
+//    NSString *apiURLString = @"http://dry-tor-2401.herokuapp.com/v1";
     NSUserDefaults *currentDefaults = [NSUserDefaults standardUserDefaults];
     [currentDefaults setObject:idString forKey:@"foursquareID"];
     [currentDefaults setObject:secretString forKey:@"foursquareSecret"];
+//    [currentDefaults setObject:apiURLString forKey:@"apiURL"];
     
     // Set up a user on Recommenu
-//    NSFetchRequest *request = [[NSFetchRequest alloc]init];
-//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.managedObjectContext];
-//    [request setEntity:entity];
-//    NSError *error;
-//    NSArray *fetchedArray = [self.managedObjectContext executeFetchRequest:request error:&error];
-//    RMUSavedUser *currentUser;
-//    if (fetchedArray.count == 0){
-//        // User hasn't been created, create a user and attempt to extract a URI from the RMU DB
-//        currentUser = (RMUSavedUser*) [NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedUser"
-//                                                                    inManagedObjectContext:self.managedObjectContext];
-//        currentUser.hasLoggedIn = NO;
-//        currentUser.dateLogged = [NSDate date];
-//        [self obtainUserURIForUser:currentUser];
-//    }
-//    else {
-//        // User has been created
-//        currentUser = fetchedArray[0];
-//        if (currentUser.hasLoggedIn) {
-//            // User was created and has logged in and obtained a user URI, do nothing
-//        }
-//        else {
-//            // User was created and has not logged in, attempt to log in and obtain a user ID
-//            [self obtainUserURIForUser:currentUser];
-//        }
-//    }
+    NSFetchRequest *request = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.managedObjectContext];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchedArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+    RMUSavedUser *currentUser;
+    if (fetchedArray.count == 0){
+        // User hasn't been created, create a user and attempt to extract a URI from the RMU DB
+        currentUser = (RMUSavedUser*) [NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedUser"
+                                                                    inManagedObjectContext:self.managedObjectContext];
+        currentUser.hasLoggedIn = NO;
+        currentUser.dateLogged = [NSDate date];
+        [self obtainUserURIForUser:currentUser];
+    }
+    else {
+        // User has been created
+        currentUser = fetchedArray[0];
+        if (currentUser.hasLoggedIn) {
+            // User was created and has logged in and obtained a user URI, do nothing
+        }
+        else {
+            // User was created and has not logged in, attempt to log in and obtain a user ID
+            [self obtainUserURIForUser:currentUser];
+        }
+    }
     return YES;
 }
 
@@ -107,19 +109,24 @@
 
 - (void)obtainUserURIForUser:(RMUSavedUser*)user
 {
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    [manager GET:@"http://dry-tor-2401.herokuapp.com/api/v1/create_user/"
-//      parameters:@{<#key#>: <#object, ...#>}
-//         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//             <#code#>
-//         }
-//         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//             <#code#>
-//         }];
-    // Save user
-    NSError *error;
-    if (![self.managedObjectContext save:&error])
-        NSLog(@"Error Saving %@", error);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:@"http://dry-tor-2401.herokuapp.com/api/v1/create_user/"
+      parameters:@{@"device_id": [[UIDevice currentDevice] identifierForVendor].UUIDString}
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             // Succeeded, save the URI to the user object
+//             user.userURI = [responseObject objectForKey:@""]
+             NSLog(@"response : %@", responseObject);
+             NSError *saveError;
+             if (![self.managedObjectContext save:&saveError])
+                 NSLog(@"Error Saving %@", saveError);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             // Failed. Save the User Regardless
+             NSLog(@"error: %@ with response string: %@", error, operation.responseString);
+             NSError *saveError;
+             if (![self.managedObjectContext save:&saveError])
+                 NSLog(@"Error Saving %@", saveError);
+         }];
 
 }
 

@@ -22,8 +22,9 @@
 @property (weak, nonatomic) IBOutlet UIView *popupView;
 @property (weak, nonatomic) IBOutlet UILabel *restaurantLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
-@property (weak, nonatomic) IBOutlet UIView *falloutPopup;
+@property (weak, nonatomic) IBOutlet UIView *fallbackPopup;
 @property (weak, nonatomic) IBOutlet UITableView *fallbackTable;
+@property (weak, nonatomic) IBOutlet UIButton *dismissButton;
 
 // Regular properties
 @property (strong,nonatomic) NSMutableArray *fallbackRest;
@@ -52,6 +53,15 @@
     [super viewDidLoad];
     self.hasDroppedPin =NO;
     self.fallbackRest = [[NSMutableArray alloc]init];
+    
+    // Deactivate dismiss button
+    [self.dismissButton setUserInteractionEnabled:NO];
+    
+    // Add borders to buttons
+    self.yesButton.layer.borderWidth = 1.0;
+    self.yesButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.noButton.layer.borderWidth = 1.0;
+    self.noButton.layer.borderColor = [UIColor blackColor].CGColor;
     
     // Customize the Appearance of the TabBar
     UITabBarController *tabBarVC = self.tabBarController;
@@ -101,6 +111,7 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     // Find Your Location
+    NSLog(@"Updating....");
     [self.locationManager stopUpdatingLocation];
     self.location = locations[0];
     CLLocationCoordinate2D coord = self.location.coordinate;
@@ -151,6 +162,7 @@
                      [self.restaurantLabel setText:self.restString];
                      [self.addressLabel setText:[[respArray[0] objectForKey:@"location"] objectForKey:@"address"]];
                      [self animateInGradient];
+                     
                  }
             }
          }
@@ -187,7 +199,7 @@
                  for (int i = 0; i < NUMBER_OF_FALLBACK; i++) {
                      [self.fallbackRest addObject:respArray[i]];
                  }
-                 [self.falloutPopup setHidden:NO];
+                 [self.fallbackPopup setHidden:NO];
                  [self animateFallbackPopup];
                  [self.fallbackTable reloadData];
                  
@@ -202,11 +214,23 @@
 #pragma mark - Interactivity Methods
 
 /*
+ *  Allows a user to reload process should they pick the wrong restaurant
+ */
+
+- (IBAction)dismissPopups:(id)sender
+{
+    [self.popupView setHidden:YES];
+    [self.fallbackPopup setHidden:YES];
+    [self animateOutGradient];
+}
+
+/*
  *  If restaurant guessed is correct then report it's foursquare id and obtain a menu
  */
 
 - (IBAction)confirmRestaurant:(id)sender
 {
+    
 }
 
 
@@ -312,7 +336,26 @@
                          [self.popupView setAlpha:1.0f];
                      } completion:^(BOOL finished) {
                          [self.popupView setHidden:NO];
+                         [self.dismissButton setUserInteractionEnabled:YES];
                          [self animatePopup];
+                     }];
+}
+
+- (void)animateOutGradient
+{
+    [self.gradientImage setAlpha:1.0f];
+    [self.gradientImage setHidden:NO];
+    [UIView animateWithDuration:0.3f
+                          delay:0.2f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         [self.gradientImage setAlpha:0.0f];
+                     } completion:^(BOOL finished) {
+                         [self.dismissButton setUserInteractionEnabled:NO];
+                         [self.locationManager startUpdatingLocation];
+                         self.restString = @"";
+                         [self.yesButton setUserInteractionEnabled:YES];
+                         [self.noButton setUserInteractionEnabled:YES];
                      }];
 }
 
@@ -332,7 +375,7 @@
 
 - (void)animateFallbackPopup
 {
-    [RMUAnimationClass animateFlyInView:self.falloutPopup
+    [RMUAnimationClass animateFlyInView:self.fallbackPopup
                            withDuration:0.1f
                               withDelay:0.0f
                           fromDirection:buttonAnimationDirectionTop
@@ -340,6 +383,4 @@
                              withBounce:YES];
 }
 @end
-
-
 

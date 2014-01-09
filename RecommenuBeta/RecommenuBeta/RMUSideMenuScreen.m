@@ -13,6 +13,8 @@
 @property (weak,nonatomic) RMURestaurant *currentRestaurant;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *missingLabel;
+@property (weak, nonatomic) IBOutlet RMUButton *reportButton;
 
 @end
 
@@ -22,7 +24,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [self.missingLabel setTextColor:[UIColor RMUSelectGrayColor]];
+    [self.reportButton setBackgroundColor:[UIColor whiteColor]];
 }
 
 - (void)didReceiveMemoryWarning
