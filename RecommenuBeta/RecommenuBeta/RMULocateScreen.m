@@ -31,7 +31,7 @@
 @property (strong, nonatomic) RMMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *location;
-@property (strong,nonatomic) NSNumber *restID;
+@property (strong,nonatomic) NSString *restID;
 @property (strong,nonatomic) NSString *restString;
 @property BOOL hasDroppedPin;
 
@@ -85,7 +85,7 @@
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self.location = [[CLLocation alloc]init];
     [self.locationManager startUpdatingLocation];
-    self.restID = [[NSNumber alloc]init];
+    self.restID = [[NSString alloc]init];
     self.restString = [[NSString alloc]init];
 
     // Connfigure the buttons

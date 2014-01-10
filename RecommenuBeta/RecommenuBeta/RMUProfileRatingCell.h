@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *likeDislikeImage;
 @property (weak, nonatomic) IBOutlet UILabel *entreeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
 @end

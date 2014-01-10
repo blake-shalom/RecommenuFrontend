@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSManagedObject *userForRecommedation;
 @property (nonatomic, retain) NSString * entreeName;
 @property (nonatomic, retain) NSString * restaurantName;
+@property (nonatomic, retain) NSString * entreeDesc;
 
 @end

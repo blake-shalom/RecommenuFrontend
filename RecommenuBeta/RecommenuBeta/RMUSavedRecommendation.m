@@ -18,5 +18,6 @@
 @dynamic userForRecommedation;
 @dynamic entreeName;
 @dynamic restaurantName;
+@dynamic entreeDesc;
 
 @end

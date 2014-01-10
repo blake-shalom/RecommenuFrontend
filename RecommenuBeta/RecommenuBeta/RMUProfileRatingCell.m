@@ -28,4 +28,11 @@
     // Configure the view for the selected state
 }
 
+- (void)layoutSubviews
+{
+    [self.entreeLabel setTextColor:[UIColor RMUTitleColor]];
+    [self.descriptionLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
+    [self.dateLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
+}
+
 @end

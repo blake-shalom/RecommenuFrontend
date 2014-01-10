@@ -35,6 +35,7 @@
 {
     [super viewDidLoad];
     
+    self.ratingsArray = [[NSMutableArray alloc]init];
     // Set the tableview's properties
     self.profileTable.delegate = self;
     self.profileTable.dataSource = self;
@@ -56,27 +57,50 @@
     }
     else {
         RMUSavedUser *user = fetchedArray[0];
-        // Handle User details
-        if (!user.facebookID) {
-            [self.nameLabel setText:@"Anonymous User"];
-            [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
-#warning need to do generic picture
-        }
-        else {
-            [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
-
-#warning - TODO Facebook mapping for pic/name
-        }
+        [self sortUserRatingsIntoRatingsArray:user];
         
-        // Handle rating storage
-        if (user.ratingsForUser.count == 0) {
-            [self.currentRatingsLabel setText:@"0 Ratings"];
-        }
-        else {
-            // Sort ratings into containers
-        }
     }
 	// Do any additional setup after loading the view.
+}
+
+- (void)sortUserRatingsIntoRatingsArray: (RMUSavedUser*) user
+{
+    if (!user.facebookID) {
+        [self.nameLabel setText:@"Anonymous User"];
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
+#warning need to do generic picture
+    }
+    else {
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+        
+#warning - TODO Facebook mapping for pic/name
+    }
+    
+    // Handle rating storage
+    if (user.ratingsForUser.count == 0) {
+        [self.currentRatingsLabel setText:@"0 Ratings"];
+    }
+    else {
+        // Set UI
+        [self.currentRatingsLabel setText:[NSString stringWithFormat:@"%i Ratings", user.ratingsForUser.count]];
+        
+        // Sort ratings into containers
+        for (RMUSavedRecommendation *recommendation in user.ratingsForUser) {
+            BOOL doesRestExist = NO;
+            for (NSMutableDictionary *recDict in self.ratingsArray) {
+                if ([[recDict objectForKey:@"restName"] isEqualToString:recommendation.restaurantName]) {
+                    doesRestExist = YES;
+                    [[recDict objectForKey:@"recArray"] addObject:recommendation];
+                }
+            }
+            if (!doesRestExist) {
+                NSMutableDictionary *newDictionary = [[NSMutableDictionary alloc]initWithDictionary:@{@"restName": recommendation.restaurantName}];
+                NSMutableArray *recArray = [[NSMutableArray alloc]initWithObjects:recommendation, nil];
+                [newDictionary setObject:recArray forKey:@"recArray"];
+                [self.ratingsArray addObject:newDictionary];
+            }
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -93,7 +117,22 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [[UITableViewCell alloc]init];
+    static NSString *CellIdentifier = @"ratingCell";
+    RMUProfileRatingCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
+    RMUSavedRecommendation *rec = recArray[indexPath.row];
+    [cell.entreeLabel setText:rec.entreeName];
+    [cell.descriptionLabel setText:rec.entreeDesc];
+    if (rec.isRecommendPositive.boolValue)
+        [cell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_up_profile"]];
+    else
+        [cell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_down_profile"]];
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"MM/dd/yyy"];
+    [cell.dateLabel setText:[formatter stringFromDate:rec.timeRated]];
+    
+    return cell;
 }
 
 /*
@@ -102,7 +141,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    NSArray *rowArray = [self.ratingsArray[section] objectForKey:@"recArray"];
+    return rowArray.count;
 }
 
 /*
@@ -111,9 +151,34 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.ratingsArray.count;
 }
 
+/*
+ *
+ */
 
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [self.ratingsArray[section] objectForKey:@"restName"];
+}
+
+#pragma mark - segue methods
+
+/*
+ *  Currently one segue is supported, profile to menu, that redirects a user to the menu of an item
+ */
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"profileToMenu"]) {
+        RMURevealViewController *nextScreen = (RMURevealViewController*) segue.destinationViewController;
+        NSIndexPath *indexPath = [self.profileTable indexPathForSelectedRow];
+        NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
+        RMUSavedRecommendation *rec = recArray[indexPath.row];
+        NSLog(@"%@", rec.restFoursquareID);
+        [nextScreen getRestaurantWithFoursquareID:rec.restFoursquareID andName:rec.restaurantName];
+    }
+}
 
 @end

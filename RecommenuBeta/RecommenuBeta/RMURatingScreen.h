@@ -14,6 +14,8 @@
 #import "RMUMenuTable.h"
 #import "RMURevealViewController.h"
 #import "RMURatingCell.h"
+#import "RMUAppDelegate.h"
+#import "RMUSavedRecommendation.h"
 
 @interface RMURatingScreen : UIViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate>

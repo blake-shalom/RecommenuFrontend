@@ -68,6 +68,7 @@
     self.reportMenuButton.layer.borderWidth = 1.0f;
     [self.missingMenuView setHidden:YES];
 	// Do any additional setup after loading the view.
+    
 }
 
 
@@ -192,7 +193,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%i", indexPath.row);
+
 }
 
 /*

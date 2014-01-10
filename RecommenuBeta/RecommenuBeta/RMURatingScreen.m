@@ -16,6 +16,8 @@
 @property (weak,nonatomic) RMUCourse *currentCourse;
 @property BOOL isRatingVisible;
 @property BOOL isMenuVisible;
+@property (strong,nonatomic) RMUSavedUser *user;
+@property (weak,nonatomic) RMUAppDelegate *appDelegate;
 
 // IBOutlets
 @property (weak, nonatomic) IBOutlet UILabel *restNameLabel;
@@ -56,12 +58,29 @@
     self.carousel.clipsToBounds = YES;
     self.carousel.pagingEnabled = YES;
     self.revealViewController.delegate = self;
+    
+    // Set up managed context, user, and app delegate
+    self.appDelegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+    NSFetchRequest *request = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.appDelegate.managedObjectContext];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchedArray = [self.appDelegate.managedObjectContext executeFetchRequest:request error:&error];
+    self.user = fetchedArray[0];
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidLoad];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    NSLog(@"In view will disappear");
+    NSError *error;
+    if (![self.appDelegate.managedObjectContext save:&error])
+        NSLog(@"ERROR SAVING: %@", error);
 }
 
 - (void)didReceiveMemoryWarning
@@ -189,6 +208,16 @@
     if (!meal.isLiked && !meal.isDisliked){
         button.selected = !button.selected;
         meal.isLiked = YES;
+        RMUSavedRecommendation *likeRecommendation = (RMUSavedRecommendation*) [NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedRecommendation"
+                                                                                                             inManagedObjectContext:self.appDelegate.managedObjectContext];
+        likeRecommendation.entreeFoursquareID = meal.mealID;
+        likeRecommendation.entreeName = meal.mealName;
+        likeRecommendation.restaurantName = self.currentRestaurant.restName;
+        likeRecommendation.restFoursquareID = self.currentRestaurant.restFoursquareID;
+        likeRecommendation.isRecommendPositive = [NSNumber numberWithBool:YES];
+        likeRecommendation.timeRated = [NSDate date];
+        likeRecommendation.entreeDesc = meal.mealDescription;
+        [self.user addRatingsForUserObject:likeRecommendation];
     }
 }
 
@@ -202,6 +231,18 @@
     if (!meal.isLiked && !meal.isDisliked){
         button.selected = !button.selected;
         meal.isDisliked = YES;
+        
+        RMUSavedRecommendation *dislikeRecommendation = (RMUSavedRecommendation*) [NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedRecommendation"
+                                                                                                             inManagedObjectContext:self.appDelegate.managedObjectContext];
+        dislikeRecommendation.entreeFoursquareID = meal.mealID;
+        dislikeRecommendation.entreeName = meal.mealName;
+        dislikeRecommendation.restaurantName = self.currentRestaurant.restName;
+        dislikeRecommendation.restFoursquareID = self.currentRestaurant.restFoursquareID;
+        dislikeRecommendation.isRecommendPositive = [NSNumber numberWithBool:NO];
+        dislikeRecommendation.timeRated = [NSDate date];
+        dislikeRecommendation.entreeDesc = meal.mealDescription;
+        
+        [self.user addRatingsForUserObject:dislikeRecommendation];
     }
 }
 

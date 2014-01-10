@@ -16,7 +16,7 @@
 <RMUSideMenuScreenDelegate>
 @property (strong,nonatomic) RMURestaurant *currentRestaurant;
 
-- (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name;
+- (void)getRestaurantWithFoursquareID:(NSString *)foursquareID andName:(NSString *)name;
 
 @end
 

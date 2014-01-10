@@ -52,7 +52,7 @@
  *  Sets a property that the children VC's use to fill their data structures
  */
 
-- (void)getRestaurantWithFoursquareID:(NSNumber *)foursquareID andName:(NSString *)name
+- (void)getRestaurantWithFoursquareID:(NSString *)foursquareID andName:(NSString *)name
 {
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
@@ -66,6 +66,7 @@
              [self.view setHidden:NO];
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
                                                              andRestaurantName:name];
+             self.currentRestaurant.restFoursquareID = foursquareID;
              RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
              [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
              [menuScreen setupViews];

@@ -68,11 +68,9 @@
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";
-//    NSString *apiURLString = @"http://dry-tor-2401.herokuapp.com/v1";
     NSUserDefaults *currentDefaults = [NSUserDefaults standardUserDefaults];
     [currentDefaults setObject:idString forKey:@"foursquareID"];
     [currentDefaults setObject:secretString forKey:@"foursquareSecret"];
-//    [currentDefaults setObject:apiURLString forKey:@"apiURL"];
     
     // Set up a user on Recommenu
     NSFetchRequest *request = [[NSFetchRequest alloc]init];
@@ -87,7 +85,7 @@
                                                                     inManagedObjectContext:self.managedObjectContext];
         currentUser.hasLoggedIn = NO;
         currentUser.dateLogged = [NSDate date];
-        [self obtainUserURIForUser:currentUser];
+//        [self obtainUserURIForUser:currentUser];
     }
     else {
         // User has been created
@@ -97,7 +95,7 @@
         }
         else {
             // User was created and has not logged in, attempt to log in and obtain a user ID
-            [self obtainUserURIForUser:currentUser];
+//            [self obtainUserURIForUser:currentUser];
         }
     }
     return YES;
@@ -110,8 +108,15 @@
 - (void)obtainUserURIForUser:(RMUSavedUser*)user
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    NSLog(@"%@",deviceId);
     [manager POST:@"http://dry-tor-2401.herokuapp.com/api/v1/create_user/"
-      parameters:@{@"device_id": [[UIDevice currentDevice] identifierForVendor].UUIDString}
+      parameters:@{@"device_id": deviceId,
+                   @"user" : deviceId,
+                   @"username" : deviceId,
+                   @"first_name" : deviceId,
+                   @"last_name" : deviceId,
+                   @"password" : deviceId}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              // Succeeded, save the URI to the user object
 //             user.userURI = [responseObject objectForKey:@""]
@@ -140,6 +145,10 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSError *saveError;
+    if (![self.managedObjectContext save:&saveError])
+        NSLog(@"Error Saving %@", saveError);
+
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
