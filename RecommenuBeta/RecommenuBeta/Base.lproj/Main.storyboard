@@ -646,7 +646,7 @@
                                 <rect key="frame" x="0.0" y="63" width="320" height="119"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EQ6-N5-8P3">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="top_section.png" translatesAutoresizingMaskIntoConstraints="NO" id="EQ6-N5-8P3">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="119"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
@@ -656,21 +656,21 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rj0-PT-pUN">
-                                        <rect key="frame" x="0.0" y="89" width="160" height="30"/>
+                                        <rect key="frame" x="0.0" y="82" width="160" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Past Ratings">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJi-Li-pIN">
-                                        <rect key="frame" x="160" y="89" width="160" height="30"/>
+                                        <rect key="frame" x="160" y="81" width="160" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Friends">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Katie Eldredge" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="cnh-mo-peH">
-                                        <rect key="frame" x="123" y="32" width="197" height="21"/>
+                                        <rect key="frame" x="123" y="32" width="123" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                                         <nil key="highlightedColor"/>
@@ -681,10 +681,10 @@
                                         <fontDescription key="fontDescription" name="Avenir-LightOblique" family="Avenir" pointSize="10"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K3T-Fa-FeV">
-                                        <rect key="frame" x="254" y="28" width="38" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K3T-Fa-FeV">
+                                        <rect key="frame" x="254" y="28" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button">
+                                        <state key="normal" image="facebook_off.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
@@ -713,14 +713,14 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="80" id="TtS-wp-qlu">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="80" id="TtS-wp-qlu" customClass="RMUProfileRatingCell">
                                         <rect key="frame" x="0.0" y="55" width="320" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TtS-wp-qlu" id="N8B-cX-ZUg">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zsq-cY-RXV">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thumbs_up_profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="zsq-cY-RXV">
                                                     <rect key="frame" x="11" y="21" width="38" height="38"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
@@ -738,6 +738,11 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="descriptionLabel" destination="IhW-Ik-wZK" id="Iqy-Fn-DpH"/>
+                                            <outlet property="entreeLabel" destination="x37-ED-xvb" id="k7u-Ig-PqA"/>
+                                            <outlet property="likeDislikeImage" destination="zsq-cY-RXV" id="Tat-kX-e3f"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="67" id="xWS-Zh-ENJ">
                                         <rect key="frame" x="0.0" y="135" width="320" height="67"/>
@@ -773,6 +778,14 @@
                     <tabBarItem key="tabBarItem" title="Profile" image="icon_profile.png" id="1yP-AO-hIC">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
                     </tabBarItem>
+                    <connections>
+                        <outlet property="currentRatingsLabel" destination="RA2-rc-moR" id="IGw-T8-B8s"/>
+                        <outlet property="facebookButton" destination="K3T-Fa-FeV" id="qxC-C2-K1A"/>
+                        <outlet property="friendsButton" destination="HJi-Li-pIN" id="sF4-vd-8vk"/>
+                        <outlet property="nameLabel" destination="cnh-mo-peH" id="v8F-my-1xA"/>
+                        <outlet property="pastRatingsButton" destination="rj0-PT-pUN" id="Dam-cY-ACG"/>
+                        <outlet property="profileTable" destination="S3M-ZD-ylj" id="biJ-yQ-Kgv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MEg-Sg-XhO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -945,6 +958,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="facebook_off.png" width="29" height="29"/>
         <image name="filter_bar.png" width="321" height="39"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_graph.png" width="16" height="16"/>
@@ -957,7 +971,9 @@
         <image name="overlay_card.png" width="268" height="406"/>
         <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="popup_location.png" width="265" height="200"/>
+        <image name="thumbs_up_profile.png" width="38" height="38"/>
         <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_section.png" width="320" height="119"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -17,5 +17,7 @@
 @property (nonatomic, retain) NSDate * timeRated;
 @property (nonatomic, retain) NSNumber * isRecommendPositive;
 @property (nonatomic, retain) NSManagedObject *userForRecommedation;
+@property (nonatomic, retain) NSString * entreeName;
+@property (nonatomic, retain) NSString * restaurantName;
 
 @end

@@ -143,6 +143,11 @@
 		9DF800B9187F4E1C000A08BA /* facebook_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF800B5187F4E1C000A08BA /* facebook_off@2x.png */; };
 		9DF800BA187F4E1C000A08BA /* facebook_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF800B6187F4E1C000A08BA /* facebook_on.png */; };
 		9DF800BB187F4E1C000A08BA /* facebook_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF800B7187F4E1C000A08BA /* facebook_on@2x.png */; };
+		9DF800BE187F68FF000A08BA /* top_section.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF800BC187F68FF000A08BA /* top_section.png */; };
+		9DF800BF187F68FF000A08BA /* top_section@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF800BD187F68FF000A08BA /* top_section@2x.png */; };
+		9DF800C2187F813D000A08BA /* thumbs_up_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF800C0187F813D000A08BA /* thumbs_up_profile.png */; };
+		9DF800C3187F813D000A08BA /* thumbs_up_profile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DF800C1187F813D000A08BA /* thumbs_up_profile@2x.png */; };
+		9DF800C6187F8969000A08BA /* RMUProfileRatingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF800C5187F8969000A08BA /* RMUProfileRatingCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -329,6 +334,13 @@
 		9DF800B5187F4E1C000A08BA /* facebook_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook_off@2x.png"; sourceTree = "<group>"; };
 		9DF800B6187F4E1C000A08BA /* facebook_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_on.png; sourceTree = "<group>"; };
 		9DF800B7187F4E1C000A08BA /* facebook_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook_on@2x.png"; sourceTree = "<group>"; };
+		9DF800BC187F68FF000A08BA /* top_section.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_section.png; sourceTree = "<group>"; };
+		9DF800BD187F68FF000A08BA /* top_section@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_section@2x.png"; sourceTree = "<group>"; };
+		9DF800C0187F813D000A08BA /* thumbs_up_profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbs_up_profile.png; sourceTree = "<group>"; };
+		9DF800C1187F813D000A08BA /* thumbs_up_profile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbs_up_profile@2x.png"; sourceTree = "<group>"; };
+		9DF800C4187F8969000A08BA /* RMUProfileRatingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUProfileRatingCell.h; sourceTree = "<group>"; };
+		9DF800C5187F8969000A08BA /* RMUProfileRatingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUProfileRatingCell.m; sourceTree = "<group>"; };
+		9DF800C7187F974B000A08BA /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,6 +390,10 @@
 		9D419B911845E5EA0097C6CA /* Image Assets */ = {
 			isa = PBXGroup;
 			children = (
+				9DF800C0187F813D000A08BA /* thumbs_up_profile.png */,
+				9DF800C1187F813D000A08BA /* thumbs_up_profile@2x.png */,
+				9DF800BC187F68FF000A08BA /* top_section.png */,
+				9DF800BD187F68FF000A08BA /* top_section@2x.png */,
 				9DF800B0187F4DEC000A08BA /* button_back.png */,
 				9DF800B2187F4DFD000A08BA /* button_back@2x.png */,
 				9DF800B4187F4E1C000A08BA /* facebook_off.png */,
@@ -517,6 +533,8 @@
 				9DC2C4D3186FF9B7001BF7DA /* RMURatingCell.m */,
 				9DB9C27D186A03A5003CD478 /* RMUMenuTable.h */,
 				9DB9C27E186A03A5003CD478 /* RMUMenuTable.m */,
+				9DF800C4187F8969000A08BA /* RMUProfileRatingCell.h */,
+				9DF800C5187F8969000A08BA /* RMUProfileRatingCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -612,11 +630,11 @@
 				9D7736EE18562BFB00A84E14 /* Objects */,
 				9D7736EC18562BDE00A84E14 /* Views */,
 				9D7736ED18562BED00A84E14 /* Categories */,
+				9DF800971875DBDB000A08BA /* Core Data */,
 				9DF8008D1875D42C000A08BA /* User Interfaces */,
 				9D419BE5185436810097C6CA /* View Controllers */,
 				9DF1ABFB18370702006DF0B3 /* Images.xcassets */,
 				9DF1ABEA18370702006DF0B3 /* Supporting Files */,
-				9DF800971875DBDB000A08BA /* Core Data */,
 			);
 			path = RecommenuBeta;
 			sourceTree = "<group>";
@@ -799,9 +817,12 @@
 				9D2759FE1860A53E003BF004 /* ellipse_select_@2x.png in Resources */,
 				9D419BBF1845E6220097C6CA /* icon_settings@2x.png in Resources */,
 				9D419BBC1845E6220097C6CA /* icon_search_select@2x.png in Resources */,
+				9DF800BF187F68FF000A08BA /* top_section@2x.png in Resources */,
 				9DF800AF187E533D000A08BA /* popup_ratingbreakdown@2x.png in Resources */,
 				9DC2C4CB186FF773001BF7DA /* thumbs_down_red@2x.png in Resources */,
 				9D275A0E1860A53E003BF004 /* icon_list_select.png in Resources */,
+				9DF800C2187F813D000A08BA /* thumbs_up_profile.png in Resources */,
+				9DF800BE187F68FF000A08BA /* top_section.png in Resources */,
 				9D419BC61845E6220097C6CA /* nav_bar.png in Resources */,
 				9DC2C4CE186FF773001BF7DA /* thumbs_up_green.png in Resources */,
 				9DC2C4D0186FF773001BF7DA /* thumbs_up.png in Resources */,
@@ -814,6 +835,7 @@
 				9DF800A2187D8CF6000A08BA /* pattern_fullscreen.png in Resources */,
 				9DF1ABEE18370702006DF0B3 /* InfoPlist.strings in Resources */,
 				9DF8009B187C75A4000A08BA /* icon_profile.png in Resources */,
+				9DF800C3187F813D000A08BA /* thumbs_up_profile@2x.png in Resources */,
 				9D275A0D1860A53E003BF004 /* icon_graph@2x.png in Resources */,
 				9DF800AB187E5321000A08BA /* popup_location.png in Resources */,
 				9D275A0B1860A53E003BF004 /* icon_graph_select@2x.png in Resources */,
@@ -872,6 +894,7 @@
 				9D7736F71857C40A00A84E14 /* RMUCourse.m in Sources */,
 				9D419BD518493CF30097C6CA /* RMUProfileScreen.m in Sources */,
 				9D419C031854E1640097C6CA /* AFHTTPRequestOperationManager.m in Sources */,
+				9DF800C6187F8969000A08BA /* RMUProfileRatingCell.m in Sources */,
 				9DF800961875DBD5000A08BA /* RMUSavedUser.m in Sources */,
 				9D7736F11857A4C700A84E14 /* RMUMenu.m in Sources */,
 				9DF800901875D72F000A08BA /* Model.xcdatamodeld in Sources */,
@@ -1127,9 +1150,10 @@
 		9DF8008E1875D72F000A08BA /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9DF800C7187F974B000A08BA /* Model 2.xcdatamodel */,
 				9DF8008F1875D72F000A08BA /* Model.xcdatamodel */,
 			);
-			currentVersion = 9DF8008F1875D72F000A08BA /* Model.xcdatamodel */;
+			currentVersion = 9DF800C7187F974B000A08BA /* Model 2.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -2,7 +2,9 @@
 <model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="RMUSavedRecommendation" representedClassName="RMUSavedRecommendation" syncable="YES">
         <attribute name="entreeFoursquareID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="entreeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRecommendPositive" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="restaurantName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="restFoursquareID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeRated" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="userForRecommedation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RMUSavedUser" inverseName="ratingsForUser" inverseEntity="RMUSavedUser" syncable="YES"/>

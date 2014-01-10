@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RMUAppDelegate.h"
 
 @interface RMUProfileScreen : UIViewController
+<UITableViewDataSource, UITableViewDelegate>
 
 @end

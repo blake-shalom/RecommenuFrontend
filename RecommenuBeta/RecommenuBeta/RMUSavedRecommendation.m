@@ -16,5 +16,7 @@
 @dynamic timeRated;
 @dynamic isRecommendPositive;
 @dynamic userForRecommedation;
+@dynamic entreeName;
+@dynamic restaurantName;
 
 @end
