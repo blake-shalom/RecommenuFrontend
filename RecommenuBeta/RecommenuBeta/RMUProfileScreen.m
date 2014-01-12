@@ -15,8 +15,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UITableView *profileTable;
 @property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+@property (weak, nonatomic) IBOutlet UIView *emptyView;
+@property (weak, nonatomic) IBOutlet UILabel *topEmptyLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bottomEmptyLabel;
 
 @property NSMutableArray *ratingsArray;
+@property BOOL isOnPastRatings;
 
 @end
 
@@ -40,6 +44,10 @@
     self.profileTable.delegate = self;
     self.profileTable.dataSource = self;
     
+    [self.pastRatingsButton setTintColor:[UIColor RMULogoBlueColor]];
+    [self.friendsButton setTintColor:[UIColor RMUDividingGrayColor]];
+    self.isOnPastRatings = YES;
+    
     // Do some general setup
     [self.nameLabel setTextColor:[UIColor RMUTitleColor]];
     [self.currentRatingsLabel setTextColor:[UIColor RMUNumRatingGray]];
@@ -60,6 +68,8 @@
         [self sortUserRatingsIntoRatingsArray:user];
         
     }
+    
+    [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
 	// Do any additional setup after loading the view.
 }
 
@@ -178,6 +188,47 @@
         RMUSavedRecommendation *rec = recArray[indexPath.row];
         NSLog(@"%@", rec.restFoursquareID);
         [nextScreen getRestaurantWithFoursquareID:rec.restFoursquareID andName:rec.restaurantName];
+    }
+}
+
+#pragma mark - interactivity
+
+- (IBAction)showFriendsRatings:(id)sender
+{
+    [self.friendsButton setTintColor:[UIColor RMULogoBlueColor]];
+    [self.pastRatingsButton setTintColor:[UIColor RMUDividingGrayColor]];
+    self.isOnPastRatings = NO;
+    if (NO) {
+        // TODO make the conditional checkunderlying storage and reload the table and make another conditional check on if friends are on
+        [self.profileTable setHidden:NO];
+        [self.emptyView setHidden:YES];
+        [self.profileTable reloadData];
+    }
+    else {
+        // Else hide the Table and show the empty view
+        [self.profileTable setHidden:YES];
+        [self.emptyView setHidden:NO];
+        [self.topEmptyLabel setText:@"You don't have any friends yet!"];
+        [self.bottomEmptyLabel setText:@"Connect through Facebook to search for friends and view their ratings."];
+    }
+}
+
+- (IBAction)showPastRatings:(id)sender
+{
+    [self.pastRatingsButton setTintColor:[UIColor RMULogoBlueColor]];
+    [self.friendsButton setTintColor:[UIColor RMUDividingGrayColor]];
+    self.isOnPastRatings = YES;
+    if (self.ratingsArray.count > 0) {
+        [self.profileTable setHidden:NO];
+        [self.emptyView setHidden:YES];
+        [self.profileTable reloadData];
+    }
+    else {
+        [self.profileTable setHidden:YES];
+        [self.emptyView setHidden:NO];
+        [self.topEmptyLabel setText:@"Rate more items to see them on your profile!"];
+        [self.bottomEmptyLabel setText:@""];
+        // Show the correct headers on the missing view
     }
 }
 

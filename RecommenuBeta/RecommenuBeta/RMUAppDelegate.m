@@ -85,17 +85,18 @@
                                                                     inManagedObjectContext:self.managedObjectContext];
         currentUser.hasLoggedIn = NO;
         currentUser.dateLogged = [NSDate date];
-//        [self obtainUserURIForUser:currentUser];
+        [self obtainUserURIForUser:currentUser];
     }
     else {
         // User has been created
         currentUser = fetchedArray[0];
         if (currentUser.hasLoggedIn) {
             // User was created and has logged in and obtained a user URI, do nothing
+            NSLog(@"USER OBTAINED URI: %@", currentUser.userURI);
         }
         else {
             // User was created and has not logged in, attempt to log in and obtain a user ID
-//            [self obtainUserURIForUser:currentUser];
+            [self obtainUserURIForUser:currentUser];
         }
     }
     return YES;
@@ -110,18 +111,21 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     NSLog(@"%@",deviceId);
-    [manager POST:@"http://dry-tor-2401.herokuapp.com/api/v1/create_user/"
+    NSString *testFields = [deviceId substringToIndex:10];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_user/"
       parameters:@{@"device_id": deviceId,
-                   @"user" : deviceId,
-                   @"username" : deviceId,
-                   @"first_name" : deviceId,
-                   @"last_name" : deviceId,
-                   @"password" : deviceId}
+                   @"user" : @{@"email" : testFields,
+                               @"username" : testFields,
+                               @"first_name" : testFields,
+                               @"last_name" : testFields,
+                               @"password" : testFields}}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              // Succeeded, save the URI to the user object
-//             user.userURI = [responseObject objectForKey:@""]
+             user.userURI = [[responseObject objectForKey:@"user"] objectForKey:@"resource_uri"];
              NSLog(@"response : %@", responseObject);
              NSError *saveError;
+             user.hasLoggedIn = [NSNumber numberWithBool:YES];
              if (![self.managedObjectContext save:&saveError])
                  NSLog(@"Error Saving %@", saveError);
          }
@@ -132,7 +136,6 @@
              if (![self.managedObjectContext save:&saveError])
                  NSLog(@"Error Saving %@", saveError);
          }];
-
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

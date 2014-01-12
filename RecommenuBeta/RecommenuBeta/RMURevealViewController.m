@@ -32,6 +32,7 @@
         [ratingScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
         [ratingScreen setupViews];
         RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
+        [sideMenu loadCurrentRestaurant:self.currentRestaurant];
         sideMenu.delegate = self;
     }
 }

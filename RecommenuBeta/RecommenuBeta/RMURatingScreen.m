@@ -218,6 +218,7 @@
         likeRecommendation.timeRated = [NSDate date];
         likeRecommendation.entreeDesc = meal.mealDescription;
         [self.user addRatingsForUserObject:likeRecommendation];
+        [self postRatingToRMUDBFromSavedRecommendation:likeRecommendation];
     }
 }
 
@@ -243,9 +244,40 @@
         dislikeRecommendation.entreeDesc = meal.mealDescription;
         
         [self.user addRatingsForUserObject:dislikeRecommendation];
+        [self postRatingToRMUDBFromSavedRecommendation:dislikeRecommendation];
     }
 }
 
+/*
+ *  Posts to RMU DB that the user liked some content
+ */
+
+- (void)postRatingToRMUDBFromSavedRecommendation: (RMUSavedRecommendation*) recommendation
+{
+    if (self.user.userURI) {
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        NSString *isPositive;
+        if (recommendation.isRecommendPositive.boolValue){
+            isPositive = @"True";
+        }
+        else {
+            isPositive = @"False";
+        }
+        [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/rating/")]
+           parameters:@{@"foursquare_id": recommendation.entreeFoursquareID,
+                        @"positive" : isPositive,
+                        @"user" : self.user.userURI}
+              success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                  // Succeeded, Log the response
+                  NSLog(@"%@", responseObject);
+              }
+              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  // Failed. Log the user
+                  NSLog(@"error: %@ with response string: %@", error, operation.responseString);
+              }];
+    }
+}
 
 #pragma mark -  iCarousel Methods
 
