@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="1.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="RMUSavedRecommendation" representedClassName="RMUSavedRecommendation" syncable="YES">
         <attribute name="entreeFoursquareID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRecommendPositive" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -20,7 +20,7 @@
         <relationship name="ratingsForUser" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RMUSavedRecommendation" inverseName="userForRecommedation" inverseEntity="RMUSavedRecommendation" syncable="YES"/>
     </entity>
     <elements>
-        <element name="RMUSavedUser" positionX="160" positionY="192" width="128" height="193"/>
-        <element name="RMUSavedRecommendation" positionX="529" positionY="222" width="128" height="118"/>
+        <element name="RMUSavedRecommendation" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="RMUSavedUser" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

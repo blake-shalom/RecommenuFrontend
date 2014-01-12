@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RMURestaurant.h"
 #import "SWRevealViewController.h"
+#import "RMUButton.h"
 
 @class RMUSideMenuScreen;
 

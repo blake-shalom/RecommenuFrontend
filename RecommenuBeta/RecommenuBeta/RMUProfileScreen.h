@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RMUAppDelegate.h"
+#import "RMUSavedRecommendation.h"
+#import "RMUProfileRatingCell.h"
+#import "RMURevealViewController.h"
 
 @interface RMUProfileScreen : UIViewController
+<UITableViewDataSource, UITableViewDelegate>
 
 @end

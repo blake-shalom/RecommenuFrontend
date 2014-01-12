@@ -20,5 +20,6 @@
 +(UIColor*) RMUBadRedColor;
 +(UIColor*) RMULikeBlueColor;
 +(UIColor*) RMUSelectGrayColor;
++(UIColor*) RMUNumRatingGray;
 
 @end

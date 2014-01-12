@@ -13,9 +13,10 @@
 #import "RMUMenuCell.h"
 #import "RMUMenuTable.h"
 #import "RMURevealViewController.h"
+#import "RMUButton.h"
 
 @interface RMUMenuScreen : UIViewController
-<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate>
+<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate, UIAlertViewDelegate>
 
 - (void)setupViews;
 - (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant;

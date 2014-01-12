@@ -25,8 +25,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *rightSectionLabel;
 @property (weak, nonatomic) IBOutlet iCarousel *carousel;
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
+@property (weak, nonatomic) IBOutlet UIView *missingMenuView;
+@property (weak, nonatomic) IBOutlet RMUButton *reportMenuButton;
 
-#warning TODO popup when restaurant menu is not supported
 
 @end
 
@@ -58,7 +59,16 @@
     self.revealViewController.delegate = self;
     self.carousel.clipsToBounds = YES;
     self.carousel.pagingEnabled = YES;
+    
+    // Set up button UI
+    [self.reportMenuButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.reportMenuButton setBackgroundColor:[UIColor RMULogoBlueColor]];
+    self.reportMenuButton.isBlue = YES;
+    self.reportMenuButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.reportMenuButton.layer.borderWidth = 1.0f;
+    [self.missingMenuView setHidden:YES];
 	// Do any additional setup after loading the view.
+    
 }
 
 
@@ -89,6 +99,8 @@
         [self.leftSectionLabel setText:@""];
         [self.rightSectionLabel setText:@""];
     }
+    if (self.currentRestaurant.menus.count < 1)
+        [self.missingMenuView setHidden:NO];
     [self.carousel reloadData];
 }
 
@@ -109,7 +121,31 @@
     [self setupViews];
 }
 
+#pragma mark - UIAlertView Delegate
+
+/*
+ *  Returns home to the main menu
+ */
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self performSegueWithIdentifier:@"menuToHome" sender:self];
+}
+
 #pragma mark - interactivity
+
+/*
+ *  Reports the menu as invalid baddy bad bad
+ */
+
+
+- (IBAction)reportMenu:(id)sender
+{
+    NSLog(@"You is sooooo reported");
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Menu Reported!" message:@"Thanks for reporting this menu!" delegate:self cancelButtonTitle:@"Return Home" otherButtonTitles:nil];
+    
+    [alert show];
+}
 
 /*
  *  Views other avalable menus at the restaurant
@@ -135,8 +171,9 @@
         self.isRatingVisible = YES;
         [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
     }    
-    UITableView *tableView = (UITableView*) self.carousel.currentItemView;
-    [tableView reloadData];
+//    UITableView *tableView = (UITableView*) self.carousel.currentItemView;
+//    [tableView reloadData];
+    [self.carousel reloadData];
 }
 
 #pragma mark - UITableViewDelagate
@@ -156,7 +193,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%i", indexPath.row);
+
 }
 
 /*

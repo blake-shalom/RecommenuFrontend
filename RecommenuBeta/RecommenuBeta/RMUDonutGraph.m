@@ -76,6 +76,7 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
         CGContextFillPath(context);
         CGContextRestoreGState(context);
         CFRelease(dislikePath);
+        // Create blank path
         CGContextSaveGState(context);
         CGMutablePathRef blankPath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - 3.0f, .05 - M_PI/2.0, 0);
         CGContextAddPath(context, blankPath);

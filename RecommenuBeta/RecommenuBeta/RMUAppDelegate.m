@@ -65,12 +65,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    // Customize the Appearance of the TabBar
-    UITabBarController *tabBarVC = (UITabBarController*)self.window.rootViewController;
-    UITabBar *tabBar = tabBarVC.tabBar;
-    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
-    
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";
@@ -79,31 +73,32 @@
     [currentDefaults setObject:secretString forKey:@"foursquareSecret"];
     
     // Set up a user on Recommenu
-//    NSFetchRequest *request = [[NSFetchRequest alloc]init];
-//    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.managedObjectContext];
-//    [request setEntity:entity];
-//    NSError *error;
-//    NSArray *fetchedArray = [self.managedObjectContext executeFetchRequest:request error:&error];
-//    RMUSavedUser *currentUser;
-//    if (fetchedArray.count == 0){
-//        // User hasn't been created, create a user and attempt to extract a URI from the RMU DB
-//        currentUser = (RMUSavedUser*) [NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedUser"
-//                                                                    inManagedObjectContext:self.managedObjectContext];
-//        currentUser.hasLoggedIn = NO;
-//        currentUser.dateLogged = [NSDate date];
-//        [self obtainUserURIForUser:currentUser];
-//    }
-//    else {
-//        // User has been created
-//        currentUser = fetchedArray[0];
-//        if (currentUser.hasLoggedIn) {
-//            // User was created and has logged in and obtained a user URI, do nothing
-//        }
-//        else {
-//            // User was created and has not logged in, attempt to log in and obtain a user ID
-//            [self obtainUserURIForUser:currentUser];
-//        }
-//    }
+    NSFetchRequest *request = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.managedObjectContext];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchedArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+    RMUSavedUser *currentUser;
+    if (fetchedArray.count == 0){
+        // User hasn't been created, create a user and attempt to extract a URI from the RMU DB
+        currentUser = (RMUSavedUser*) [NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedUser"
+                                                                    inManagedObjectContext:self.managedObjectContext];
+        currentUser.hasLoggedIn = NO;
+        currentUser.dateLogged = [NSDate date];
+        [self obtainUserURIForUser:currentUser];
+    }
+    else {
+        // User has been created
+        currentUser = fetchedArray[0];
+        if (currentUser.hasLoggedIn) {
+            // User was created and has logged in and obtained a user URI, do nothing
+            NSLog(@"USER OBTAINED URI: %@", currentUser.userURI);
+        }
+        else {
+            // User was created and has not logged in, attempt to log in and obtain a user ID
+            [self obtainUserURIForUser:currentUser];
+        }
+    }
     return YES;
 }
 
@@ -113,16 +108,34 @@
 
 - (void)obtainUserURIForUser:(RMUSavedUser*)user
 {
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    [manager GET:<#(NSString *)#>
-//      parameters:<#(NSDictionary *)#>
-//         success:<#^(AFHTTPRequestOperation *operation, id responseObject)success#>
-//         failure:<#^(AFHTTPRequestOperation *operation, NSError *error)failure#>];
-    // Save user
-    NSError *error;
-    if (![self.managedObjectContext save:&error])
-        NSLog(@"Error Saving %@", error);
-
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    NSLog(@"%@",deviceId);
+    NSString *testFields = [deviceId substringToIndex:10];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_user/"
+      parameters:@{@"device_id": deviceId,
+                   @"user" : @{@"email" : testFields,
+                               @"username" : testFields,
+                               @"first_name" : testFields,
+                               @"last_name" : testFields,
+                               @"password" : testFields}}
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             // Succeeded, save the URI to the user object
+             user.userURI = [[responseObject objectForKey:@"user"] objectForKey:@"resource_uri"];
+             NSLog(@"response : %@", responseObject);
+             NSError *saveError;
+             user.hasLoggedIn = [NSNumber numberWithBool:YES];
+             if (![self.managedObjectContext save:&saveError])
+                 NSLog(@"Error Saving %@", saveError);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             // Failed. Save the User Regardless
+             NSLog(@"error: %@ with response string: %@", error, operation.responseString);
+             NSError *saveError;
+             if (![self.managedObjectContext save:&saveError])
+                 NSLog(@"Error Saving %@", saveError);
+         }];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -135,6 +148,10 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSError *saveError;
+    if (![self.managedObjectContext save:&saveError])
+        NSLog(@"Error Saving %@", saveError);
+
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
