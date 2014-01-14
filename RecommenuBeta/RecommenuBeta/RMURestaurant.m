@@ -16,6 +16,9 @@
 
 @implementation RMURestaurant
 
+/*
+ *  Start of data structure, store the name of the restaurant and iterate of its menus initializing them
+ */
 
 -(id) initWithDictionary:(NSDictionary *)restaurantDictionary andRestaurantName:(NSString*) name
 {

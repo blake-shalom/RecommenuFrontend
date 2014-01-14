@@ -67,17 +67,21 @@
     NSError *error;
     NSArray *fetchedArray = [self.appDelegate.managedObjectContext executeFetchRequest:request error:&error];
     self.user = fetchedArray[0];
+    
+    // Rating was visited, tell delegate to not notify
+    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+    delegate.shouldDelegateNotifyUser = NO;
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidLoad];
+    NSLog(@"restaurant : %@", self.currentRestaurant.restName);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"In view will disappear");
     NSError *error;
     if (![self.appDelegate.managedObjectContext save:&error])
         NSLog(@"ERROR SAVING: %@", error);

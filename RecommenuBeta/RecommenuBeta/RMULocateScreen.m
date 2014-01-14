@@ -119,6 +119,7 @@
     
     // Drop a pin
 #warning - TODO customized user annotation
+#warning  TODO cache map images
     if (!self.hasDroppedPin){
         RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView
                                                                         coordinate:coord
@@ -162,7 +163,6 @@
                      [self.restaurantLabel setText:self.restString];
                      [self.addressLabel setText:[[respArray[0] objectForKey:@"location"] objectForKey:@"address"]];
                      [self animateInGradient];
-                     
                  }
             }
          }

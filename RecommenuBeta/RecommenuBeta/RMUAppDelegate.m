@@ -6,11 +6,19 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
+#define SECS_IN_MIN 60
+#define MINS_TIL_NOTIFICATION 30
+
 #import "RMUAppDelegate.h"
 
 @implementation RMUAppDelegate
 
 #pragma mark - Core Data Methods
+
+/*
+ *  Returns a managed object context for saving core data stuffz
+ */
+
 - (NSManagedObjectContext *) managedObjectContext {
     if (managedObjectContext != nil) {
         return managedObjectContext;
@@ -24,6 +32,10 @@
     return managedObjectContext;
 }
 
+/*
+ *  Retuns managed object model
+ */
+
 - (NSManagedObjectModel *)managedObjectModel {
     if (managedObjectModel != nil) {
         return managedObjectModel;
@@ -33,10 +45,16 @@
     return managedObjectModel;
 }
 
+/*
+ *  Returns persistent store and handles migration from ollder object models
+ */
+
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    // if persistent exists return it
     if (persistentStoreCoordinator != nil) {
         return persistentStoreCoordinator;
     }
+    // else make a new one or migrate a model
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
                                                stringByAppendingPathComponent: @"Recommenu.sqlite"]];
     NSError *error = nil;
@@ -57,14 +75,22 @@
     return persistentStoreCoordinator;
 }
 
+/*
+ *  App doc directory, used in core data methods
+ */
+
 - (NSString *)applicationDocumentsDirectory {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
 #pragma mark - Launch options
 
+/*
+ *  Called upon launching of the app, saves defaults sets up a user and adds some user properties
+ */
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+{    
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";
@@ -99,6 +125,7 @@
             [self obtainUserURIForUser:currentUser];
         }
     }
+    
     return YES;
 }
 
@@ -111,6 +138,8 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     NSLog(@"%@",deviceId);
+    
+    // For now save all test fields as substrings of ID, length 10
     NSString *testFields = [deviceId substringToIndex:10];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_user/"
@@ -144,19 +173,44 @@
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
+/*
+ *  Saves state when entering background
+ */
+
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    if (self.shouldDelegateNotifyUser) {
+        // Notification needs to be set up
+        UILocalNotification *notification = [[UILocalNotification alloc]init];
+        [notification setAlertAction:@"rate"];
+        [notification setAlertBody:@"Did you enjoy what you ordered?"];
+        NSTimeInterval interval = SECS_IN_MIN * MINS_TIL_NOTIFICATION;
+//        NSTimeInterval interval = 5;
+        NSDate *fireDate = [[NSDate date]dateByAddingTimeInterval:interval];
+        [notification setFireDate:fireDate];
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
+    else {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    }
     NSError *saveError;
     if (![self.managedObjectContext save:&saveError])
         NSLog(@"Error Saving %@", saveError);
-
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    // If notified user, present rate VC
+    if (self.shouldDelegateNotifyUser) {
+        UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RMURevealViewController *rateViewController = [mainstoryboard instantiateViewControllerWithIdentifier:@"RateRevealViewController"];
+        NSLog(@"Current Restaurant name: %@, and ID %@", self.savedRestaurant.restName, self.savedRestaurant.restFoursquareID);
+        rateViewController.currentRestaurant = self.savedRestaurant;
+        [self.window makeKeyAndVisible];
+        [self.window setRootViewController:rateViewController];
+    }
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

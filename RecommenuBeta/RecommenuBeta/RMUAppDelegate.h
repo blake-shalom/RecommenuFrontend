@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AFNetworking.h"
 #import "RMUSavedUser.h"
+#import "RMURevealViewController.h"
 
 @interface RMUAppDelegate : UIResponder <UIApplicationDelegate>{
     NSManagedObjectModel *managedObjectModel;
@@ -23,6 +24,11 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+// Push notification properties
+@property BOOL shouldDelegateNotifyUser;
+@property RMURestaurant *savedRestaurant; 
+
+// Used to save across multiple files
 - (NSManagedObjectContext *) managedObjectContext;
 
 

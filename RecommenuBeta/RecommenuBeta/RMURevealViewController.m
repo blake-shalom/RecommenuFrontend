@@ -27,10 +27,14 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    // If the front VC is a rating screen then the menu was already loaded, go ahead and set the menu properties
     if ([self.frontViewController isKindOfClass:[RMURatingScreen class]]) {
+        // Rating screen gets current menu
         RMURatingScreen *ratingScreen = (RMURatingScreen*) self.frontViewController;
         [ratingScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
         [ratingScreen setupViews];
+        
+        // So does side menu
         RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
         [sideMenu loadCurrentRestaurant:self.currentRestaurant];
         sideMenu.delegate = self;
@@ -50,7 +54,7 @@
 }
 
 /*
- *  Sets a property that the children VC's use to fill their data structures
+ *  Sets a property that the children VC's of the reveal controller use to fill their data structures
  */
 
 - (void)getRestaurantWithFoursquareID:(NSString *)foursquareID andName:(NSString *)name
@@ -63,15 +67,17 @@
                    @"v" : @20131017}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              // TODO reveal the table
-             NSLog(@"%@", responseObject);
              [self.view setHidden:NO];
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
                                                              andRestaurantName:name];
              self.currentRestaurant.restFoursquareID = foursquareID;
+             
+             // Handles menu "front" screen
              RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
              [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
              [menuScreen setupViews];
              
+             // Handles side menu "rear" screen
              RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
              [sideMenu loadCurrentRestaurant:self.currentRestaurant];
              sideMenu.delegate = self;
@@ -82,7 +88,7 @@
 }
 
 /*
- *  Loads Menu Screen with a different menu selection
+ *  Loads Menu Screen with a different menu selection, used as an intermediary between side menu and menu screen
  */
 
 - (void)loadMenuScreenWithMenu:(RMUMenu *)menu

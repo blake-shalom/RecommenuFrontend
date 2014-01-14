@@ -67,6 +67,7 @@
     self.reportMenuButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.reportMenuButton.layer.borderWidth = 1.0f;
     [self.missingMenuView setHidden:YES];
+    
 	// Do any additional setup after loading the view.
     
 }
@@ -102,6 +103,14 @@
     if (self.currentRestaurant.menus.count < 1)
         [self.missingMenuView setHidden:NO];
     [self.carousel reloadData];
+    
+    // Menu visited, set notifications
+    if (self.currentRestaurant.menus.count > 0){
+        RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+        delegate.savedRestaurant = self.currentRestaurant;
+        delegate.shouldDelegateNotifyUser = YES;
+    }
+
 }
 
 - (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant

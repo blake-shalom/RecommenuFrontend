@@ -10,6 +10,10 @@
 
 @implementation RMUMeal
 
+/*
+ *  Called from the Course menu, assign properties from JSON dictionary
+ */
+
 - (id)initWithDictionary:(NSDictionary*) mealDictionary
 {
     self = [super init];
@@ -24,5 +28,4 @@
     return self;
 }
 
-//- (void)initializeAllRankings: 
 @end

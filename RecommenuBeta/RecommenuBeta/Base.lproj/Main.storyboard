@@ -443,7 +443,7 @@
         <!--Side Menu Screen-->
         <scene sceneID="eEv-iB-uch">
             <objects>
-                <viewController id="d2G-sg-s9V" customClass="RMUSideMenuScreen" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SideMenuViewController" id="d2G-sg-s9V" customClass="RMUSideMenuScreen" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="m4G-GT-OQS"/>
                         <viewControllerLayoutGuide type="bottom" id="DgG-2W-MrN"/>
@@ -837,7 +837,7 @@
         <!--Rating Screen-->
         <scene sceneID="uOw-Z0-tW0">
             <objects>
-                <viewController id="qtX-wL-D1d" customClass="RMURatingScreen" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RateViewController" id="qtX-wL-D1d" customClass="RMURatingScreen" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="N3u-VO-3Sl"/>
                         <viewControllerLayoutGuide type="bottom" id="A86-ZO-u2p"/>
@@ -980,7 +980,7 @@
         <!--Reveal View Controller-->
         <scene sceneID="vKG-cC-NPl">
             <objects>
-                <viewController id="59y-sm-h19" customClass="RMURevealViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RateRevealViewController" id="59y-sm-h19" customClass="RMURevealViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PKa-Fd-1YB"/>
                         <viewControllerLayoutGuide type="bottom" id="rE2-TA-GQx"/>
@@ -1036,8 +1036,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="qTF-6T-aZv"/>
         <segue reference="cec-ZC-rvl"/>
+        <segue reference="N8u-Ey-9g2"/>
         <segue reference="1ex-Vq-BDP"/>
     </inferredMetricsTieBreakers>
 </document>
