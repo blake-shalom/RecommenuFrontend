@@ -189,6 +189,17 @@
         NSLog(@"%@", rec.restFoursquareID);
         [nextScreen getRestaurantWithFoursquareID:rec.restFoursquareID andName:rec.restaurantName];
     }
+    else if ([segue.identifier isEqualToString:@"profToFoodie"]) {
+        RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
+        foodieProf.isFoodie = YES;
+    }
+    else if ([segue.identifier isEqualToString:@"profToFriend"]) {
+        RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
+        foodieProf.isFoodie = NO;
+    }
+    else {
+        NSLog(@"Unknown ID: %@", segue.identifier);
+    }
 }
 
 #pragma mark - interactivity

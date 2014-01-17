@@ -9,7 +9,6 @@
 
 #import "RMULocateScreen.h"
 
-#warning TODO implement push notifications
 #warning TODO Google Analytics
 
 @interface RMULocateScreen ()

@@ -10,6 +10,8 @@
 
 @interface RMUSearchScreen ()
 
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+
 @end
 
 @implementation RMUSearchScreen

@@ -66,7 +66,7 @@
                    @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
                    @"v" : @20131017}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             // TODO reveal the table
+//             NSLog(@"%@", responseObject);
              [self.view setHidden:NO];
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
                                                              andRestaurantName:name];

@@ -10,6 +10,7 @@
 
 @interface RMURatingCell : UITableViewCell
 
+// Allows config of interface elements
 @property (weak, nonatomic) IBOutlet UILabel *mealLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;

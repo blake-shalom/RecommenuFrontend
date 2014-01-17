@@ -11,6 +11,7 @@
 #import "RMUSavedRecommendation.h"
 #import "RMUProfileRatingCell.h"
 #import "RMURevealViewController.h"
+#import "RMUOtherProfileScreen.h"
 
 @interface RMUProfileScreen : UIViewController
 <UITableViewDataSource, UITableViewDelegate>

@@ -20,6 +20,10 @@
     return self;
 }
 
+/*
+ *  laysout the subview and sets the corner radius to 3
+ */
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

@@ -5,6 +5,7 @@
 //  Created by Blake Ellingham on 1/2/14.
 //  Copyright (c) 2014 Blake Ellingham. All rights reserved.
 //
+//  Saved user model
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>

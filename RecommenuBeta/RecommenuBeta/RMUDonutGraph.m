@@ -10,6 +10,7 @@
 
 #pragma mark - C - drawing functions
 
+// Creates a hoop from the center of the view
 CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius, CGFloat innerRadius, CGFloat theta, bool clockwise)
 {
     
