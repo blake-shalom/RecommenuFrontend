@@ -10,7 +10,8 @@
 
 @interface RMUSearchScreen ()
 
-@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UIButton *stopEditingButton;
 
 @end
 
@@ -35,6 +36,28 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Search Bar Delegate
+
+/*
+ *  Began editing, bring button to the front
+ */
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [self.view bringSubviewToFront:self.stopEditingButton];
+}
+
+#pragma mark - Interactivity
+
+/*
+ *  Stop editing button clicked, stop editing
+ */
+
+- (IBAction)stopEditing:(id)sender
+{
+    NSLog(@"STOP EDITING FOOL!");
 }
 
 @end

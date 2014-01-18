@@ -78,6 +78,7 @@
 		9DB9C281186A11DE003CD478 /* menuTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9DB9C280186A11DE003CD478 /* menuTableCell.xib */; };
 		9DB9C284186D15F2003CD478 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9C283186D15F2003CD478 /* SWRevealViewController.m */; };
 		9DB9C28D186DC62E003CD478 /* RMURevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9C28C186DC62E003CD478 /* RMURevealViewController.m */; };
+		9DC086E9188AF01D005949D3 /* RMUSearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC086E8188AF01D005949D3 /* RMUSearchCell.m */; };
 		9DC2C4B7186E8FE5001BF7DA /* RMUSideMenuScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC2C4B6186E8FE5001BF7DA /* RMUSideMenuScreen.m */; };
 		9DC2C4BC186FD84D001BF7DA /* list_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC2C4B8186FD84D001BF7DA /* list_line.png */; };
 		9DC2C4BD186FD84D001BF7DA /* list_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC2C4B9186FD84D001BF7DA /* list_line@2x.png */; };
@@ -270,6 +271,8 @@
 		9DB9C283186D15F2003CD478 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		9DB9C28B186DC62E003CD478 /* RMURevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMURevealViewController.h; sourceTree = "<group>"; };
 		9DB9C28C186DC62E003CD478 /* RMURevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMURevealViewController.m; sourceTree = "<group>"; };
+		9DC086E7188AF01D005949D3 /* RMUSearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUSearchCell.h; sourceTree = "<group>"; };
+		9DC086E8188AF01D005949D3 /* RMUSearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUSearchCell.m; sourceTree = "<group>"; };
 		9DC2C4B5186E8FE5001BF7DA /* RMUSideMenuScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUSideMenuScreen.h; sourceTree = "<group>"; };
 		9DC2C4B6186E8FE5001BF7DA /* RMUSideMenuScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUSideMenuScreen.m; sourceTree = "<group>"; };
 		9DC2C4B8186FD84D001BF7DA /* list_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_line.png; sourceTree = "<group>"; };
@@ -569,6 +572,8 @@
 				9DB9C27E186A03A5003CD478 /* RMUMenuTable.m */,
 				9DF800C4187F8969000A08BA /* RMUProfileRatingCell.h */,
 				9DF800C5187F8969000A08BA /* RMUProfileRatingCell.m */,
+				9DC086E7188AF01D005949D3 /* RMUSearchCell.h */,
+				9DC086E8188AF01D005949D3 /* RMUSearchCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -941,6 +946,7 @@
 				9DF800961875DBD5000A08BA /* RMUSavedUser.m in Sources */,
 				9D7736F11857A4C700A84E14 /* RMUMenu.m in Sources */,
 				9DF800901875D72F000A08BA /* Model.xcdatamodeld in Sources */,
+				9DC086E9188AF01D005949D3 /* RMUSearchCell.m in Sources */,
 				9D419BDB18493DDC0097C6CA /* RMUSettingsScreen.m in Sources */,
 				9D419C091854E1640097C6CA /* AFURLResponseSerialization.m in Sources */,
 				9D419BE4184EE1B40097C6CA /* UIColor+RMUColors.m in Sources */,
