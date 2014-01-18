@@ -28,4 +28,25 @@
     return self;
 }
 
+/*
+ *  Loads correct number of likes dislikes etc
+ */
+
+- (void)loadLikeDislikeInformationWithDictionary: (NSDictionary *)rateDictionary
+{
+    self.crowdLikes = [rateDictionary objectForKey:@"likes"];
+    self.crowdDislikes = [rateDictionary objectForKey:@"dislikes"];
+    
+    // Handle foodie objects
+    NSDictionary *foodieDict = [rateDictionary objectForKey:@"foodie"];
+    self.expertLikes = [foodieDict objectForKey:@"flikes"];
+    self.foodieLikeID = [foodieDict objectForKey:@"like_ids"];
+    self.foodieDislikeID = [foodieDict objectForKey:@"dislike_ids"];
+    
+    NSDictionary *friendDict = [rateDictionary objectForKey:@"facebook"];
+    self.friendLikes = [friendDict objectForKey:@"likes"];
+    self.facebookLikeID = [friendDict objectForKey:@"like_ids"];
+    self.facebookDislikeID = [friendDict objectForKey:@"dislike_ids"];
+    
+}
 @end

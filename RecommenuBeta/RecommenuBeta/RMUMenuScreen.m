@@ -235,7 +235,12 @@
     [cell.mealLabel setText:currentMeal.mealName];
     [cell.descriptionLabel setText:currentMeal.mealDescription];
     [cell.priceLabel setText:currentMeal.mealPrice];
-    [cell.donutGraph displayLikes:12 dislikes:12];
+    
+    [cell.crowdLikeLabel setText:[currentMeal.crowdLikes stringValue]];
+    [cell.friendLikeLabel setText:[currentMeal.friendLikes stringValue]];
+    [cell.expertLikeLabel setText:[currentMeal.expertLikes stringValue]];
+    [cell.donutGraph displayLikes:[currentMeal.crowdLikes integerValue] dislikes:[currentMeal.crowdDislikes integerValue]];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (self.isRatingVisible) {
         [cell.descView setHidden:YES];

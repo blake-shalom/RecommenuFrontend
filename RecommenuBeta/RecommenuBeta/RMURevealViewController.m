@@ -66,21 +66,13 @@
                    @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
                    @"v" : @20131017}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//             NSLog(@"%@", responseObject);
              [self.view setHidden:NO];
+             NSLog(@"%@", responseObject);
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
                                                              andRestaurantName:name];
              self.currentRestaurant.restFoursquareID = foursquareID;
+             [self gatherRatingsForMenu];
              
-             // Handles menu "front" screen
-             RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
-             [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
-             [menuScreen setupViews];
-             
-             // Handles side menu "rear" screen
-             RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
-             [sideMenu loadCurrentRestaurant:self.currentRestaurant];
-             sideMenu.delegate = self;
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"error : %@", error);
@@ -95,6 +87,61 @@
 {
     RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
     [menuScreen loadMenu:menu];
+}
+
+/*
+ *  Loads ratings into menu and sets current menu on other screens
+ */
+
+- (void)gatherRatingsForMenu
+{
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), self.currentRestaurant.restFoursquareID]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"response : %@",responseObject);
+             
+             // Take response object and put it into menus
+             NSDictionary *testDictionary = @{@"recommendations": @[
+                                                      @{@"entree_id": @"444945",
+                                                        @"dislikes" : @4,
+                                                        @"likes" : @6,
+                                                        @"facebook" :
+                                                            @{@"like_ids" : @[@1, @2, @3],
+                                                              @"dislike_ids" : @[@4],
+                                                              @"likes" : @3,
+                                                              @"dislikes" : @1},
+                                                        @"foodie" :
+                                                            @{@"fdislikes": @0,
+                                                              @"flikes" : @2,
+                                                              @"like_ids" : @[@5,@6],
+                                                              @"dislike_ids" : @[]}}]};
+             [self loadMenuWithRatingsWithDictionary:testDictionary];
+             
+             // Handles menu "front" screen
+             RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
+             [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
+             [menuScreen setupViews];
+             
+             // Handles side menu "rear" screen
+             RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
+             [sideMenu loadCurrentRestaurant:self.currentRestaurant];
+             sideMenu.delegate = self;
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"error: %@", error);
+         }];
+}
+
+- (void)loadMenuWithRatingsWithDictionary: (NSDictionary*)respDictionary
+{
+    for (NSDictionary *rating in [respDictionary objectForKey:@"recommendations"])
+        for (RMUMenu *menu in self.currentRestaurant.menus)
+            for (RMUCourse *course in menu.courses)
+                for (RMUMeal *meal in course.meals)
+                    if ([meal.mealID isEqualToString:[rating objectForKey:@"entree_id"]])
+                        [meal loadLikeDislikeInformationWithDictionary:rating];
+                        
 }
 
 @end
