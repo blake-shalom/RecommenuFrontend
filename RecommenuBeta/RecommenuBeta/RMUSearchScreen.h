@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AFNetworking.h"
+#import "RMUSearchCell.h"
+#import "RMURevealViewController.h"
 
 @interface RMUSearchScreen : UIViewController
-<UISearchBarDelegate>
+<UISearchBarDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end
