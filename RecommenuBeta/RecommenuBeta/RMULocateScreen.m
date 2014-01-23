@@ -121,8 +121,8 @@
 #warning  TODO cache map images
     if (!self.hasDroppedPin){
         RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView
-                                                                        coordinate:coord
-                                                                          andTitle:@"YOU ARE HERE"];
+                                                                            coordinate:coord
+                                                                              andTitle:@"YOU ARE HERE"];
         [self.mapView addAnnotation:userAnnotation];
         self.hasDroppedPin = YES;
     }

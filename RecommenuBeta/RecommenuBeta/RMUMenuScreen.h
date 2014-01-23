@@ -18,6 +18,8 @@
 @interface RMUMenuScreen : UIViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate, UIAlertViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
+
 - (void)setupViews;
 - (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant;
 - (void)loadMenu: (RMUMenu*)menu;

@@ -126,8 +126,9 @@
 {
     self.currentMenu = menu;
     self.currentCourse = self.currentMenu.courses[0];
-    [self.carousel reloadData];
     [self setupViews];
+    [self.carousel scrollToItemAtIndex:0 animated:NO];
+    [self.carousel reloadData];
 }
 
 #pragma mark - UIAlertView Delegate
@@ -185,6 +186,32 @@
     [self.carousel reloadData];
 }
 
+/*
+ *  Upon click, moves the section forward, unless at the last index
+ */
+
+- (IBAction)moveSectionBackward:(id)sender
+{
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index > 0){
+        [self.carousel scrollToItemAtIndex:index - 1  animated:YES];
+    }
+}
+
+/*
+ *  Upon click moves the section backward, unless at first section index
+ */
+
+
+- (IBAction)moveSectionForward:(id)sender
+{
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index < self.currentMenu.courses.count -1){
+        [self.carousel scrollToItemAtIndex:index + 1 animated:YES];
+    }
+}
+
+
 #pragma mark - UITableViewDelagate
 
 /*
@@ -227,7 +254,6 @@
     RMUCourse *course = self.currentMenu.courses[index];
     [tableView registerNib:[UINib nibWithNibName:@"menuTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellIdentifier];
     RMUMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     if (cell == nil) {
         cell = [[RMUMenuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }

@@ -13,6 +13,9 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UIButton *stopEditingButton;
 @property (weak, nonatomic) IBOutlet UITableView *searchResultsTable;
+@property (weak, nonatomic) IBOutlet UILabel *boldLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
+@property (weak, nonatomic) IBOutlet UILabel *underBoldLabel;
 
 // Location jazz
 @property (strong, nonatomic) CLLocationManager *locationManager;
@@ -52,7 +55,16 @@
     
     self.restID = [[NSString alloc]init];
     self.restString = [[NSString alloc]init];
+    
+    [self.indicator setHidden:YES];
+    [self.indicator stopAnimating];
 	// Do any additional setup after loading the view.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.boldLabel setText:@"Explore Recommenu"];
+    [self.underBoldLabel setText:@"Search a restaurant to find it's menu!"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -92,7 +104,12 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    // Resign first responder and roll the indicator
     [self.searchBar resignFirstResponder];
+    [self.indicator setHidden:NO];
+    [self.indicator startAnimating];
+    [searchBar setUserInteractionEnabled:NO];
+    
     CLLocationCoordinate2D coord = self.location.coordinate;
     [self.searchResultsArray removeAllObjects];
     NSString *latLongString = [NSString stringWithFormat:@"%f,%f", coord.latitude, coord.longitude];
@@ -112,14 +129,25 @@
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"RESPONSE OBJECT: %@", responseObject);
              NSArray *respArray = [[responseObject objectForKey:@"response"] objectForKey:@"venues"];
-             for (NSDictionary * dict in respArray){
-                 [self.searchResultsArray addObject:dict];
+             if (respArray.count > 0){
+                 for (NSDictionary * dict in respArray){
+                     [self.searchResultsArray addObject:dict];
+                 }
+                 [self.searchResultsTable reloadData];
+                 [self.searchResultsTable setHidden:NO];
              }
-             [self.searchResultsTable reloadData];
-             [self.searchResultsTable setHidden:NO];
+             else {
+                 [self.boldLabel setText:@"No results found!"];
+                 [self.underBoldLabel setText:@""];
+                 [self.searchResultsTable setHidden:YES];
+             }
+             [self.indicator setHidden:YES];
+             [self.indicator stopAnimating];
+             [searchBar setUserInteractionEnabled:YES];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"ERRROR : %@", error);
+             [searchBar setUserInteractionEnabled:YES];
          }];
 }
 

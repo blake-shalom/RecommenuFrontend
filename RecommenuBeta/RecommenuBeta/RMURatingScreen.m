@@ -100,9 +100,8 @@
     [self.currSectionLabel setText:self.currentCourse.courseName];
     // If there are more than one course set the label to each of the two courses to the left and right
     if (self.currentMenu.courses.count > 1) {
-        RMUCourse *course = self.currentMenu.courses[self.currentMenu.courses.count -1 ];
         [self.leftSectionLabel setText:@""];
-        course = self.currentMenu.courses[1];
+        RMUCourse *course = self.currentMenu.courses[1];
         [self.rightSectionLabel setText:course.courseName];
     }
     else {
@@ -119,13 +118,24 @@
         self.currentMenu = self.currentRestaurant.menus[0];
         self.currentCourse = self.currentMenu.courses[0];
     }
-    
+}
+
+- (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant withCurrentMenu: (NSInteger)menu withCurrentSection: (NSInteger) section
+{
+    self.currentRestaurant = restaurant;
+    if (self.currentRestaurant.menus.count > 0) {
+        self.currentMenu = self.currentRestaurant.menus[menu];
+        self.currentCourse = self.currentMenu.courses[section];
+    }
+    [self.carousel scrollToItemAtIndex:section animated:NO];
+    [self.carousel reloadData];
 }
 
 - (void)loadMenu: (RMUMenu*)menu
 {
     self.currentMenu = menu;
     self.currentCourse = self.currentMenu.courses[0];
+    [self.carousel scrollToItemAtIndex:0 animated:NO];
     [self.carousel reloadData];
 }
 
@@ -141,6 +151,21 @@
     [self.revealViewController performSelectorOnMainThread:@selector(revealToggle:) withObject:self waitUntilDone:NO];
 }
 
+- (IBAction)moveSectionBackward:(id)sender
+{
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index > 0){
+        [self.carousel scrollToItemAtIndex:index + 1 animated:YES];
+    }
+}
+
+- (IBAction)moveSectionForward:(id)sender
+{
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index < self.currentMenu.courses.count -1){
+        [self.carousel scrollToItemAtIndex:index + 1 animated:YES];
+    }
+}
 
 #pragma mark - UITableViewDelagate
 

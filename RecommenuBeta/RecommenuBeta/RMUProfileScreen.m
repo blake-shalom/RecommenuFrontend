@@ -122,7 +122,7 @@
 #pragma mark - UITableView Data source
 
 /*
- *
+ *  Cell for row uses Rating cells
  */
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

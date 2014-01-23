@@ -39,6 +39,7 @@
         [sideMenu loadCurrentRestaurant:self.currentRestaurant];
         sideMenu.delegate = self;
     }
+    self.draggableBorderWidth = 20.0f;
 }
 
 - (void)viewDidLoad
@@ -59,6 +60,10 @@
 
 - (void)getRestaurantWithFoursquareID:(NSString *)foursquareID andName:(NSString *)name
 {
+    RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
+    [menuScreen.indicator setHidden:NO];
+    [menuScreen.indicator startAnimating];
+
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
       parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", foursquareID],
@@ -96,7 +101,8 @@
 - (void)gatherRatingsForMenu
 {
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), self.currentRestaurant.restFoursquareID]
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menufake/%@"), self.currentRestaurant.restFoursquareID]
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"response : %@",responseObject);
@@ -122,6 +128,7 @@
              RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
              [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
              [menuScreen setupViews];
+             [menuScreen.indicator setHidden:YES];
              
              // Handles side menu "rear" screen
              RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
@@ -129,6 +136,7 @@
              sideMenu.delegate = self;
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+#warning TODO handle screen if error
              NSLog(@"error: %@", error);
          }];
 }
