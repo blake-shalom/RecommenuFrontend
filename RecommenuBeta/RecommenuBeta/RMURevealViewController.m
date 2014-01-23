@@ -102,7 +102,7 @@
 {
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menufake/%@"), self.currentRestaurant.restFoursquareID]
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), self.currentRestaurant.restFoursquareID]
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"response : %@",responseObject);
