@@ -147,7 +147,6 @@
 
 - (IBAction)viewMenus:(id)sender
 {
-    
     [self.revealViewController performSelectorOnMainThread:@selector(revealToggle:) withObject:self waitUntilDone:NO];
 }
 
@@ -293,10 +292,14 @@
         else {
             isPositive = @"False";
         }
-        [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/rating/")]
-           parameters:@{@"foursquare_id": recommendation.entreeFoursquareID,
-                        @"positive" : isPositive,
-                        @"user" : self.user.userURI}
+        [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_rating/")]
+           parameters:@{@"rating":
+                            @{ @"foursquare_entry_id": recommendation.entreeFoursquareID,
+                               @"positive" : isPositive,
+                               @"user" : self.user.userURI,
+                               @"foursquare_venue_id" : self.currentRestaurant.restFoursquareID,
+                               @"foursquare_menu_id" : self.currentMenu.menuFoursquareID,
+                               @"review": @""}}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   // Succeeded, Log the response
                   NSLog(@"%@", responseObject);

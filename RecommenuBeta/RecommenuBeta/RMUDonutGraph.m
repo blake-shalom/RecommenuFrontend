@@ -20,14 +20,10 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
     CGFloat startAngle = 0;
     
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPoint start = CGPointMake(arcCenter.x , arcCenter.y - outerRadius);
     
     CGPathAddArc(path, NULL, arcCenter.x, arcCenter.y, outerRadius, startAngle, theta, clockwise);
     CGPathAddArc(path, NULL, arcCenter.x, arcCenter.y, innerRadius, theta, startAngle, !clockwise);
-    
-//    if (theta != 0)
-//        CGPathAddLineToPoint(path, NULL, start.x, start.y);
-    
+        
     return path;
 }
 
@@ -57,7 +53,9 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
 //    CGPoint arcCenter = CGPointMake((rect.origin.x + rect.size.width / 2), (rect.origin.y + rect.size.height / 2));
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGFloat likesToRadians = 2 * M_PI * ( self.likes / (self.likes + self.dislikes));
-    float extraSpace = 0.05;
+    if (likesToRadians == 0)
+        likesToRadians = 2 * M_PI;
+    float extraSpace = 0.0;
     if (self.likes != 0) {
         CGContextSaveGState(context);
         CGMutablePathRef likePath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - WIDTH_OF_GRAPH, - likesToRadians, 1);
@@ -85,6 +83,16 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
         CGContextFillPath(context);
         CGContextRestoreGState(context);
         CFRelease(blankPath);
+            
+    }
+    else if (self.likes == 0){
+        CGContextSaveGState(context);
+        CGMutablePathRef dislikePath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - WIDTH_OF_GRAPH, M_PI * 2, 0);
+        CGContextAddPath(context, dislikePath);
+        CGContextSetFillColorWithColor(context, [UIColor RMUDividingGrayColor].CGColor);
+        CGContextFillPath(context);
+        CGContextRestoreGState(context);
+        CFRelease(dislikePath);
     }
 }
 

@@ -13,6 +13,7 @@
 
 @property NSString *menuName;
 @property NSMutableArray *courses;
+@property NSString *menuFoursquareID;
 
 - (id)initWithDictionary:(NSDictionary*) menu;
 

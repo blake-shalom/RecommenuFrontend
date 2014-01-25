@@ -66,6 +66,8 @@
 
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
+//    [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", @"4adcbcd2f964a520402f21e3"]
+
       parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", foursquareID],
                    @"client_id" : [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareID"],
                    @"client_secret" : [[NSUserDefaults standardUserDefaults]stringForKey:@"foursquareSecret"],
@@ -103,26 +105,14 @@
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), self.currentRestaurant.restFoursquareID]
+//    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), @"4adcbcd2f964a520402f21e3"]
+
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"response : %@",responseObject);
              
              // Take response object and put it into menus
-             NSDictionary *testDictionary = @{@"recommendations": @[
-                                                      @{@"entree_id": @"444945",
-                                                        @"dislikes" : @4,
-                                                        @"likes" : @6,
-                                                        @"facebook" :
-                                                            @{@"like_ids" : @[@1, @2, @3],
-                                                              @"dislike_ids" : @[@4],
-                                                              @"likes" : @3,
-                                                              @"dislikes" : @1},
-                                                        @"foodie" :
-                                                            @{@"fdislikes": @0,
-                                                              @"flikes" : @2,
-                                                              @"like_ids" : @[@5,@6],
-                                                              @"dislike_ids" : @[]}}]};
-             [self loadMenuWithRatingsWithDictionary:testDictionary];
+             [self loadMenuWithRatingsWithDictionary:responseObject];
              
              // Handles menu "front" screen
              RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;

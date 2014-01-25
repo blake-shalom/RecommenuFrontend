@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
+#import <FacebookSDK/FacebookSDK.h>
 #import "RMUProfileScreen.h"
 
 @interface RMUProfileScreen ()
@@ -70,6 +71,11 @@
     }
     
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
+    
+    if (!delegate.shouldUserLoginFacebook) {
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+        [self.facebookButton setUserInteractionEnabled:NO];
+    }
 	// Do any additional setup after loading the view.
 }
 
@@ -78,7 +84,6 @@
     if (!user.facebookID) {
         [self.nameLabel setText:@"Anonymous User"];
         [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
-#warning need to do generic picture
     }
     else {
         [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
@@ -203,6 +208,26 @@
 }
 
 #pragma mark - interactivity
+
+/*
+ *  Logs in on Facebook
+ */
+
+- (IBAction)loginOnFaceBook:(id)sender
+{
+    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                       allowLoginUI:YES
+                                  completionHandler:
+     ^(FBSession *session, FBSessionState state, NSError *error) {
+         
+         // Retrieve the app delegate
+         RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+         // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+         [appDelegate sessionStateChanged:session state:state error:error];
+         if (!appDelegate.shouldUserLoginFacebook)
+             [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+     }];
+}
 
 - (IBAction)showFriendsRatings:(id)sender
 {

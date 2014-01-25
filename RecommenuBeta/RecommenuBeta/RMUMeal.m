@@ -24,6 +24,9 @@
         self.mealPrice = [mealDictionary objectForKey:@"price"];
         self.isLiked = NO;
         self.isDisliked = NO;
+        self.expertLikes = [NSNumber numberWithInt:0];
+        self.crowdLikes = [NSNumber numberWithInt:0];
+        self.friendLikes = [NSNumber numberWithInt:0];
     }
     return self;
 }

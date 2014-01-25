@@ -91,9 +91,8 @@
     [self.currSectionLabel setText:self.currentCourse.courseName];
     // If there are more than one course set the label to each of the two courses to the left and right
     if (self.currentMenu.courses.count > 1) {
-        RMUCourse *course = self.currentMenu.courses[self.currentMenu.courses.count -1 ];
         [self.leftSectionLabel setText:@""];
-        course = self.currentMenu.courses[1];
+        RMUCourse *course = self.currentMenu.courses[1];
         [self.rightSectionLabel setText:course.courseName];
     }
     else {

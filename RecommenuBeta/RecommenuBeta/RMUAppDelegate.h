@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "AFNetworking.h"
 #import "RMUSavedUser.h"
 #import "RMURevealViewController.h"
@@ -26,10 +27,14 @@
 
 // Push notification properties
 @property BOOL shouldDelegateNotifyUser;
-@property RMURestaurant *savedRestaurant; 
+@property BOOL shouldUserLoginFacebook;
+@property RMURestaurant *savedRestaurant;
+@property FBSession *session;
 
 // Used to save across multiple files
 - (NSManagedObjectContext *) managedObjectContext;
 
+// Handles changed state of FB
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 
 @end
