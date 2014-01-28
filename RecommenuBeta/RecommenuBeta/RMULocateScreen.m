@@ -133,6 +133,22 @@
     [self findRestaurantWithRadius:10.0f];
 }
 
+/*
+ *  If location manager is off be sure to tell the user
+ */
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    if (error.code == kCLErrorDenied){
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"No Location Services"
+                                                      message:@"Sorry but the search feature requires location services please adjust these in the Settings"
+                                                     delegate:self cancelButtonTitle:@"Settings"
+                                            otherButtonTitles:@"Cancel", nil];
+        [alertView show];
+    }
+}
+
+
 #pragma mark - Networking
 
 /*
