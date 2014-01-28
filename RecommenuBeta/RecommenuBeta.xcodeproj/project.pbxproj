@@ -64,6 +64,8 @@
 		9D419C081854E1640097C6CA /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419BFD1854E1640097C6CA /* AFURLRequestSerialization.m */; };
 		9D419C091854E1640097C6CA /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419BFF1854E1640097C6CA /* AFURLResponseSerialization.m */; };
 		9D419C0A1854E1640097C6CA /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419C011854E1640097C6CA /* AFURLSessionManager.m */; };
+		9D6B9445189802AD00492335 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6B9444189802AD00492335 /* libGoogleAnalyticsServices.a */; };
+		9D6B9449189804B700492335 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6B9448189804B700492335 /* libz.dylib */; };
 		9D7736F11857A4C700A84E14 /* RMUMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F01857A4C700A84E14 /* RMUMenu.m */; };
 		9D7736F41857A59200A84E14 /* RMUMeal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F31857A59200A84E14 /* RMUMeal.m */; };
 		9D7736F71857C40A00A84E14 /* RMUCourse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F61857C40A00A84E14 /* RMUCourse.m */; };
@@ -257,6 +259,14 @@
 		9D419BFF1854E1640097C6CA /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		9D419C001854E1640097C6CA /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		9D419C011854E1640097C6CA /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		9D6B943E1898029E00492335 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		9D6B943F1898029E00492335 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		9D6B94401898029E00492335 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		9D6B94411898029E00492335 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		9D6B94421898029E00492335 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		9D6B94431898029E00492335 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		9D6B9444189802AD00492335 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		9D6B9448189804B700492335 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		9D7736EF1857A4C700A84E14 /* RMUMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUMenu.h; sourceTree = "<group>"; };
 		9D7736F01857A4C700A84E14 /* RMUMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUMenu.m; sourceTree = "<group>"; };
 		9D7736F21857A59200A84E14 /* RMUMeal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUMeal.h; sourceTree = "<group>"; };
@@ -389,6 +399,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D6B9449189804B700492335 /* libz.dylib in Frameworks */,
 				9DF1ACD218371723006DF0B3 /* MobileCoreServices.framework in Frameworks */,
 				9DF155DE1841C30E00222403 /* MapBox.framework in Frameworks */,
 				9DF1AC2718370B7F006DF0B3 /* SystemConfiguration.framework in Frameworks */,
@@ -397,6 +408,7 @@
 				9DF1AC2118370B30006DF0B3 /* Social.framework in Frameworks */,
 				9DF1AC1F18370B28006DF0B3 /* libsqlite3.0.dylib in Frameworks */,
 				9DF1ACCC18371590006DF0B3 /* FacebookSDK.framework in Frameworks */,
+				9D6B9445189802AD00492335 /* libGoogleAnalyticsServices.a in Frameworks */,
 				9DF1AC1D18370B1F006DF0B3 /* Security.framework in Frameworks */,
 				9DF1AC1B18370B16006DF0B3 /* CoreData.framework in Frameworks */,
 				9DF1AC1918370B09006DF0B3 /* CoreLocation.framework in Frameworks */,
@@ -581,6 +593,20 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
+		9D6B9447189802BD00492335 /* Google Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				9D6B9444189802AD00492335 /* libGoogleAnalyticsServices.a */,
+				9D6B943E1898029E00492335 /* GAI.h */,
+				9D6B943F1898029E00492335 /* GAIDictionaryBuilder.h */,
+				9D6B94401898029E00492335 /* GAIFields.h */,
+				9D6B94411898029E00492335 /* GAILogger.h */,
+				9D6B94421898029E00492335 /* GAITrackedViewController.h */,
+				9D6B94431898029E00492335 /* GAITracker.h */,
+			);
+			name = "Google Analytics";
+			sourceTree = "<group>";
+		};
 		9D7736EC18562BDE00A84E14 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -661,6 +687,8 @@
 		9DF1ABE218370702006DF0B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9D6B9448189804B700492335 /* libz.dylib */,
+				9D6B9447189802BD00492335 /* Google Analytics */,
 				9D419BEE1854E1640097C6CA /* AFNetworking */,
 				9DF155DF1841C42900222403 /* MapBox.bundle */,
 				9DF155DD1841C30E00222403 /* MapBox.framework */,
@@ -1128,6 +1156,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RecommenuBeta/RecommenuBeta-Prefix.pch";
 				INFOPLIST_FILE = "RecommenuBeta/RecommenuBeta-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/blakeellingham/Documents/Recommenu/RecommenuBeta/RecommenuBeta,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "1BFC209F-E9DD-450E-8E0C-188E650658F0";
 				WRAPPER_EXTENSION = app;
@@ -1148,6 +1180,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RecommenuBeta/RecommenuBeta-Prefix.pch";
 				INFOPLIST_FILE = "RecommenuBeta/RecommenuBeta-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/blakeellingham/Documents/Recommenu/RecommenuBeta/RecommenuBeta,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "F9AB2E47-A58B-4D61-9481-0EF13AD35B2B";
 				WRAPPER_EXTENSION = app;

@@ -9,6 +9,7 @@
 #define SECS_IN_MIN 60
 #define MINS_TIL_NOTIFICATION 30
 
+#import "GAI.h"
 #import "RMUAppDelegate.h"
 
 @implementation RMUAppDelegate
@@ -90,7 +91,21 @@
  */
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    
+{
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 30;
+    
+    // Optional: set Logger to VERBOSE for debug information.
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    
+    // Initialize tracker, and suppress that stupid warning.
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-47533709-1"];
+#pragma unused(tracker)
+
+    
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";

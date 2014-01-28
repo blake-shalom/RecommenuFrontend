@@ -1001,6 +1001,8 @@
                         <outlet property="friendsButton" destination="HJi-Li-pIN" id="sF4-vd-8vk"/>
                         <outlet property="nameLabel" destination="cnh-mo-peH" id="v8F-my-1xA"/>
                         <outlet property="pastRatingsButton" destination="rj0-PT-pUN" id="Dam-cY-ACG"/>
+                        <outlet property="profilePic" destination="Agt-Ox-0Df" id="R8t-19-ygF"/>
+                        <outlet property="profilePicView" destination="AgL-r8-sas" id="Che-sh-C80"/>
                         <outlet property="profileTable" destination="S3M-ZD-ylj" id="biJ-yQ-Kgv"/>
                         <outlet property="topEmptyLabel" destination="Tri-AL-ryL" id="jxy-oF-h0P"/>
                     </connections>

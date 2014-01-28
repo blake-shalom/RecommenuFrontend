@@ -76,6 +76,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidLoad];
+    self.screenName = @"Menu Screen";
+
 }
 
 - (void)didReceiveMemoryWarning

@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
 @property (weak, nonatomic) IBOutlet UILabel *topEmptyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bottomEmptyLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *profilePic;
+@property (weak, nonatomic) IBOutlet UIView *profilePicView;
 
 @property NSMutableArray *ratingsArray;
 @property BOOL isOnPastRatings;
@@ -67,30 +69,20 @@
     else {
         RMUSavedUser *user = fetchedArray[0];
         [self sortUserRatingsIntoRatingsArray:user];
-        
+        [self loadFacebookElements];
     }
-    
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
-    
-    if (!delegate.shouldUserLoginFacebook) {
-        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
-        [self.facebookButton setUserInteractionEnabled:NO];
-    }
-	// Do any additional setup after loading the view.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.screenName = @"Other Profile Screen";
+
 }
 
 - (void)sortUserRatingsIntoRatingsArray: (RMUSavedUser*) user
 {
-    if (!user.facebookID) {
-        [self.nameLabel setText:@"Anonymous User"];
-        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
-    }
-    else {
-        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
-        
-#warning - TODO Facebook mapping for pic/name
-    }
-    
     // Handle rating storage
     if (user.ratingsForUser.count == 0) {
         [self.currentRatingsLabel setText:@"0 Ratings"];
@@ -115,6 +107,36 @@
                 [self.ratingsArray addObject:newDictionary];
             }
         }
+    }
+}
+
+/*
+ *  Set Up facebook elements
+ */
+
+- (void)loadFacebookElements
+{
+    RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    if (appDelegate.shouldUserLoginFacebook) {
+        [self.nameLabel setText:@"Anonymous User"];
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
+    }
+    else {
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+        [self.facebookButton setUserInteractionEnabled:NO];
+        [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if (!error) {
+                // Success! Include your code to handle the results here
+                NSLog(@"user info: %@", result);
+                [self.nameLabel setText:[result objectForKey:@"name"]];
+                FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                [profileView setFrame:self.profilePic.frame];
+                [self.profilePicView addSubview:profileView];
+            } else {
+                NSLog(@"error: %@", error);
+                // An error occurred, we need to handle the error
+            }
+        }];
     }
 }
 
@@ -224,8 +246,7 @@
          RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
          // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
          [appDelegate sessionStateChanged:session state:state error:error];
-         if (!appDelegate.shouldUserLoginFacebook)
-             [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+         [self loadFacebookElements];
      }];
 }
 

@@ -14,8 +14,9 @@
 #import "RMURestaurant.h"
 #import "RMUMenuScreen.h"
 #import "RMURevealViewController.h"
+#import "GAITrackedViewController.h"
 
-@interface RMULocateScreen : UIViewController
+@interface RMULocateScreen : GAITrackedViewController
 <CLLocationManagerDelegate, UIAlertViewDelegate>
 
 @end

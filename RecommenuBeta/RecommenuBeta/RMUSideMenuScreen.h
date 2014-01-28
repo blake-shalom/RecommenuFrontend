@@ -10,6 +10,7 @@
 #import "RMURestaurant.h"
 #import "SWRevealViewController.h"
 #import "RMUButton.h"
+#import "GAITrackedViewController.h"
 
 @class RMUSideMenuScreen;
 
@@ -19,7 +20,7 @@
 
 @end
 
-@interface RMUSideMenuScreen : UIViewController
+@interface RMUSideMenuScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic,weak)  id <RMUSideMenuScreenDelegate> delegate;

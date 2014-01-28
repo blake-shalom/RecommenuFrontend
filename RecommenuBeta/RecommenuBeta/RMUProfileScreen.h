@@ -12,8 +12,9 @@
 #import "RMUProfileRatingCell.h"
 #import "RMURevealViewController.h"
 #import "RMUOtherProfileScreen.h"
+#import "GAITrackedViewController.h"
 
-@interface RMUProfileScreen : UIViewController
+@interface RMUProfileScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate>
 
 @end

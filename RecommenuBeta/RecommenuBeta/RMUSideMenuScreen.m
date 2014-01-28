@@ -28,6 +28,11 @@
     [self.reportButton setBackgroundColor:[UIColor whiteColor]];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

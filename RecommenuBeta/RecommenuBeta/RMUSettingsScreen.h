@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GAITrackedViewController.h"
 
-@interface RMUSettingsScreen : UIViewController
+@interface RMUSettingsScreen : GAITrackedViewController
 
 @end

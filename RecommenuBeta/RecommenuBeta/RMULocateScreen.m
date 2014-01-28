@@ -9,8 +9,6 @@
 
 #import "RMULocateScreen.h"
 
-#warning TODO Google Analytics
-
 @interface RMULocateScreen ()
 
 // IBOutlets
@@ -45,6 +43,12 @@
         // Custom initialization
     }
     return self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.screenName = @"Locate Screen";
 }
 
 - (void)viewDidLoad

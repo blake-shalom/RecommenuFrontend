@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "RMUButton.h"
+#import "GAITrackedViewController.h"
 
-@interface RMUOtherProfileScreen : UIViewController
+@interface RMUOtherProfileScreen : GAITrackedViewController
 
 - (void)hideFoodieElements;
 - (void)showFoodieElements;

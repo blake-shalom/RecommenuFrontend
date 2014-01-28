@@ -77,7 +77,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidLoad];
-    NSLog(@"restaurant : %@", self.currentRestaurant.restName);
+    self.screenName = @"Rating Screen";
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -154,7 +155,7 @@
 {
     NSInteger index = self.carousel.currentItemIndex;
     if (index > 0){
-        [self.carousel scrollToItemAtIndex:index + 1 animated:YES];
+        [self.carousel scrollToItemAtIndex:index - 1 animated:YES];
     }
 }
 
@@ -292,17 +293,18 @@
         else {
             isPositive = @"False";
         }
+        NSLog(@"YOO WHAT ARE YOU PASSING!?!? %@", isPositive);
         [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_rating/")]
            parameters:@{@"rating":
                             @{ @"foursquare_entry_id": recommendation.entreeFoursquareID,
-                               @"positive" : isPositive,
+                               @"positive" : recommendation.isRecommendPositive,
                                @"user" : self.user.userURI,
                                @"foursquare_venue_id" : self.currentRestaurant.restFoursquareID,
                                @"foursquare_menu_id" : self.currentMenu.menuFoursquareID,
                                @"review": @""}}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   // Succeeded, Log the response
-                  NSLog(@"%@", responseObject);
+                  NSLog(@"SUCCESS POSTING RATING: %@", responseObject);
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   // Failed. Log the user

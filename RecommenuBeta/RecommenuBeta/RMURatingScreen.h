@@ -16,8 +16,9 @@
 #import "RMURatingCell.h"
 #import "RMUAppDelegate.h"
 #import "RMUSavedRecommendation.h"
+#import "GAITrackedViewController.h"
 
-@interface RMURatingScreen : UIViewController
+@interface RMURatingScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate>
 
 - (void)setupViews;
