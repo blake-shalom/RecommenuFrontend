@@ -63,6 +63,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     [self.boldLabel setText:@"Explore Recommenu"];
     [self.underBoldLabel setText:@"Search a restaurant to find it's menu!"];
     self.screenName = @"Search Screen";
@@ -71,6 +72,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:animated];
     [self.locationManager stopUpdatingLocation];
 }
 

@@ -224,7 +224,7 @@
 }
 
 /*
- *  Attempts to log in and obtain a user URI for a given user by it's device id
+ *  Using a user's username get an error message that states if the user needs to login with params
  */
 
 - (void)obtainUserURIForUser:(RMUSavedUser*)user
@@ -235,6 +235,40 @@
     
     // For now save all test fields as substrings of ID, length 10
     NSString *testFields = [deviceId substringToIndex:10];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/users/%@"),testFields]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"response: %@", responseObject);
+             if ([[responseObject objectForKey:@"error"] isEqualToString:@"dne"])
+                 [self registerUser:user];
+             else {
+                 [user setUserURI:[responseObject objectForKey:@"error"]];
+                 NSError *saveError;
+                 if (![self.managedObjectContext save:&saveError])
+                     NSLog(@"Error Saving %@", saveError);
+             }
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@", error);
+         }];
+}
+
+
+/*
+ *  Attempts to log in and obtain a user URI for a given user by it's device id
+ */
+
+- (void)registerUser:(RMUSavedUser*)user
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    NSLog(@"%@",deviceId);
+    
+    // For now save all test fields as substrings of ID, length 10
+    NSString *testFields = [deviceId substringToIndex:10];
+    
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_user/"
       parameters:@{@"device_id": deviceId,

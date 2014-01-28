@@ -77,7 +77,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.screenName = @"Other Profile Screen";
+    self.screenName = @"Profile Screen";
 
 }
 
@@ -130,8 +130,13 @@
                 NSLog(@"user info: %@", result);
                 [self.nameLabel setText:[result objectForKey:@"name"]];
                 FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
-                [profileView setFrame:self.profilePic.frame];
+                CGRect profPicFrame = self.profilePic.frame;
+                CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
+                [profileView setFrame:modifiedProf];
+                UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle"]];
+                [circleView setFrame: profPicFrame];
                 [self.profilePicView addSubview:profileView];
+                [self.profilePicView addSubview:circleView];
             } else {
                 NSLog(@"error: %@", error);
                 // An error occurred, we need to handle the error
