@@ -170,9 +170,9 @@
 {
     if (error.code == kCLErrorDenied){
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"No Location Services"
-                                                           message:@"Sorry but the locate feature requires location services please adjust these in the Settings"
-                                                          delegate:self cancelButtonTitle:@"Settings"
-                                                 otherButtonTitles:@"Cancel", nil];
+                                                           message:@"Sorry, the search feature requires location services please adjust these in your iPhone's Settings < Privacy < Location Services"
+                                                          delegate:self cancelButtonTitle:@"OK"
+                                                 otherButtonTitles:nil];
         [alertView show];
     }
 }
@@ -245,5 +245,6 @@
     }
     
 }
+
 
 @end

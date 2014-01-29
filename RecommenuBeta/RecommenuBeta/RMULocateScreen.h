@@ -17,6 +17,6 @@
 #import "GAITrackedViewController.h"
 
 @interface RMULocateScreen : GAITrackedViewController
-<CLLocationManagerDelegate, UIAlertViewDelegate>
+<CLLocationManagerDelegate, UIAlertViewDelegate, UIAlertViewDelegate>
 
 @end

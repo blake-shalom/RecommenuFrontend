@@ -10,6 +10,8 @@
 
 @interface RMUSettingsScreen ()
 
+@property (weak, nonatomic) IBOutlet UITableView *settingsTable;
+
 @end
 
 @implementation RMUSettingsScreen
@@ -26,20 +28,48 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    self.settingsTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     self.screenName = @"Settings Screen";
-
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - TableView Datasource methods
+
+/*
+ *  Cell for row, pretty lazy and non-adaptive
+ */
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.row) {
+//        case 0:
+//            return [tableView dequeueReusableCellWithIdentifier:@"locationCell"];
+//            break;
+            
+        default:
+            return [[UITableViewCell alloc]init];
+            break;
+    }
+}
+
+/*
+ *  Number of cells in section, again not very adaptive
+ */
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
 }
 
 @end

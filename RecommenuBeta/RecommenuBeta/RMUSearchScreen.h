@@ -13,6 +13,6 @@
 #import "GAITrackedViewController.h"
 
 @interface RMUSearchScreen : GAITrackedViewController
-<UISearchBarDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate>
+<UISearchBarDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @end
