@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "GAITrackedViewController.h"
 #import "RMULocationCell.h"
-
+#import "AFNetworking.h"
+#import "RMUAppDelegate.h"
 
 @interface RMUSettingsScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate>

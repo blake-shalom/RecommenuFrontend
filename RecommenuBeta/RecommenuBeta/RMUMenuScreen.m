@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
 @property (weak, nonatomic) IBOutlet UIView *missingMenuView;
 @property (weak, nonatomic) IBOutlet RMUButton *reportMenuButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadIndicator;
 
 
 @end
@@ -67,7 +68,7 @@
     self.reportMenuButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.reportMenuButton.layer.borderWidth = 1.0f;
     [self.missingMenuView setHidden:YES];
-    
+    [self.loadIndicator startAnimating];
 	// Do any additional setup after loading the view.
     
 }

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *bottomEmptyLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profilePic;
 @property (weak, nonatomic) IBOutlet UIView *profilePicView;
+@property (weak, nonatomic) IBOutlet UIView *hideNameView;
 
 @property NSMutableArray *ratingsArray;
 @property BOOL isOnPastRatings;
@@ -56,21 +57,10 @@
     [self.currentRatingsLabel setTextColor:[UIColor RMUNumRatingGray]];
     
     // Pull a user and sort his/her ratings
-    NSFetchRequest *request = [[NSFetchRequest alloc]init];
     RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:delegate.managedObjectContext];
-    [request setEntity:entity];
-    NSError *error;
-    NSArray *fetchedArray = [delegate.managedObjectContext executeFetchRequest:request error:&error];
-    if (fetchedArray.count == 0){
-        NSLog(@"User was not created properly");
-        abort();
-    }
-    else {
-        RMUSavedUser *user = fetchedArray[0];
-        [self sortUserRatingsIntoRatingsArray:user];
-        [self loadFacebookElements];
-    }
+    RMUSavedUser *user = [delegate fetchCurrentUser];
+    [self sortUserRatingsIntoRatingsArray:user];
+    [self loadFacebookElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
 }
 
@@ -86,9 +76,11 @@
     // Handle rating storage
     if (user.ratingsForUser.count == 0) {
         [self.currentRatingsLabel setText:@"0 Ratings"];
+        [self showPastRatings:self];
     }
     else {
         // Set UI
+        [self.profileTable setHidden:NO];
         [self.currentRatingsLabel setText:[NSString stringWithFormat:@"%i Ratings", user.ratingsForUser.count]];
         
         // Sort ratings into containers
@@ -124,6 +116,7 @@
     else {
         [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
         [self.facebookButton setUserInteractionEnabled:NO];
+        [self.hideNameView setHidden:NO];
         [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if (!error) {
                 // Success! Include your code to handle the results here
@@ -133,12 +126,13 @@
                 CGRect profPicFrame = self.profilePic.frame;
                 CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
                 [profileView setFrame:modifiedProf];
-                UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle"]];
+                UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
                 [circleView setFrame: profPicFrame];
                 [self.profilePicView addSubview:profileView];
                 [self.profilePicView addSubview:circleView];
+                [self.hideNameView setHidden:YES];
             } else {
-                NSLog(@"error: %@", error);
+                NSLog(@"error: %@", error); 
                 // An error occurred, we need to handle the error
             }
         }];

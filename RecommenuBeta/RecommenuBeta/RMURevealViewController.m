@@ -78,8 +78,10 @@
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
                                                              andRestaurantName:name];
              self.currentRestaurant.restFoursquareID = foursquareID;
-             [self gatherRatingsForMenu];
-             
+             if (self.currentRestaurant.menus.count == 0)
+                 [self setChildViewControllersUIWithCurrentRestaurant];
+             else
+                 [self gatherRatingsForMenu];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"error : %@", error);
@@ -113,22 +115,26 @@
              
              // Take response object and put it into menus
              [self loadMenuWithRatingsWithDictionary:responseObject];
-             
-             // Handles menu "front" screen
-             RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
-             [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
-             [menuScreen setupViews];
-             [menuScreen.indicator setHidden:YES];
-             
-             // Handles side menu "rear" screen
-             RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
-             [sideMenu loadCurrentRestaurant:self.currentRestaurant];
-             sideMenu.delegate = self;
+             [self setChildViewControllersUIWithCurrentRestaurant];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 #warning TODO handle screen if error
              NSLog(@"error: %@", error);
          }];
+}
+
+- (void)setChildViewControllersUIWithCurrentRestaurant
+{
+    // Handles menu "front" screen
+    RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
+    [menuScreen setupMenuElementsWithRestaurant:self.currentRestaurant];
+    [menuScreen setupViews];
+    [menuScreen.indicator setHidden:YES];
+    
+    // Handles side menu "rear" screen
+    RMUSideMenuScreen *sideMenu = (RMUSideMenuScreen*)self.rearViewController;
+    [sideMenu loadCurrentRestaurant:self.currentRestaurant];
+    sideMenu.delegate = self;
 }
 
 - (void)loadMenuWithRatingsWithDictionary: (NSDictionary*)respDictionary

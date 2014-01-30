@@ -72,4 +72,22 @@
     return 1;
 }
 
+#pragma mark - Interactivity
+
+- (IBAction)connectFoodie:(id)sender
+{
+    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+    RMUSavedUser *currentUser = [delegate fetchCurrentUser];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@/foodiesvip"),
+//      parameters:nil
+//         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            
+//         }
+//         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//             
+//         }];
+}
+
+
 @end

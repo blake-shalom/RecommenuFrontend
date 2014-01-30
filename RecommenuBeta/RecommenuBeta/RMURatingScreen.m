@@ -61,12 +61,7 @@
     
     // Set up managed context, user, and app delegate
     self.appDelegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
-    NSFetchRequest *request = [[NSFetchRequest alloc]init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.appDelegate.managedObjectContext];
-    [request setEntity:entity];
-    NSError *error;
-    NSArray *fetchedArray = [self.appDelegate.managedObjectContext executeFetchRequest:request error:&error];
-    self.user = fetchedArray[0];
+    self.user = [self.appDelegate fetchCurrentUser];
     
     // Rating was visited, tell delegate to not notify
     RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
