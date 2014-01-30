@@ -59,13 +59,7 @@
     
     // Deactivate dismiss button
     [self.dismissButton setUserInteractionEnabled:NO];
-    
-    // Add borders to buttons
-    self.yesButton.layer.borderWidth = 1.0;
-    self.yesButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.noButton.layer.borderWidth = 1.0;
-    self.noButton.layer.borderColor = [UIColor blackColor].CGColor;
-    
+        
     // Customize the Appearance of the TabBar
     UITabBarController *tabBarVC = self.tabBarController;
     UITabBar *tabBar = tabBarVC.tabBar;

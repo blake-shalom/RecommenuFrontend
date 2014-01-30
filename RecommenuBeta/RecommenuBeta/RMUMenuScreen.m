@@ -65,8 +65,6 @@
     [self.reportMenuButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.reportMenuButton setBackgroundColor:[UIColor RMULogoBlueColor]];
     self.reportMenuButton.isBlue = YES;
-    self.reportMenuButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.reportMenuButton.layer.borderWidth = 1.0f;
     [self.missingMenuView setHidden:YES];
     [self.loadIndicator startAnimating];
 	// Do any additional setup after loading the view.
