@@ -1433,36 +1433,23 @@
         <image name="dividing_line.png" width="2" height="37"/>
         <image name="facebook_off.png" width="29" height="29"/>
         <image name="filter_bar.png" width="321" height="39"/>
-        <image name="filter_bar.png" width="321" height="39"/>
         <image name="foodie_certified.png" width="29" height="29"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_graph.png" width="29" height="28"/>
         <image name="icon_home.png" width="31" height="29"/>
         <image name="icon_list.png" width="28" height="21"/>
-        <image name="icon_list.png" width="28" height="21"/>
         <image name="icon_menu.png" width="20" height="20"/>
-        <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
         <image name="overlay_card.png" width="268" height="406"/>
-        <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="popup_location.png" width="265" height="200"/>
         <image name="thumbs_up_profile.png" width="38" height="38"/>
-        <image name="thumbs_up_profile.png" width="38" height="38"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
         <image name="top_section.png" width="320" height="119"/>
         <image name="top_section_2.png" width="320" height="86"/>
-        <image name="user_default_profile.png" width="69" height="69"/>
         <image name="user_default_profile.png" width="69" height="69"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

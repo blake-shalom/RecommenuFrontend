@@ -244,7 +244,7 @@
              if ([[responseObject objectForKey:@"error"] isEqualToString:@"dne"])
                  [self registerUser:user];
              else {
-                 [user setUserURI:[responseObject objectForKey:@"error"]];
+                 [user setUserURI:[responseObject objectForKey:@"resource_uri"]];
                  NSError *saveError;
                  if (![self.managedObjectContext save:&saveError])
                      NSLog(@"Error Saving %@", saveError);
