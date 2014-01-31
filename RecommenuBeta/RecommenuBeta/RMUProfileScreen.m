@@ -66,9 +66,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
     self.screenName = @"Profile Screen";
-
+    [super viewDidAppear:animated];
 }
 
 - (void)sortUserRatingsIntoRatingsArray: (RMUSavedUser*) user

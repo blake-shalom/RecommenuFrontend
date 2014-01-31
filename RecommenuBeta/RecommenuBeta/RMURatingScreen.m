@@ -71,8 +71,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
     self.screenName = @"Rating Screen";
+    [super viewDidAppear:animated];
 
 }
 

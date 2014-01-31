@@ -47,8 +47,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
     self.screenName = @"Locate Screen";
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidLoad

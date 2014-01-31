@@ -44,9 +44,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
     self.screenName = @"Other Profile Screen";
-
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning

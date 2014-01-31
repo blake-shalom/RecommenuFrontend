@@ -14,6 +14,8 @@
 		9D1C27711899D67E007A3E4E /* profile_circle_user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C276D1899D67E007A3E4E /* profile_circle_user@2x.png */; };
 		9D1C27761899D6BB007A3E4E /* profile_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C27741899D6BB007A3E4E /* profile_circle.png */; };
 		9D1C27771899D6BB007A3E4E /* profile_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C27751899D6BB007A3E4E /* profile_circle@2x.png */; };
+		9D1C277D189C5340007A3E4E /* icon_foodie_activate.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C277B189C5340007A3E4E /* icon_foodie_activate.png */; };
+		9D1C277E189C5340007A3E4E /* icon_foodie_activate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C277C189C5340007A3E4E /* icon_foodie_activate@2x.png */; };
 		9D2759FE1860A53E003BF004 /* ellipse_select_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759EA1860A53E003BF004 /* ellipse_select_@2x.png */; };
 		9D2759FF1860A53E003BF004 /* ellipse_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759EB1860A53E003BF004 /* ellipse_select.png */; };
 		9D275A001860A53E003BF004 /* ellipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759EC1860A53E003BF004 /* ellipse.png */; };
@@ -196,6 +198,8 @@
 		9D1C276D1899D67E007A3E4E /* profile_circle_user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile_circle_user@2x.png"; sourceTree = "<group>"; };
 		9D1C27741899D6BB007A3E4E /* profile_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_circle.png; sourceTree = "<group>"; };
 		9D1C27751899D6BB007A3E4E /* profile_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile_circle@2x.png"; sourceTree = "<group>"; };
+		9D1C277B189C5340007A3E4E /* icon_foodie_activate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_foodie_activate.png; sourceTree = "<group>"; };
+		9D1C277C189C5340007A3E4E /* icon_foodie_activate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_foodie_activate@2x.png"; sourceTree = "<group>"; };
 		9D2759EA1860A53E003BF004 /* ellipse_select_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ellipse_select_@2x.png"; sourceTree = "<group>"; };
 		9D2759EB1860A53E003BF004 /* ellipse_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ellipse_select.png; sourceTree = "<group>"; };
 		9D2759EC1860A53E003BF004 /* ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ellipse.png; sourceTree = "<group>"; };
@@ -458,6 +462,8 @@
 		9D419B911845E5EA0097C6CA /* Image Assets */ = {
 			isa = PBXGroup;
 			children = (
+				9D1C277B189C5340007A3E4E /* icon_foodie_activate.png */,
+				9D1C277C189C5340007A3E4E /* icon_foodie_activate@2x.png */,
 				9D1C27741899D6BB007A3E4E /* profile_circle.png */,
 				9D1C27751899D6BB007A3E4E /* profile_circle@2x.png */,
 				9D1C276C1899D67E007A3E4E /* profile_circle_user.png */,
@@ -895,6 +901,7 @@
 				9DF800D5187F9B6E000A08BA /* icon_list_select@2x.png in Resources */,
 				9D419BBD1845E6220097C6CA /* icon_search_select.png in Resources */,
 				9DC086F4188B677E005949D3 /* icon_menu.png in Resources */,
+				9D1C277E189C5340007A3E4E /* icon_foodie_activate@2x.png in Resources */,
 				9DF800DB187F9BED000A08BA /* thumbs_down_profile@2x.png in Resources */,
 				9DF155E01841C42900222403 /* MapBox.bundle in Resources */,
 				9D419BB41845E6220097C6CA /* icon_home_profile.png in Resources */,
@@ -940,6 +947,7 @@
 				9D1C276A1899D64C007A3E4E /* foodie_default_profile.png in Resources */,
 				9D419BBF1845E6220097C6CA /* icon_settings@2x.png in Resources */,
 				9D419BBC1845E6220097C6CA /* icon_search_select@2x.png in Resources */,
+				9D1C277D189C5340007A3E4E /* icon_foodie_activate.png in Resources */,
 				9DF800BF187F68FF000A08BA /* top_section@2x.png in Resources */,
 				9D7A0FB018885B880078FF91 /* top_section_2@2x.png in Resources */,
 				9DF800AF187E533D000A08BA /* popup_ratingbreakdown@2x.png in Resources */,

@@ -34,8 +34,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
     self.screenName = @"Settings Screen";
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning

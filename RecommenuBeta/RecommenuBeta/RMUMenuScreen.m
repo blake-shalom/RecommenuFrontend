@@ -74,8 +74,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
     self.screenName = @"Menu Screen";
+    [super viewDidAppear:animated];
 
 }
 

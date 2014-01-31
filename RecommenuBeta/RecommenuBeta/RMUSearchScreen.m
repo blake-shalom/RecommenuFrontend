@@ -63,11 +63,10 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.screenName = @"Search Screen";
     [super viewDidAppear:animated];
     [self.boldLabel setText:@"Explore Recommenu"];
     [self.underBoldLabel setText:@"Search a restaurant to find it's menu!"];
-    self.screenName = @"Search Screen";
-
 }
 
 - (void)viewDidDisappear:(BOOL)animated
