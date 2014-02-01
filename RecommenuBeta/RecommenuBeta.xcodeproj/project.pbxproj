@@ -20,6 +20,7 @@
 		9D1C2782189C6E12007A3E4E /* foodie_overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C2780189C6E12007A3E4E /* foodie_overlay@2x.png */; };
 		9D1C2785189C864D007A3E4E /* button_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C2783189C864D007A3E4E /* button_x.png */; };
 		9D1C2786189C864D007A3E4E /* button_x@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D1C2784189C864D007A3E4E /* button_x@2x.png */; };
+		9D1C278A189D7D7E007A3E4E /* RMUSavedUserPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D1C2789189D7D7E007A3E4E /* RMUSavedUserPhoto.m */; };
 		9D2759FE1860A53E003BF004 /* ellipse_select_@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759EA1860A53E003BF004 /* ellipse_select_@2x.png */; };
 		9D2759FF1860A53E003BF004 /* ellipse_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759EB1860A53E003BF004 /* ellipse_select.png */; };
 		9D275A001860A53E003BF004 /* ellipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D2759EC1860A53E003BF004 /* ellipse.png */; };
@@ -208,6 +209,9 @@
 		9D1C2780189C6E12007A3E4E /* foodie_overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "foodie_overlay@2x.png"; sourceTree = "<group>"; };
 		9D1C2783189C864D007A3E4E /* button_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_x.png; sourceTree = "<group>"; };
 		9D1C2784189C864D007A3E4E /* button_x@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_x@2x.png"; sourceTree = "<group>"; };
+		9D1C2787189D7ABD007A3E4E /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
+		9D1C2788189D7D7E007A3E4E /* RMUSavedUserPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUSavedUserPhoto.h; sourceTree = "<group>"; };
+		9D1C2789189D7D7E007A3E4E /* RMUSavedUserPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUSavedUserPhoto.m; sourceTree = "<group>"; };
 		9D2759EA1860A53E003BF004 /* ellipse_select_@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ellipse_select_@2x.png"; sourceTree = "<group>"; };
 		9D2759EB1860A53E003BF004 /* ellipse_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ellipse_select.png; sourceTree = "<group>"; };
 		9D2759EC1860A53E003BF004 /* ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ellipse.png; sourceTree = "<group>"; };
@@ -815,6 +819,8 @@
 			isa = PBXGroup;
 			children = (
 				9DF8008E1875D72F000A08BA /* Model.xcdatamodeld */,
+				9D1C2788189D7D7E007A3E4E /* RMUSavedUserPhoto.h */,
+				9D1C2789189D7D7E007A3E4E /* RMUSavedUserPhoto.m */,
 				9DF800941875DBD5000A08BA /* RMUSavedUser.h */,
 				9DF800951875DBD5000A08BA /* RMUSavedUser.m */,
 				9DF800911875DBAD000A08BA /* RMUSavedRecommendation.h */,
@@ -1049,6 +1055,7 @@
 				9D419C041854E1640097C6CA /* AFHTTPSessionManager.m in Sources */,
 				9DB9C28D186DC62E003CD478 /* RMURevealViewController.m in Sources */,
 				9D419C081854E1640097C6CA /* AFURLRequestSerialization.m in Sources */,
+				9D1C278A189D7D7E007A3E4E /* RMUSavedUserPhoto.m in Sources */,
 				9DF1ABF018370702006DF0B3 /* main.m in Sources */,
 				9D7736FA1858E62400A84E14 /* RMURestaurant.m in Sources */,
 				9D419C0A1854E1640097C6CA /* AFURLSessionManager.m in Sources */,
@@ -1322,11 +1329,12 @@
 		9DF8008E1875D72F000A08BA /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9D1C2787189D7ABD007A3E4E /* Model 4.xcdatamodel */,
 				9DF800C7187F974B000A08BA /* Model 2.xcdatamodel */,
 				9DF800DC18806368000A08BA /* Model 3.xcdatamodel */,
 				9DF8008F1875D72F000A08BA /* Model.xcdatamodel */,
 			);
-			currentVersion = 9DF800DC18806368000A08BA /* Model 3.xcdatamodel */;
+			currentVersion = 9D1C2787189D7ABD007A3E4E /* Model 4.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -15,5 +15,5 @@
 
 
 @interface RMUSettingsScreen : GAITrackedViewController
-<UITableViewDataSource, UITableViewDelegate>
+<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @end

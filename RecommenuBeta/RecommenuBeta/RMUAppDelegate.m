@@ -76,6 +76,7 @@
     return persistentStoreCoordinator;
 }
 
+#warning TODO fix profile to store other user data
 /*
  *  App doc directory, used in core data methods
  */
@@ -126,6 +127,7 @@
                                                                     inManagedObjectContext:self.managedObjectContext];
         currentUser.hasLoggedIn = NO;
         currentUser.dateLogged = [NSDate date];
+        currentUser.isFoodie = NO;
         [self obtainUserURIForUser:currentUser];
     }
     else {
@@ -372,6 +374,15 @@
     NSError *error;
     NSArray *fetchedArray = [self.managedObjectContext executeFetchRequest:request error:&error];
     return (RMUSavedUser*) fetchedArray[0];
+}
+
+
+- (NSString*)returnUserName
+{
+    NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    // For now save all test fields as substrings of ID, length 10
+    return [deviceId substringToIndex:10];
+
 }
 
 @end

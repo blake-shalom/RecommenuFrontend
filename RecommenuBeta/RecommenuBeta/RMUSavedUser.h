@@ -24,6 +24,8 @@
 @property (nonatomic, retain) NSString * city;
 @property (nonatomic, retain) NSDate * dateLogged;
 @property (nonatomic, retain) NSSet *ratingsForUser;
+@property (nonatomic, retain) NSNumber * isFoodie;
+@property (nonatomic, retain) NSString * userName;
 @end
 
 @interface RMUSavedUser (CoreDataGeneratedAccessors)

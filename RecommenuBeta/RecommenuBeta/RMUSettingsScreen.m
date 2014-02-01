@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet RMUButton *confirmSignInButton;
 @property (weak, nonatomic) IBOutlet UITextField *enterCodeTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *gradientImage;
+@property (weak, nonatomic) IBOutlet UIButton *dismissKeyButton;
 
 @end
 
@@ -37,6 +38,7 @@
     [super viewDidLoad];
     self.foodieSignInButton.isBlue = YES;
     self.confirmSignInButton.isBlue = YES;
+    self.enterCodeTextField.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -85,17 +87,26 @@
 {
     //Animate in gradient + popup
     [self animateInGradient];
-//    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
-//    RMUSavedUser *currentUser = [delegate fetchCurrentUser];
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@/foodiesvip"),
-//      parameters:nil
-//         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            
-//         }
-//         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//             
-//         }];
+}
+- (IBAction)signInFoodie:(id)sender
+{
+    NSLog(@"EXECUTING....");
+    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSString *userID = [delegate returnUserName];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/foodies/%@/%@"),userID, self.enterCodeTextField.text]
+                                 parameters:nil
+                                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                        NSLog(@"RESPONSE: %@", responseObject);
+                                        
+                                        
+                                    }
+                                    failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                        NSLog(@"RESPONSE STRING: %@", operation.responseString);
+                                        NSLog(@"ERROR: %@", error);
+                                    }];
+
 }
 
 /*
@@ -109,6 +120,10 @@
 }
 
 
+- (IBAction)dismissKeyboard:(id)sender
+{
+    [self.enterCodeTextField resignFirstResponder];
+}
 
 #pragma mark - Animation Methods
 
@@ -158,5 +173,26 @@
                          withCompletion:Nil
                              withBounce:YES];
 }
+
+#pragma mark - UITextView Delegate
+
+/*
+ *  Began editing, bring button to the front
+ */
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.view bringSubviewToFront:self.dismissKeyButton];
+}
+
+/*
+ *  Ended editing send button backwards
+ */
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.view sendSubviewToBack:self.dismissKeyButton];
+}
+
 
 @end

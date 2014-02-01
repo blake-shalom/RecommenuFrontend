@@ -22,5 +22,7 @@
 @dynamic city;
 @dynamic dateLogged;
 @dynamic ratingsForUser;
+@dynamic userName;
+@dynamic isFoodie;
 
 @end

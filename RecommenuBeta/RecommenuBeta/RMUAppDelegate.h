@@ -37,5 +37,7 @@
 // Handles changed state of FB
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 - (RMUSavedUser*)fetchCurrentUser;
+- (NSString*)returnUserName;
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title;
 
 @end
