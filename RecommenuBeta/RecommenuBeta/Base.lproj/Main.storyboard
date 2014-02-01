@@ -21,7 +21,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradient.png" translatesAutoresizingMaskIntoConstraints="NO" id="Pos-um-Q4p">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="454"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="456"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>
@@ -163,7 +163,7 @@
                                     <constraint firstItem="45m-f4-5eF" firstAttribute="centerX" secondItem="dE4-jx-lZL" secondAttribute="centerX" id="1V0-us-EnR"/>
                                     <constraint firstItem="45m-f4-5eF" firstAttribute="centerX" secondItem="Pos-um-Q4p" secondAttribute="centerX" id="4TX-LJ-Xmv"/>
                                     <constraint firstAttribute="trailing" secondItem="45m-f4-5eF" secondAttribute="trailing" constant="28" id="8LW-LM-E42"/>
-                                    <constraint firstAttribute="bottom" secondItem="Pos-um-Q4p" secondAttribute="bottom" constant="50" id="Rx2-5Y-FNS"/>
+                                    <constraint firstAttribute="bottom" secondItem="Pos-um-Q4p" secondAttribute="bottom" constant="48" id="Rx2-5Y-FNS"/>
                                     <constraint firstAttribute="centerY" secondItem="45m-f4-5eF" secondAttribute="centerY" constant="26" id="VYZ-ny-Bm4"/>
                                     <constraint firstItem="45m-f4-5eF" firstAttribute="trailing" secondItem="bOm-Y7-Zed" secondAttribute="trailing" constant="-2" id="ZWX-Ri-6TZ"/>
                                     <constraint firstItem="45m-f4-5eF" firstAttribute="centerX" secondItem="bOm-Y7-Zed" secondAttribute="centerX" id="bsg-HC-Dbc"/>
@@ -562,7 +562,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="on9-bk-6Tz">
             <objects>
-                <tabBarController definesPresentationContext="YES" id="MhZ-4q-dlO" sceneMemberID="viewController">
+                <tabBarController extendedLayoutIncludesOpaqueBars="YES" definesPresentationContext="YES" id="MhZ-4q-dlO" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Wmv-Bi-bRA"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -798,6 +798,10 @@
                                     <outlet property="delegate" destination="yVy-QN-2PL" id="Mo9-eE-uWT"/>
                                 </connections>
                             </tableView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gradient.png" translatesAutoresizingMaskIntoConstraints="NO" id="L1V-Z2-fg2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="520"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4kZ-vQ-luD">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -816,12 +820,78 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Dr-YW-MdH">
+                                <rect key="frame" x="30" y="92" width="260" height="195"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="foodie_overlay.png" translatesAutoresizingMaskIntoConstraints="NO" id="7LR-tZ-moL">
+                                        <rect key="frame" x="0.0" y="0.0" width="260" height="195"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dVl-Wn-SYJ" customClass="RMUButton">
+                                        <rect key="frame" x="168" y="142" width="79" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.79607843140000001" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
+                                        <state key="normal" title="SIGN IN">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ENTER YOUR CODE" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fgP-WD-nYf">
+                                        <rect key="frame" x="12" y="145" width="148" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter code to activate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umL-9T-6Ig">
+                                        <rect key="frame" x="52" y="62" width="157" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="16"/>
+                                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FOODIE STATUS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPe-k2-3kT">
+                                        <rect key="frame" x="69" y="92" width="122" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="16"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ISy-Dh-2gz">
+                                        <rect key="frame" x="214" y="6" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="button_x.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissFoodieSignin:" destination="yVy-QN-2PL" eventType="touchUpInside" id="thJ-sU-UTW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="260" id="6hd-Ui-LaM"/>
+                                    <constraint firstAttribute="height" constant="195" id="YzA-Eq-c8T"/>
+                                    <constraint firstAttribute="centerX" secondItem="umL-9T-6Ig" secondAttribute="centerX" id="mSG-HU-5d3"/>
+                                    <constraint firstItem="umL-9T-6Ig" firstAttribute="top" secondItem="4Dr-YW-MdH" secondAttribute="top" constant="62" id="tbG-FX-Qxf"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4Dr-YW-MdH" firstAttribute="top" secondItem="ZiZ-ef-5Lf" secondAttribute="bottom" constant="72" id="d4i-mL-8kX"/>
+                            <constraint firstAttribute="centerX" secondItem="4Dr-YW-MdH" secondAttribute="centerX" id="kEg-9d-Qp2"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" image="icon_settings.png" id="BRo-gf-7KI"/>
                     <connections>
-                        <outlet property="settingLabel" destination="OcR-nv-x44" id="Zkh-4I-drG"/>
+                        <outlet property="confirmSignInButton" destination="dVl-Wn-SYJ" id="FUa-6G-3Jz"/>
+                        <outlet property="enterCodeTextField" destination="fgP-WD-nYf" id="8pb-g4-4df"/>
+                        <outlet property="foodieLoginLabel" destination="OcR-nv-x44" id="1Ah-eo-zfI"/>
+                        <outlet property="foodieOnImage" destination="pYw-Y2-kfq" id="hDk-9O-XIZ"/>
+                        <outlet property="foodieSignInButton" destination="zqr-NV-tlE" id="w48-2k-ayb"/>
+                        <outlet property="gradientImage" destination="L1V-Z2-fg2" id="L5O-K0-7bO"/>
+                        <outlet property="overlaySignInView" destination="4Dr-YW-MdH" id="wrH-Hd-8ZO"/>
                         <outlet property="settingsTable" destination="CU7-xP-6Bz" id="ynZ-iA-wIG"/>
                     </connections>
                 </viewController>
@@ -1432,27 +1502,43 @@
     </scenes>
     <resources>
         <image name="button_back.png" width="10" height="18"/>
+        <image name="button_x.png" width="16" height="16"/>
         <image name="dividing_line.png" width="2" height="37"/>
         <image name="facebook_off.png" width="29" height="29"/>
         <image name="filter_bar.png" width="321" height="39"/>
+        <image name="filter_bar.png" width="321" height="39"/>
         <image name="foodie_certified.png" width="29" height="29"/>
+        <image name="foodie_overlay.png" width="264" height="200"/>
+        <image name="gradient.png" width="320" height="548"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_foodie_activate.png" width="37" height="36"/>
         <image name="icon_graph.png" width="29" height="28"/>
         <image name="icon_home.png" width="31" height="29"/>
         <image name="icon_list.png" width="28" height="21"/>
+        <image name="icon_list.png" width="28" height="21"/>
         <image name="icon_menu.png" width="20" height="20"/>
+        <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
         <image name="overlay_card.png" width="268" height="406"/>
+        <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="popup_location.png" width="265" height="200"/>
         <image name="thumbs_up_profile.png" width="38" height="38"/>
+        <image name="thumbs_up_profile.png" width="38" height="38"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
         <image name="top_section.png" width="320" height="119"/>
         <image name="top_section_2.png" width="320" height="86"/>
+        <image name="user_default_profile.png" width="69" height="69"/>
         <image name="user_default_profile.png" width="69" height="69"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1461,7 +1547,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="cec-ZC-rvl"/>
+        <segue reference="bcv-3n-CFm"/>
         <segue reference="N8u-Ey-9g2"/>
         <segue reference="1ex-Vq-BDP"/>
     </inferredMetricsTieBreakers>
