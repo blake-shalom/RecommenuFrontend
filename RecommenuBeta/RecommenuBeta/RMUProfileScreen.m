@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profilePic;
 @property (weak, nonatomic) IBOutlet UIView *profilePicView;
 @property (weak, nonatomic) IBOutlet UIView *hideNameView;
+@property (weak, nonatomic) IBOutlet UIImageView *foodieImage;
 
 @property NSMutableArray *ratingsArray;
 @property BOOL isOnPastRatings;
@@ -62,6 +63,11 @@
     [self sortUserRatingsIntoRatingsArray:user];
     [self loadFacebookElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
+    
+    if (user.isFoodie)
+        [self.foodieImage setHidden:NO];
+    else
+        [self.foodieImage setHidden:YES]; 
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -39,6 +39,15 @@
     self.foodieSignInButton.isBlue = YES;
     self.confirmSignInButton.isBlue = YES;
     self.enterCodeTextField.delegate = self;
+    
+    
+    // Show correct Foodie UI
+    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+    RMUSavedUser *user = [delegate fetchCurrentUser];
+    if (user.isFoodie)
+        [self showFoodieActive];
+    else
+        [self showFoodieSignIn];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -51,6 +60,30 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Utility functions
+
+/*
+ *  Shows Active UI for foodie
+ */
+
+- (void)showFoodieActive
+{
+    [self.foodieSignInButton setHidden:YES];
+    [self.foodieOnImage setHidden:NO];
+    [self.foodieLoginLabel setText:@"Signed in as a Foodie!"];
+}
+
+/*
+ *  Shows sign in UI for foodie
+ */
+
+- (void)showFoodieSignIn
+{
+    [self.foodieSignInButton setHidden:NO];
+    [self.foodieOnImage setHidden:YES];
+    [self.foodieLoginLabel setText:@"Are you a Foodie?"];
 }
 
 #pragma mark - TableView Datasource methods
@@ -94,13 +127,24 @@
     RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSString *userID = [delegate returnUserName];
-    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/foodies/%@/%@"),userID, self.enterCodeTextField.text]
+    RMUSavedUser *user = [delegate fetchCurrentUser];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/foodies/%@/%@"),user.userName, self.enterCodeTextField.text]
                                  parameters:nil
                                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                         NSLog(@"RESPONSE: %@", responseObject);
-                                        
-                                        
+                                        NSString *response = [responseObject objectForKey:@"status"];
+                                        if ([response isEqualToString:@"wrong password"])
+                                            [delegate showMessage:@"Please Try Again" withTitle:@"Wrong Password"];
+                                        else if ([response isEqualToString:@"success"]) {
+                                            user.isFoodie = [NSNumber numberWithBool:YES];
+                                            [self dismissFoodieSignin:self];
+                                            [delegate showMessage:@"Thank you for signing up for being a recognized Recommenu Foodie!" withTitle:@"Foodie Status Achieved!"];
+                                            [self showFoodieActive];
+                                            NSError *saveError;
+                                            if (![delegate.managedObjectContext save:&saveError])
+                                                NSLog(@"Error Saving %@", saveError);
+
+                                        }
                                     }
                                     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                         NSLog(@"RESPONSE STRING: %@", operation.responseString);

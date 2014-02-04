@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
+
+#warning TODO Loading on each of the API CALLS
+
 #define SECS_IN_MIN 60
 #define MINS_TIL_NOTIFICATION 30
 
@@ -76,7 +79,6 @@
     return persistentStoreCoordinator;
 }
 
-#warning TODO fix profile to store other user data
 /*
  *  App doc directory, used in core data methods
  */
@@ -270,7 +272,7 @@
     
     // For now save all test fields as substrings of ID, length 10
     NSString *testFields = [deviceId substringToIndex:10];
-    
+    user.userName = testFields;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_user/"
       parameters:@{@"device_id": deviceId,
@@ -334,6 +336,7 @@
     else {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
     }
+    
     NSError *saveError;
     if (![self.managedObjectContext save:&saveError])
         NSLog(@"Error Saving %@", saveError);

@@ -1104,7 +1104,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K3T-Fa-FeV">
-                                        <rect key="frame" x="254" y="28" width="29" height="29"/>
+                                        <rect key="frame" x="245" y="28" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="facebook_off.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1115,6 +1115,10 @@
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dividing_line.png" translatesAutoresizingMaskIntoConstraints="NO" id="DIy-pq-HTz">
                                         <rect key="frame" x="136" y="81" width="49" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="foodie_certified.png" translatesAutoresizingMaskIntoConstraints="NO" id="bn2-nl-Qt1">
+                                        <rect key="frame" x="283" y="28" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <view hidden="YES" alpha="0.89999999999999991" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DOo-JC-4Rb">
@@ -1164,6 +1168,7 @@
                         <outlet property="currentRatingsLabel" destination="RA2-rc-moR" id="IGw-T8-B8s"/>
                         <outlet property="emptyView" destination="26I-GI-Mkc" id="6L6-3Z-Q5Q"/>
                         <outlet property="facebookButton" destination="K3T-Fa-FeV" id="qxC-C2-K1A"/>
+                        <outlet property="foodieImage" destination="bn2-nl-Qt1" id="D2B-A7-fnH"/>
                         <outlet property="friendsButton" destination="HJi-Li-pIN" id="sF4-vd-8vk"/>
                         <outlet property="hideNameView" destination="DOo-JC-4Rb" id="IN2-gW-6UT"/>
                         <outlet property="nameLabel" destination="cnh-mo-peH" id="v8F-my-1xA"/>
@@ -1523,25 +1528,40 @@
         <image name="dividing_line.png" width="2" height="37"/>
         <image name="facebook_off.png" width="29" height="29"/>
         <image name="filter_bar.png" width="321" height="39"/>
+        <image name="filter_bar.png" width="321" height="39"/>
+        <image name="foodie_certified.png" width="29" height="29"/>
         <image name="foodie_certified.png" width="29" height="29"/>
         <image name="foodie_overlay.png" width="264" height="200"/>
+        <image name="gradient.png" width="320" height="548"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_foodie_activate.png" width="37" height="36"/>
         <image name="icon_graph.png" width="29" height="28"/>
         <image name="icon_home.png" width="31" height="29"/>
         <image name="icon_list.png" width="28" height="21"/>
+        <image name="icon_list.png" width="28" height="21"/>
         <image name="icon_menu.png" width="20" height="20"/>
+        <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
+        <image name="logo.png" width="197" height="26"/>
         <image name="overlay_card.png" width="268" height="406"/>
+        <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="popup_location.png" width="265" height="200"/>
         <image name="thumbs_up_profile.png" width="38" height="38"/>
+        <image name="thumbs_up_profile.png" width="38" height="38"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
+        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
         <image name="top_section.png" width="320" height="119"/>
         <image name="top_section_2.png" width="320" height="86"/>
+        <image name="user_default_profile.png" width="69" height="69"/>
         <image name="user_default_profile.png" width="69" height="69"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1550,8 +1570,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="bcv-3n-CFm"/>
         <segue reference="N8u-Ey-9g2"/>
+        <segue reference="cec-ZC-rvl"/>
         <segue reference="1ex-Vq-BDP"/>
     </inferredMetricsTieBreakers>
 </document>
