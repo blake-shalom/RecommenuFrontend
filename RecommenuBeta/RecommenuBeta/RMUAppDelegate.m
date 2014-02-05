@@ -8,6 +8,7 @@
 
 
 #warning TODO Loading on each of the API CALLS
+#warning TODO need to load the map in a back thread
 
 #define SECS_IN_MIN 60
 #define MINS_TIL_NOTIFICATION 30
@@ -176,6 +177,10 @@
     if (!error && state == FBSessionStateOpen){
         NSLog(@"Session opened");
         self.shouldUserLoginFacebook = NO;
+        RMUSavedUser *user = [self fetchCurrentUser];
+        NSLog(@"USER FACEBOOK ID: %@", user.facebookID);
+//        if (!user.facebookID)
+//            [self logFacebookUser:user intoRecommenuWithSession:session];
         return;
     }
     if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
@@ -225,6 +230,34 @@
         [FBSession.activeSession closeAndClearTokenInformation];
         // Show the user the logged-out UI
     }
+}
+
+/*
+ *  Logs a user with Facebook into REcommenu's DB
+ */
+
+- (void)logFacebookUser:(RMUSavedUser*)user intoRecommenuWithSession:(FBSession*)session
+{
+    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        user.facebookID = [result objectForKey:@"id"];
+        NSLog(@"FACEBOOKID: %@", user.facebookID);
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        
+        [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@"), user.facebookID,
+                       session.accessTokenData.accessToken]
+                                      parameters:nil
+                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                             NSLog(@"RESPONSE : %@", responseObject);
+                                             NSError *saveError;
+                                             if (![self.managedObjectContext save:&saveError])
+                                                 NSLog(@"Error Saving %@", saveError);
+                                         }
+                                         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                             NSLog(@"ERROR : %@",error);
+                                         }];
+        
+    }];
 }
 
 /*

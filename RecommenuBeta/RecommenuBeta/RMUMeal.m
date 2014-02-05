@@ -43,11 +43,13 @@
     // Handle foodie objects
     NSDictionary *foodieDict = [rateDictionary objectForKey:@"foodie"];
     self.expertLikes = [foodieDict objectForKey:@"flikes"];
+    self.expertDislikes = [foodieDict objectForKey:@"fdislikes"];
     self.foodieLikeID = [foodieDict objectForKey:@"like_ids"];
     self.foodieDislikeID = [foodieDict objectForKey:@"dislike_ids"];
     
     NSDictionary *friendDict = [rateDictionary objectForKey:@"facebook"];
     self.friendLikes = [friendDict objectForKey:@"likes"];
+    self.friendDislikes = [friendDict objectForKey:@"dislikes"];
     self.facebookLikeID = [friendDict objectForKey:@"like_ids"];
     self.facebookDislikeID = [friendDict objectForKey:@"dislike_ids"];
     

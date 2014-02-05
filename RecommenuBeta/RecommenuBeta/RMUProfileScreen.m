@@ -61,13 +61,19 @@
     RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
     RMUSavedUser *user = [delegate fetchCurrentUser];
     [self sortUserRatingsIntoRatingsArray:user];
-    [self loadFacebookElements];
+    [self loadUserElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
     
     if (user.isFoodie)
         [self.foodieImage setHidden:NO];
     else
-        [self.foodieImage setHidden:YES]; 
+        [self.foodieImage setHidden:YES];
+    
+    // Customize the Appearance of the TabBar
+    UITabBarController *tabBarVC = self.tabBarController;
+    UITabBar *tabBar = tabBarVC.tabBar;
+    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -108,10 +114,10 @@
 }
 
 /*
- *  Set Up facebook elements
+ *  Set Up User elements
  */
 
-- (void)loadFacebookElements
+- (void)loadUserElements
 {
     RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
     if (appDelegate.shouldUserLoginFacebook) {
@@ -250,9 +256,11 @@
          RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
          // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
          [appDelegate sessionStateChanged:session state:state error:error];
-         [self loadFacebookElements];
+         [self loadUserElements];
      }];
 }
+
+
 
 - (IBAction)showFriendsRatings:(id)sender
 {

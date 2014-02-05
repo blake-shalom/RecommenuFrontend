@@ -118,10 +118,13 @@
              [self setChildViewControllersUIWithCurrentRestaurant];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-#warning TODO handle screen if error
-             NSLog(@"error: %@", error);
+             NSLog(@"error: %@ with response string: %@", error, operation.responseString);
+             RMUAppDelegate *delegate = [UIApplication sharedApplication].delegate;
+             [delegate showMessage:@"Please excuse this error we will get our team on it! All ratings will not show." withTitle:@"Error In Extracting Ratings!"];
+             [self setChildViewControllersUIWithCurrentRestaurant];
          }];
 }
+///data/menu/40fb0f00f964a520fc0a1fe3
 
 - (void)setChildViewControllersUIWithCurrentRestaurant
 {

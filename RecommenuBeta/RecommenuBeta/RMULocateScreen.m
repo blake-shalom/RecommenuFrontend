@@ -59,12 +59,7 @@
     
     // Deactivate dismiss button
     [self.dismissButton setUserInteractionEnabled:NO];
-        
-    // Customize the Appearance of the TabBar
-    UITabBarController *tabBarVC = self.tabBarController;
-    UITabBar *tabBar = tabBarVC.tabBar;
-    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
-    
+            
     // Hide yo wife
     [self.popupView setHidden:YES];
     [self.gradientImage setHidden:YES];

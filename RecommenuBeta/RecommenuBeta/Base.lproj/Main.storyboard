@@ -218,7 +218,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dnR-78-PjR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="420" y="40"/>
+            <point key="canvasLocation" x="420" y="808"/>
         </scene>
         <!--Menu Screen-->
         <scene sceneID="DR5-mX-nwr">
@@ -572,10 +572,10 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="WW4-31-mjr" kind="relationship" relationship="viewControllers" id="mFU-4f-Flp"/>
-                        <segue destination="mvm-ua-KRM" kind="relationship" relationship="viewControllers" id="PLs-gq-gsS"/>
-                        <segue destination="RjX-UA-55b" kind="relationship" relationship="viewControllers" id="RdV-Dh-2ev"/>
-                        <segue destination="yVy-QN-2PL" kind="relationship" relationship="viewControllers" id="ZDI-cG-6fg"/>
+                        <segue destination="mvm-ua-KRM" kind="relationship" relationship="viewControllers" id="Gra-xy-ZFH"/>
+                        <segue destination="WW4-31-mjr" kind="relationship" relationship="viewControllers" id="8rg-AY-zZ2"/>
+                        <segue destination="RjX-UA-55b" kind="relationship" relationship="viewControllers" id="ggG-JK-nlS"/>
+                        <segue destination="yVy-QN-2PL" kind="relationship" relationship="viewControllers" id="yWs-Dn-fev"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j3E-Ji-0XA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -714,7 +714,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RxM-hS-265" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1020" y="1464"/>
+            <point key="canvasLocation" x="1061" y="1581"/>
         </scene>
         <!--Settings Screen - Settings-->
         <scene sceneID="2F2-LR-3s1">
@@ -948,7 +948,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7af-7m-HB8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="420" y="822"/>
+            <point key="canvasLocation" x="420" y="38"/>
         </scene>
         <!--Profile Screen - Profile-->
         <scene sceneID="Dho-f1-vOc">
@@ -1181,7 +1181,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MEg-Sg-XhO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1014" y="822"/>
+            <point key="canvasLocation" x="1046" y="32"/>
         </scene>
         <!--Rating Screen-->
         <scene sceneID="uOw-Z0-tW0">
@@ -1528,40 +1528,25 @@
         <image name="dividing_line.png" width="2" height="37"/>
         <image name="facebook_off.png" width="29" height="29"/>
         <image name="filter_bar.png" width="321" height="39"/>
-        <image name="filter_bar.png" width="321" height="39"/>
-        <image name="foodie_certified.png" width="29" height="29"/>
         <image name="foodie_certified.png" width="29" height="29"/>
         <image name="foodie_overlay.png" width="264" height="200"/>
-        <image name="gradient.png" width="320" height="548"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_foodie_activate.png" width="37" height="36"/>
         <image name="icon_graph.png" width="29" height="28"/>
         <image name="icon_home.png" width="31" height="29"/>
         <image name="icon_list.png" width="28" height="21"/>
-        <image name="icon_list.png" width="28" height="21"/>
         <image name="icon_menu.png" width="20" height="20"/>
-        <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_profile.png" width="31" height="29"/>
         <image name="icon_search.png" width="31" height="29"/>
         <image name="icon_settings.png" width="31" height="29"/>
         <image name="logo.png" width="197" height="26"/>
-        <image name="logo.png" width="197" height="26"/>
         <image name="overlay_card.png" width="268" height="406"/>
-        <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="pattern_fullscreen.png" width="320" height="548"/>
         <image name="popup_location.png" width="265" height="200"/>
         <image name="thumbs_up_profile.png" width="38" height="38"/>
-        <image name="thumbs_up_profile.png" width="38" height="38"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
-        <image name="top_bar.png" width="324" height="68"/>
         <image name="top_bar.png" width="324" height="68"/>
         <image name="top_section.png" width="320" height="119"/>
         <image name="top_section_2.png" width="320" height="86"/>
-        <image name="user_default_profile.png" width="69" height="69"/>
         <image name="user_default_profile.png" width="69" height="69"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -1570,8 +1555,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="N8u-Ey-9g2"/>
         <segue reference="cec-ZC-rvl"/>
+        <segue reference="qTF-6T-aZv"/>
         <segue reference="1ex-Vq-BDP"/>
     </inferredMetricsTieBreakers>
 </document>
