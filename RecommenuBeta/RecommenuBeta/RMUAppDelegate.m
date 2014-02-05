@@ -179,8 +179,8 @@
         self.shouldUserLoginFacebook = NO;
         RMUSavedUser *user = [self fetchCurrentUser];
         NSLog(@"USER FACEBOOK ID: %@", user.facebookID);
-//        if (!user.facebookID)
-//            [self logFacebookUser:user intoRecommenuWithSession:session];
+        if (!user.facebookID)
+            [self logFacebookUser:user intoRecommenuWithSession:session];
         return;
     }
     if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
@@ -244,18 +244,17 @@
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         
-        [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@"), user.facebookID,
-                       session.accessTokenData.accessToken]
-                                      parameters:nil
-                                         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                             NSLog(@"RESPONSE : %@", responseObject);
-                                             NSError *saveError;
-                                             if (![self.managedObjectContext save:&saveError])
-                                                 NSLog(@"Error Saving %@", saveError);
-                                         }
-                                         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                             NSLog(@"ERROR : %@",error);
-                                         }];
+        [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@"), user.userURI]
+          parameters:@{@"facebook_id": [NSString stringWithFormat:(@"%@"), user.facebookID]}
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 NSLog(@"RESPONSE : %@", responseObject);
+                 NSError *saveError;
+                 if (![self.managedObjectContext save:&saveError])
+                     NSLog(@"Error Saving %@", saveError);
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 NSLog(@"ERROR : %@",error);
+             }];
         
     }];
 }

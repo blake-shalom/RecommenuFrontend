@@ -7,6 +7,8 @@
 //
 #define NUMBER_OF_FALLBACK 15
 
+#define LOCAL_QUEUE dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+
 #import "RMULocateScreen.h"
 
 @interface RMULocateScreen ()
@@ -54,12 +56,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    dispatch_async(LOCAL_QUEUE, ^
+                   {
+                       [self performSelectorOnMainThread:@selector(loadMapElements) withObject:nil waitUntilDone:YES];
+                   });
+	// Do any additional setup after loading the view.
+}
+
+- (void)loadMapElements
+{
     self.hasDroppedPin =NO;
     self.fallbackRest = [[NSMutableArray alloc]init];
     
     // Deactivate dismiss button
     [self.dismissButton setUserInteractionEnabled:NO];
-            
+    
     // Hide yo wife
     [self.popupView setHidden:YES];
     [self.gradientImage setHidden:YES];
@@ -79,7 +91,7 @@
     [self.locationManager startUpdatingLocation];
     self.restID = [[NSString alloc]init];
     self.restString = [[NSString alloc]init];
-
+    
     // Connfigure the buttons
     self.yesButton.isBlue = YES;
     self.noButton.isBlue = NO;
@@ -88,7 +100,6 @@
     [self.noButton setBackgroundColor:[UIColor whiteColor]];
     
     self.fallbackTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
