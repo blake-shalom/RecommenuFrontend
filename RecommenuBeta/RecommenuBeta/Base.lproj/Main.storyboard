@@ -405,16 +405,6 @@
                                             <action selector="viewMenus:" destination="Aa8-Db-N0V" eventType="touchUpInside" id="ZRf-wi-L3w"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gtO-pT-9eg">
-                                        <rect key="frame" x="275" y="-2" width="45" height="45"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="icon_graph.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="seeRatings:" destination="Aa8-Db-N0V" eventType="touchUpInside" id="SxS-Oj-IOx"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -1121,7 +1111,7 @@
                                         <rect key="frame" x="283" y="28" width="29" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <view hidden="YES" alpha="0.89999999999999991" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DOo-JC-4Rb">
+                                    <view hidden="YES" alpha="0.94999999999999996" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DOo-JC-4Rb">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="111"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -1532,7 +1522,6 @@
         <image name="foodie_overlay.png" width="264" height="200"/>
         <image name="gradient.png" width="320" height="548"/>
         <image name="icon_foodie_activate.png" width="37" height="36"/>
-        <image name="icon_graph.png" width="29" height="28"/>
         <image name="icon_home.png" width="31" height="29"/>
         <image name="icon_list.png" width="28" height="21"/>
         <image name="icon_menu.png" width="20" height="20"/>

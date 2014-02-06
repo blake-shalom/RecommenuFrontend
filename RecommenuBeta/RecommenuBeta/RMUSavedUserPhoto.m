@@ -8,6 +8,7 @@
 
 #import "RMUSavedUserPhoto.h"
 
+#warning TODO update the photo semi-regularly
 
 @implementation RMUSavedUserPhoto
 

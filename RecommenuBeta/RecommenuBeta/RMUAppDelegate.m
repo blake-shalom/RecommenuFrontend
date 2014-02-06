@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
-
+#warning TODO user_profile
 #warning TODO Loading on each of the API CALLS
-#warning TODO need to load the map in a back thread
+#warning TODO IF user has signed in with facebook, then refresh fb friends
 
 #define SECS_IN_MIN 60
 #define MINS_TIL_NOTIFICATION 30
@@ -137,15 +137,43 @@
         // User has been created
         currentUser = fetchedArray[0];
         if (currentUser.hasLoggedIn) {
-            // User was created and has logged in and obtained a user URI, do nothing
+            // User was created and has logged in and obtained a user URI, do nothing but possibly refresh fb
             NSLog(@"USER OBTAINED URI: %@", currentUser.userURI);
         }
         else {
             // User was created and has not logged in, attempt to log in and obtain a user ID
             [self obtainUserURIForUser:currentUser];
         }
+        
     }
-   
+    [self handleInitialFacebookLoginWithUser:currentUser];
+    return YES;
+}
+
+/*
+ *  Calls the Backend's script for sorting users and gets the profile model working
+ */
+
+- (void) refreshFacebookFriendsListWithUser:(RMUSavedUser*)user andSession:(FBSession*) session
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@"), user.facebookID, session.accessTokenData.accessToken]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"%@",responseObject);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@, with RESPONSE STRING: %@", error, operation.responseString);
+         }];
+}
+
+/*
+ *  Handles the initial login of a facebook user
+ */
+
+- (void)handleInitialFacebookLoginWithUser:(RMUSavedUser*)currentUser
+{
     // Whenever a person opens the app, check for a cached session
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded) {
         
@@ -157,16 +185,15 @@
                                           // This method will be called EACH time the session state changes,
                                           // also for intermediate states and NOT just when the session open
                                           [self sessionStateChanged:session state:state error:error];
+                                          // Refresh friends list on sign in
                                       }];
     }
     else {
+        // ELSE no facebook cached session, USER needs to login
         NSLog(@"NO FB SESSION FOUND");
         self.shouldUserLoginFacebook = YES;
     }
-    
-    return YES;
 }
-
 /*
  *  Handles State changes on FB
  */
@@ -243,9 +270,10 @@
         NSLog(@"FACEBOOKID: %@", user.facebookID);
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        
         [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@"), user.userURI]
-          parameters:@{@"facebook_id": [NSString stringWithFormat:(@"%@"), user.facebookID]}
+          parameters:@{@"facebook_id": user.facebookID,
+                       @"first_name": user.firstName,
+                       @"last_name" : user.lastName}
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  NSLog(@"RESPONSE : %@", responseObject);
                  NSError *saveError;

@@ -13,6 +13,8 @@
 #import "RMURevealViewController.h"
 #import "RMUOtherProfileScreen.h"
 #import "GAITrackedViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import "RMUSavedUserPhoto.h"
 
 @interface RMUProfileScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate>

@@ -7,6 +7,8 @@
 //
 //  Saved user model
 
+#warning TODO migrate data model and add userID number
+
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 

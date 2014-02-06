@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
-#import <FacebookSDK/FacebookSDK.h>
+
 #import "RMUProfileScreen.h"
 
 @interface RMUProfileScreen ()
@@ -61,6 +61,7 @@
     RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
     RMUSavedUser *user = [delegate fetchCurrentUser];
     [self sortUserRatingsIntoRatingsArray:user];
+    
     [self loadUserElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
     
@@ -74,6 +75,30 @@
     UITabBar *tabBar = tabBarVC.tabBar;
     [tabBar setTintColor:[UIColor RMULogoBlueColor]];
 
+    [self fetchFriendsOfUser:user];
+}
+
+- (void)fetchFriendsOfUser:(RMUSavedUser*)user
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSRange range;
+    range.length = 1;
+    range.location = 6;
+    NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
+    NSLog(@"Trim: %@", trimString);
+    NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+    NSLog(@"Value: %i", value);
+    
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/user_profile/%i/"), value]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"RESPONSE: %@", responseObject);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@, WITH RESPONSE STRING: %@",error, operation.responseString);
+         }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -128,25 +153,41 @@
         [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
         [self.facebookButton setUserInteractionEnabled:NO];
         [self.hideNameView setHidden:NO];
-        [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-            if (!error) {
-                // Success! Include your code to handle the results here
-                NSLog(@"user info: %@", result);
-                [self.nameLabel setText:[result objectForKey:@"name"]];
-                FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
-                CGRect profPicFrame = self.profilePic.frame;
-                CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
-                [profileView setFrame:modifiedProf];
-                UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
-                [circleView setFrame: profPicFrame];
-                [self.profilePicView addSubview:profileView];
-                [self.profilePicView addSubview:circleView];
-                [self.hideNameView setHidden:YES];
-            } else {
-                NSLog(@"error: %@", error); 
-                // An error occurred, we need to handle the error
-            }
-        }];
+        
+        // check if we need to go grab info from facebook
+        // if we do that start connection, otherwise use cached data
+        RMUSavedUser *user = [appDelegate fetchCurrentUser];
+        
+        // Set some frames
+        CGRect profPicFrame = self.profilePic.frame;
+        CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
+        
+        if (NO) {
+            
+        }
+        else {
+            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    // Success! Include your code to handle the results here
+                    NSLog(@"user info: %@", result);
+                    user.firstName = [result objectForKey:@"first_name"];
+                    user.lastName = [result objectForKey:@"last_name"];
+                    [self.nameLabel setText:[result objectForKey:@"name"]];
+                    FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                    
+                    [profileView setFrame:modifiedProf];
+                    [self.profilePicView addSubview:profileView];
+                }
+                else {
+                    NSLog(@"error: %@", error);
+                    // An error occurred, we need to handle the error
+                }
+            }];
+        }
+        UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+        [circleView setFrame: profPicFrame];
+        [self.profilePicView addSubview:circleView];
+        [self.hideNameView setHidden:YES];
     }
 }
 
