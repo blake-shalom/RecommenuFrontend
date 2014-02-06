@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
-#warning TODO user_profile
 #warning TODO Loading on each of the API CALLS
 #warning TODO IF user has signed in with facebook, then refresh fb friends
 
@@ -271,8 +270,7 @@
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@"), user.userURI]
-          parameters:@{@"facebook_id": user.facebookID,
-                       @"first_name": user.firstName,
+          parameters:@{@"first_name": user.firstName,
                        @"last_name" : user.lastName}
              success:^(AFHTTPRequestOperation *operation, id responseObject) {
                  NSLog(@"RESPONSE : %@", responseObject);
@@ -282,6 +280,20 @@
              }
              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                  NSLog(@"ERROR : %@",error);
+             }];
+        NSRange range;
+        range.length = 1;
+        range.location = 6;
+        NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
+        NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+        int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+        [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/user_profile/%i/"), value]
+          parameters:@{@"facebook_id": user.facebookID}
+             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                 NSLog(@"SUCCESS FROM LOGGING: %@", responseObject);
+             }
+             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                 NSLog(@"FAIL: %@ with response: %@", error, operation.responseString);
              }];
         
     }];

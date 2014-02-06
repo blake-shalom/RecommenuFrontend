@@ -952,10 +952,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="26I-GI-Mkc">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="26I-GI-Mkc">
                                 <rect key="frame" x="0.0" y="173" width="320" height="395"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ifK-me-u46">
+                                        <rect key="frame" x="150" y="188" width="20" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You don't have any friends yet!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tri-AL-ryL">
                                         <rect key="frame" x="41" y="26" width="239" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -972,6 +976,11 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="320" id="drJ-5O-0ax"/>
+                                    <constraint firstAttribute="centerX" secondItem="ifK-me-u46" secondAttribute="centerX" id="jRp-sa-gca"/>
+                                    <constraint firstAttribute="centerY" secondItem="ifK-me-u46" secondAttribute="centerY" constant="-0.5" id="lrX-Ek-IVI"/>
+                                </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="80" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="S3M-ZD-ylj">
                                 <rect key="frame" x="0.0" y="173" width="320" height="345"/>
@@ -1144,9 +1153,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="26I-GI-Mkc" firstAttribute="leading" secondItem="Exc-9v-wa6" secondAttribute="leading" id="2E0-Pe-2wE"/>
                             <constraint firstItem="S3M-ZD-ylj" firstAttribute="top" secondItem="7xr-eS-s31" secondAttribute="bottom" constant="153" id="CSI-ke-T4a"/>
                             <constraint firstItem="5Zy-Kf-dvP" firstAttribute="top" secondItem="S3M-ZD-ylj" secondAttribute="bottom" constant="1" id="WUR-uV-RzU"/>
                             <constraint firstItem="S3M-ZD-ylj" firstAttribute="leading" secondItem="Exc-9v-wa6" secondAttribute="leading" id="aRg-LE-Q0H"/>
+                            <constraint firstItem="26I-GI-Mkc" firstAttribute="top" secondItem="7xr-eS-s31" secondAttribute="bottom" constant="153" id="ekr-Hv-opl"/>
+                            <constraint firstItem="5Zy-Kf-dvP" firstAttribute="top" secondItem="26I-GI-Mkc" secondAttribute="bottom" constant="-49" id="xIw-Uf-Aa1"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" image="icon_profile.png" id="1yP-AO-hIC">
@@ -1161,6 +1173,7 @@
                         <outlet property="foodieImage" destination="bn2-nl-Qt1" id="D2B-A7-fnH"/>
                         <outlet property="friendsButton" destination="HJi-Li-pIN" id="sF4-vd-8vk"/>
                         <outlet property="hideNameView" destination="DOo-JC-4Rb" id="IN2-gW-6UT"/>
+                        <outlet property="loadingActivity" destination="ifK-me-u46" id="fMF-r9-JPA"/>
                         <outlet property="nameLabel" destination="cnh-mo-peH" id="v8F-my-1xA"/>
                         <outlet property="pastRatingsButton" destination="rj0-PT-pUN" id="Dam-cY-ACG"/>
                         <outlet property="profilePic" destination="Agt-Ox-0Df" id="R8t-19-ygF"/>

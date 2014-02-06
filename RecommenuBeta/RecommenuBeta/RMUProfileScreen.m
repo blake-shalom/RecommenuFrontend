@@ -23,9 +23,12 @@
 @property (weak, nonatomic) IBOutlet UIView *profilePicView;
 @property (weak, nonatomic) IBOutlet UIView *hideNameView;
 @property (weak, nonatomic) IBOutlet UIImageView *foodieImage;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingActivity;
 
 @property NSMutableArray *ratingsArray;
+@property NSMutableArray *friendsArray;
 @property BOOL isOnPastRatings;
+@property BOOL isUserOnFacebook;
 
 @end
 
@@ -44,7 +47,11 @@
 {
     [super viewDidLoad];
     
+    [self.loadingActivity setHidden:YES];
+    
     self.ratingsArray = [[NSMutableArray alloc]init];
+    self.friendsArray = [[NSMutableArray alloc]init];
+    
     // Set the tableview's properties
     self.profileTable.delegate = self;
     self.profileTable.dataSource = self;
@@ -75,8 +82,16 @@
     UITabBar *tabBar = tabBarVC.tabBar;
     [tabBar setTintColor:[UIColor RMULogoBlueColor]];
 
-    [self fetchFriendsOfUser:user];
+    // If user has signed in with facebook start the loading screen
+    if (user.facebookID){
+        self.isUserOnFacebook = YES;
+        [self fetchFriendsOfUser:user];
+    }
 }
+
+/*
+ *  Queries the DB for friends of the current user
+ */
 
 - (void)fetchFriendsOfUser:(RMUSavedUser*)user
 {
@@ -86,23 +101,29 @@
     range.length = 1;
     range.location = 6;
     NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
-    NSLog(@"Trim: %@", trimString);
     NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
     int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
-    NSLog(@"Value: %i", value);
     
-    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/user_profile/%i/"), value]
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/friend_list/%i"), value]
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"RESPONSE: %@", responseObject);
+             if (!self.isOnPastRatings) {
+                 [self.profileTable setHidden:NO];
+                 [self.emptyView setHidden:YES];
+                 [self.profileTable reloadData];
+             }
+             [self.friendsArray addObject:@"boody"];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"ERROR: %@, WITH RESPONSE STRING: %@",error, operation.responseString);
          }];
 }
 
+
 - (void)viewDidAppear:(BOOL)animated
 {
+    // SET the profile screen name for Google analytics
     self.screenName = @"Profile Screen";
     [super viewDidAppear:animated];
 }
@@ -302,29 +323,40 @@
 }
 
 
-
+// State switchn
 - (IBAction)showFriendsRatings:(id)sender
 {
     [self.friendsButton setTintColor:[UIColor RMULogoBlueColor]];
     [self.pastRatingsButton setTintColor:[UIColor RMUDividingGrayColor]];
     self.isOnPastRatings = NO;
-    if (NO) {
+    if (self.friendsArray.count > 0) {
         // TODO make the conditional checkunderlying storage and reload the table and make another conditional check on if friends are on
         [self.profileTable setHidden:NO];
         [self.emptyView setHidden:YES];
         [self.profileTable reloadData];
     }
     else {
+        if (self.isUserOnFacebook) {
+            [self.topEmptyLabel setHidden:YES];
+            [self.bottomEmptyLabel setHidden:YES];
+            [self.loadingActivity setHidden:NO];
+        }
         // Else hide the Table and show the empty view
-        [self.profileTable setHidden:YES];
-        [self.emptyView setHidden:NO];
-        [self.topEmptyLabel setText:@"You don't have any friends yet!"];
-        [self.bottomEmptyLabel setText:@"Connect through Facebook to search for friends and view their ratings."];
+        else {
+            [self.profileTable setHidden:YES];
+            [self.emptyView setHidden:NO];
+            [self.topEmptyLabel setText:@"You don't have any friends yet!"];
+            [self.bottomEmptyLabel setText:@"Connect through Facebook to search for friends and view their ratings."];
+        }
     }
 }
 
+// State switcherz
 - (IBAction)showPastRatings:(id)sender
 {
+    [self.topEmptyLabel setHidden:NO];
+    [self.bottomEmptyLabel setHidden:NO];
+    [self.loadingActivity setHidden:YES];
     [self.pastRatingsButton setTintColor:[UIColor RMULogoBlueColor]];
     [self.friendsButton setTintColor:[UIColor RMUDividingGrayColor]];
     self.isOnPastRatings = YES;
@@ -334,6 +366,7 @@
         [self.profileTable reloadData];
     }
     else {
+
         [self.profileTable setHidden:YES];
         [self.emptyView setHidden:NO];
         [self.topEmptyLabel setText:@"Rate more items to see them on your profile!"];
