@@ -17,10 +17,17 @@
 @property NSNumber *crowdLikes;
 @property NSNumber *crowdDislikes;
 @property NSNumber *friendLikes;
+@property NSNumber *friendDislikes;
 @property NSNumber *expertLikes;
+@property NSNumber *expertDislikes;
+@property NSMutableArray *facebookLikeID;
+@property NSMutableArray *facebookDislikeID;
+@property NSMutableArray *foodieLikeID;
+@property NSMutableArray *foodieDislikeID;
 @property BOOL isLiked;
 @property BOOL isDisliked;
 
 - (id)initWithDictionary:(NSDictionary*) mealDictionary;
+- (void)loadLikeDislikeInformationWithDictionary: (NSDictionary *)rateDictionary;
 
 @end

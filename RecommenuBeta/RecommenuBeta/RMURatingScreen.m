@@ -61,23 +61,23 @@
     
     // Set up managed context, user, and app delegate
     self.appDelegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
-    NSFetchRequest *request = [[NSFetchRequest alloc]init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.appDelegate.managedObjectContext];
-    [request setEntity:entity];
-    NSError *error;
-    NSArray *fetchedArray = [self.appDelegate.managedObjectContext executeFetchRequest:request error:&error];
-    self.user = fetchedArray[0];
+    self.user = [self.appDelegate fetchCurrentUser];
+    
+    // Rating was visited, tell delegate to not notify
+    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+    delegate.shouldDelegateNotifyUser = NO;
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    self.screenName = @"Rating Screen";
+    [super viewDidAppear:animated];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    NSLog(@"In view will disappear");
     NSError *error;
     if (![self.appDelegate.managedObjectContext save:&error])
         NSLog(@"ERROR SAVING: %@", error);
@@ -96,9 +96,8 @@
     [self.currSectionLabel setText:self.currentCourse.courseName];
     // If there are more than one course set the label to each of the two courses to the left and right
     if (self.currentMenu.courses.count > 1) {
-        RMUCourse *course = self.currentMenu.courses[self.currentMenu.courses.count -1 ];
         [self.leftSectionLabel setText:@""];
-        course = self.currentMenu.courses[1];
+        RMUCourse *course = self.currentMenu.courses[1];
         [self.rightSectionLabel setText:course.courseName];
     }
     else {
@@ -115,13 +114,24 @@
         self.currentMenu = self.currentRestaurant.menus[0];
         self.currentCourse = self.currentMenu.courses[0];
     }
-    
+}
+
+- (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant withCurrentMenu: (NSInteger)menu withCurrentSection: (NSInteger) section
+{
+    self.currentRestaurant = restaurant;
+    if (self.currentRestaurant.menus.count > 0) {
+        self.currentMenu = self.currentRestaurant.menus[menu];
+        self.currentCourse = self.currentMenu.courses[section];
+    }
+    [self.carousel scrollToItemAtIndex:section animated:NO];
+    [self.carousel reloadData];
 }
 
 - (void)loadMenu: (RMUMenu*)menu
 {
     self.currentMenu = menu;
     self.currentCourse = self.currentMenu.courses[0];
+    [self.carousel scrollToItemAtIndex:0 animated:NO];
     [self.carousel reloadData];
 }
 
@@ -133,10 +143,24 @@
 
 - (IBAction)viewMenus:(id)sender
 {
-    
     [self.revealViewController performSelectorOnMainThread:@selector(revealToggle:) withObject:self waitUntilDone:NO];
 }
 
+- (IBAction)moveSectionBackward:(id)sender
+{
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index > 0){
+        [self.carousel scrollToItemAtIndex:index - 1 animated:YES];
+    }
+}
+
+- (IBAction)moveSectionForward:(id)sender
+{
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index < self.currentMenu.courses.count -1){
+        [self.carousel scrollToItemAtIndex:index + 1 animated:YES];
+    }
+}
 
 #pragma mark - UITableViewDelagate
 
@@ -264,13 +288,18 @@
         else {
             isPositive = @"False";
         }
-        [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/rating/")]
-           parameters:@{@"foursquare_id": recommendation.entreeFoursquareID,
-                        @"positive" : isPositive,
-                        @"user" : self.user.userURI}
+        NSLog(@"YOO WHAT ARE YOU PASSING!?!? %@", isPositive);
+        [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_rating/")]
+           parameters:@{@"rating":
+                            @{ @"foursquare_entry_id": recommendation.entreeFoursquareID,
+                               @"positive" : recommendation.isRecommendPositive,
+                               @"user" : self.user.userURI,
+                               @"foursquare_venue_id" : self.currentRestaurant.restFoursquareID,
+                               @"foursquare_menu_id" : self.currentMenu.menuFoursquareID,
+                               @"review": @""}}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   // Succeeded, Log the response
-                  NSLog(@"%@", responseObject);
+                  NSLog(@"SUCCESS POSTING RATING: %@", responseObject);
               }
               failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                   // Failed. Log the user

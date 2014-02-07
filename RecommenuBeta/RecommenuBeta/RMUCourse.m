@@ -10,12 +10,15 @@
 
 @implementation RMUCourse
 
+/*
+ *  Called through the RMUMenu, set's properties and then iterates through the courses initializing each one
+ */
+
 - (id)initWithDictionary:(NSDictionary*) course
 {
     self = [super init];
     if (self) {
         self.courseName = [course objectForKey:@"name"];
-//        NSLog(@"course member: %@", self.courseName);
         self.meals = [[NSMutableArray alloc]init];
         for (NSDictionary* meal in [[course objectForKey:@"entries"] objectForKey:@"items"]) {
             [self.meals addObject:[[RMUMeal alloc]initWithDictionary:meal]];

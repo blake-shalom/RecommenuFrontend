@@ -11,12 +11,16 @@
 
 @implementation RMUMenu
 
+/*
+ *  Called from a RMURestaurant, sets initial properties and then iterates over the courses in the menu
+ */
+
 - (id)initWithDictionary:(NSDictionary*) menu
 {
     self = [super init];
     if (self) {
         self.menuName = [menu objectForKey:@"name"];
-//        NSLog(@"menu member %@", self.menuName);
+        self.menuFoursquareID = [menu objectForKey:@"menuId"];
         self.courses = [[NSMutableArray alloc]init];
         for (NSDictionary* course in [[menu objectForKey:@"entries"] objectForKey:@"items"]) {
             [self.courses addObject:[[RMUCourse alloc]initWithDictionary:course]];

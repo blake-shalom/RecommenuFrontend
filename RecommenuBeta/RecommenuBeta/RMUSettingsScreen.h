@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GAITrackedViewController.h"
+#import "RMULocationCell.h"
+#import "AFNetworking.h"
+#import "RMUAppDelegate.h"
+#import "RMUAnimationClass.h"
 
-@interface RMUSettingsScreen : UIViewController
 
+@interface RMUSettingsScreen : GAITrackedViewController
+<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @end

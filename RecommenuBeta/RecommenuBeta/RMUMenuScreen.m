@@ -14,7 +14,6 @@
 @property (weak,nonatomic) RMURestaurant *currentRestaurant;
 @property (weak,nonatomic) RMUMenu *currentMenu;
 @property (weak,nonatomic) RMUCourse *currentCourse;
-@property BOOL isRatingVisible;
 @property BOOL isMenuVisible;
 
 // IBOutlets
@@ -27,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
 @property (weak, nonatomic) IBOutlet UIView *missingMenuView;
 @property (weak, nonatomic) IBOutlet RMUButton *reportMenuButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadIndicator;
 
 
 @end
@@ -50,23 +50,28 @@
     [self.leftSectionLabel setTextColor:[UIColor RMUDividingGrayColor]];
     [self.rightSectionLabel setTextColor:[UIColor RMUDividingGrayColor]];
     [self.currSectionLabel setTextColor:[UIColor RMULogoBlueColor]];
+    
+    // Carousel Customization
     self.carousel.type = iCarouselTypeLinear;
     self.carousel.delegate = self;
     self.carousel.dataSource = self;
-    self.carousel.decelerationRate = 0.5;
+    self.carousel.decelerationRate = 0.4;
+    self.carousel.clipsToBounds = YES;
+    self.carousel.pagingEnabled = YES;
+    
+    // Reveal Controller customization
     [self.revealViewController panGestureRecognizer];
     [self.revealViewController tapGestureRecognizer];
     self.revealViewController.delegate = self;
-    self.carousel.clipsToBounds = YES;
-    self.carousel.pagingEnabled = YES;
     
     // Set up button UI
     [self.reportMenuButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.reportMenuButton setBackgroundColor:[UIColor RMULogoBlueColor]];
     self.reportMenuButton.isBlue = YES;
-    self.reportMenuButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.reportMenuButton.layer.borderWidth = 1.0f;
     [self.missingMenuView setHidden:YES];
+    
+    // Spin Load Indicator
+    [self.loadIndicator startAnimating];
 	// Do any additional setup after loading the view.
     
 }
@@ -74,7 +79,10 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    // Google Analytics screen name
+    self.screenName = @"Menu Screen";
+    [super viewDidAppear:animated];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,9 +98,8 @@
     [self.currSectionLabel setText:self.currentCourse.courseName];
     // If there are more than one course set the label to each of the two courses to the left and right
     if (self.currentMenu.courses.count > 1) {
-        RMUCourse *course = self.currentMenu.courses[self.currentMenu.courses.count -1 ];
         [self.leftSectionLabel setText:@""];
-        course = self.currentMenu.courses[1];
+        RMUCourse *course = self.currentMenu.courses[1];
         [self.rightSectionLabel setText:course.courseName];
     }
     else {
@@ -102,6 +109,14 @@
     if (self.currentRestaurant.menus.count < 1)
         [self.missingMenuView setHidden:NO];
     [self.carousel reloadData];
+    
+    // Menu visited, set notifications
+    if (self.currentRestaurant.menus.count > 0){
+        RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+        delegate.savedRestaurant = self.currentRestaurant;
+        delegate.shouldDelegateNotifyUser = YES;
+    }
+
 }
 
 - (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant
@@ -117,8 +132,9 @@
 {
     self.currentMenu = menu;
     self.currentCourse = self.currentMenu.courses[0];
-    [self.carousel reloadData];
     [self setupViews];
+    [self.carousel scrollToItemAtIndex:0 animated:NO];
+    [self.carousel reloadData];
 }
 
 #pragma mark - UIAlertView Delegate
@@ -157,24 +173,30 @@
 }
 
 /*
- *  Sees the ratings for all dishes, toggle-able
+ *  Upon click, moves the section forward, unless at the last index
  */
 
-- (IBAction)seeRatings:(id)sender
+- (IBAction)moveSectionBackward:(id)sender
 {
-    UIButton *button = (UIButton*)sender;
-    if (self.isRatingVisible) {
-        self.isRatingVisible = NO;
-        [button setImage:[UIImage imageNamed:@"icon_graph"] forState:UIControlStateNormal];
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index > 0){
+        [self.carousel scrollToItemAtIndex:index - 1  animated:YES];
     }
-    else {
-        self.isRatingVisible = YES;
-        [button setImage:[UIImage imageNamed:@"icon_graph_select"] forState:UIControlStateNormal];
-    }    
-//    UITableView *tableView = (UITableView*) self.carousel.currentItemView;
-//    [tableView reloadData];
-    [self.carousel reloadData];
 }
+
+/*
+ *  Upon click moves the section backward, unless at first section index
+ */
+
+
+- (IBAction)moveSectionForward:(id)sender
+{
+    NSInteger index = self.carousel.currentItemIndex;
+    if (index < self.currentMenu.courses.count -1){
+        [self.carousel scrollToItemAtIndex:index + 1 animated:YES];
+    }
+}
+
 
 #pragma mark - UITableViewDelagate
 
@@ -184,7 +206,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 72.0f;
+    return 118.0f;
 }
 
 /*
@@ -218,7 +240,6 @@
     RMUCourse *course = self.currentMenu.courses[index];
     [tableView registerNib:[UINib nibWithNibName:@"menuTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellIdentifier];
     RMUMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
     if (cell == nil) {
         cell = [[RMUMenuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
@@ -226,16 +247,17 @@
     [cell.mealLabel setText:currentMeal.mealName];
     [cell.descriptionLabel setText:currentMeal.mealDescription];
     [cell.priceLabel setText:currentMeal.mealPrice];
-    [cell.donutGraph displayLikes:12 dislikes:12];
+    
+    NSNumber *totalCrowd = [NSNumber numberWithInt:(currentMeal.crowdLikes.intValue + currentMeal.crowdDislikes.intValue)];
+    NSNumber *totalFacebook = [NSNumber numberWithInt:(currentMeal.friendLikes.intValue + currentMeal.friendDislikes.intValue)];
+    NSNumber *totalFoodie = [NSNumber numberWithInt:(currentMeal.expertDislikes.intValue + currentMeal.expertLikes.intValue)];
+
+    [cell.crowdLikeLabel setText:[totalCrowd stringValue]];
+    [cell.friendLikeLabel setText:[totalFacebook stringValue]];
+    [cell.expertLikeLabel setText:[totalFoodie stringValue]];
+    [cell.donutGraph displayLikes:[currentMeal.crowdLikes integerValue] dislikes:[currentMeal.crowdDislikes integerValue]];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (self.isRatingVisible) {
-        [cell.descView setHidden:YES];
-        [cell.likeView setHidden:NO];
-    }
-    else {
-        [cell.descView setHidden:NO];
-        [cell.likeView setHidden:YES];
-    }
     return cell;
 }
 

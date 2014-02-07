@@ -14,9 +14,12 @@
 #import "RMUMenuTable.h"
 #import "RMURevealViewController.h"
 #import "RMUButton.h"
+#import "GAITrackedViewController.h"
 
-@interface RMUMenuScreen : UIViewController
+@interface RMUMenuScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate, UIAlertViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 
 - (void)setupViews;
 - (void)setupMenuElementsWithRestaurant:(RMURestaurant*)restaurant;

@@ -10,5 +10,7 @@
 
 @interface RMUButton : UIButton
 
+// There are two types of rounded rect butons, grey and blue, this sets that property
 @property BOOL isBlue;
+
 @end

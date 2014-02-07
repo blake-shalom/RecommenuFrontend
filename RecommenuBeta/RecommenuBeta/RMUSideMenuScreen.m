@@ -28,6 +28,12 @@
     [self.reportButton setBackgroundColor:[UIColor whiteColor]];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.screenName = @"Side Menu Screen";
+    [super viewDidAppear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

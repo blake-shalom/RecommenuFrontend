@@ -6,11 +6,23 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
+#warning TODO Loading on each of the API CALLS
+#warning TODO IF user has signed in with facebook, then refresh fb friends
+
+#define SECS_IN_MIN 60
+#define MINS_TIL_NOTIFICATION 30
+
+#import "GAI.h"
 #import "RMUAppDelegate.h"
 
 @implementation RMUAppDelegate
 
 #pragma mark - Core Data Methods
+
+/*
+ *  Returns a managed object context for saving core data stuffz
+ */
+
 - (NSManagedObjectContext *) managedObjectContext {
     if (managedObjectContext != nil) {
         return managedObjectContext;
@@ -24,6 +36,10 @@
     return managedObjectContext;
 }
 
+/*
+ *  Retuns managed object model
+ */
+
 - (NSManagedObjectModel *)managedObjectModel {
     if (managedObjectModel != nil) {
         return managedObjectModel;
@@ -33,10 +49,16 @@
     return managedObjectModel;
 }
 
+/*
+ *  Returns persistent store and handles migration from ollder object models
+ */
+
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    // if persistent exists return it
     if (persistentStoreCoordinator != nil) {
         return persistentStoreCoordinator;
     }
+    // else make a new one or migrate a model
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
                                                stringByAppendingPathComponent: @"Recommenu.sqlite"]];
     NSError *error = nil;
@@ -57,14 +79,36 @@
     return persistentStoreCoordinator;
 }
 
+/*
+ *  App doc directory, used in core data methods
+ */
+
 - (NSString *)applicationDocumentsDirectory {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
 #pragma mark - Launch options
 
+/*
+ *  Called upon launching of the app, saves defaults sets up a user and adds some user properties
+ */
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 30;
+    
+    // Optional: set Logger to VERBOSE for debug information.
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    
+    // Initialize tracker, and suppress that stupid warning.
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-47533709-1"];
+#pragma unused(tracker)
+
+    
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
     NSString *secretString = @"2GA3BI5S4Z10ONRUJRWA40OTYDED3LAGCUAXJDBBEUNR4JJN";
@@ -85,25 +129,128 @@
                                                                     inManagedObjectContext:self.managedObjectContext];
         currentUser.hasLoggedIn = NO;
         currentUser.dateLogged = [NSDate date];
+        currentUser.isFoodie = NO;
         [self obtainUserURIForUser:currentUser];
     }
     else {
         // User has been created
         currentUser = fetchedArray[0];
         if (currentUser.hasLoggedIn) {
-            // User was created and has logged in and obtained a user URI, do nothing
+            // User was created and has logged in and obtained a user URI, do nothing but possibly refresh fb
             NSLog(@"USER OBTAINED URI: %@", currentUser.userURI);
+            NSRange range;
+            range.length = 1;
+            range.location = 6;
+            NSString *trimString = [currentUser.userURI stringByReplacingCharactersInRange:range withString:@""];
+            NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+            int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+            currentUser.userID = [NSNumber numberWithInt:value];
+            
         }
         else {
             // User was created and has not logged in, attempt to log in and obtain a user ID
             [self obtainUserURIForUser:currentUser];
         }
+        
     }
+    NSError *saveError;
+    if (![self.managedObjectContext save:&saveError])
+        NSLog(@"Error Saving %@", saveError);
+    [self handleInitialFacebookLoginWithUser:currentUser];
     return YES;
 }
 
+
 /*
- *  Attempts to log in and obtain a user URI for a given user by it's device id
+ *  Handles the initial login of a facebook user
+ */
+
+- (void)handleInitialFacebookLoginWithUser:(RMUSavedUser*)currentUser
+{
+    // Whenever a person opens the app, check for a cached session
+    if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded) {
+        
+        // If there's one, just open the session silently, without showing the user the login UI
+        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+                                          // Handler for session state changes
+                                          // This method will be called EACH time the session state changes,
+                                          // also for intermediate states and NOT just when the session open
+                                          [self sessionStateChanged:session state:state error:error];
+                                          // Refresh friends list on sign in
+                                      }];
+    }
+    else {
+        // ELSE no facebook cached session, USER needs to login
+        NSLog(@"NO FB SESSION FOUND");
+        self.shouldUserLoginFacebook = YES;
+    }
+}
+/*
+ *  Handles State changes on FB
+ */
+
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error
+{
+    // If the session was opened successfully
+    if (!error && state == FBSessionStateOpen){
+        NSLog(@"Session opened");
+        self.shouldUserLoginFacebook = NO;
+        return;
+    }
+    if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
+        // If the session is closed
+        NSLog(@"Session closed");
+        self.shouldUserLoginFacebook = YES;
+    }
+    
+    // Handle errors
+    if (error){
+        NSLog(@"Error");
+        NSString *alertText;
+        NSString *alertTitle;
+        // If the error requires people using an app to make an action outside of the app in order to recover
+        if ([FBErrorUtility shouldNotifyUserForError:error] == YES){
+            alertTitle = @"Something went wrong";
+            alertText = [FBErrorUtility userMessageForError:error];
+            [self showMessage:alertText withTitle:alertTitle];
+        } else {
+            
+            // If the user cancelled login, do nothing
+            if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+                NSLog(@"User cancelled login");
+                
+                // Handle session closures that happen outside of the app
+            } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
+                alertTitle = @"Facebook Error";
+                alertText = @"Your current session is no longer valid. Please log in again.";
+                [self showMessage:alertText withTitle:alertTitle];
+                self.shouldUserLoginFacebook = YES;
+                
+                // For simplicity, here we just show a generic message for all other errors
+                // You can learn how to handle other errors using our guide: https://developers.facebook.com/docs/ios/errors
+            } else {
+                //Get more error information from the error
+                NSDictionary *errorInformation = [[[error.userInfo objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"] objectForKey:@"body"] objectForKey:@"error"];
+                
+                // Show the user an error message
+                alertTitle = @"Something went wrong";
+                alertText = [NSString stringWithFormat:@"Please retry. \n\n If the problem persists contact us and mention this error code: %@", [errorInformation objectForKey:@"message"]];
+                [self showMessage:alertText withTitle:alertTitle];
+                self.shouldUserLoginFacebook = YES;
+
+            }
+        }
+        // Clear this token
+        [FBSession.activeSession closeAndClearTokenInformation];
+        // Show the user the logged-out UI
+    }
+}
+
+
+/*
+ *  Using a user's username get an error message that states if the user needs to login with params
  */
 
 - (void)obtainUserURIForUser:(RMUSavedUser*)user
@@ -111,7 +258,47 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     NSLog(@"%@",deviceId);
+    
+    // For now save all test fields as substrings of ID, length 10
     NSString *testFields = [deviceId substringToIndex:10];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/users/%@"),testFields]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"response: %@", responseObject);
+             if ([[responseObject objectForKey:@"error"] isEqualToString:@"dne"])
+                 [self registerUser:user];
+             else {
+                 [user setUserURI:[responseObject objectForKey:@"resource_uri"]];
+                 NSRange range;
+                 range.length = 1;
+                 range.location = 6;
+                 NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
+                 NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+                 int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+                 user.userID = [NSNumber numberWithInt:value];
+             }
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@", error);
+         }];
+}
+
+
+/*
+ *  Attempts to log in and obtain a user URI for a given user by it's device id
+ */
+
+- (void)registerUser:(RMUSavedUser*)user
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    NSLog(@"%@",deviceId);
+    
+    // For now save all test fields as substrings of ID, length 10
+    NSString *testFields = [deviceId substringToIndex:10];
+    user.userName = testFields;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_user/"
       parameters:@{@"device_id": deviceId,
@@ -126,6 +313,13 @@
              NSLog(@"response : %@", responseObject);
              NSError *saveError;
              user.hasLoggedIn = [NSNumber numberWithBool:YES];
+             NSRange range;
+             range.length = 1;
+             range.location = 6;
+             NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
+             NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+             int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+             user.userID = [NSNumber numberWithInt:value];
              if (![self.managedObjectContext save:&saveError])
                  NSLog(@"Error Saving %@", saveError);
          }
@@ -138,25 +332,62 @@
          }];
 }
 
+/* 
+ * Show an alert message
+ */
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title
+{
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:text
+                               delegate:self
+                      cancelButtonTitle:@"OK!"
+                      otherButtonTitles:nil] show];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
 
+/*
+ *  Saves state when entering background
+ */
+
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    if (self.shouldDelegateNotifyUser) {
+        // Notification needs to be set up
+        UILocalNotification *notification = [[UILocalNotification alloc]init];
+        [notification setAlertAction:@"rate"];
+        [notification setAlertBody:@"Did you enjoy what you ordered?"];
+        NSTimeInterval interval = SECS_IN_MIN * MINS_TIL_NOTIFICATION;
+        NSDate *fireDate = [[NSDate date]dateByAddingTimeInterval:interval];
+        [notification setFireDate:fireDate];
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
+    else {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    }
+    
     NSError *saveError;
     if (![self.managedObjectContext save:&saveError])
         NSLog(@"Error Saving %@", saveError);
-
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    // If notified user, present rate VC
+    if (self.shouldDelegateNotifyUser) {
+        UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        RMURevealViewController *rateViewController = [mainstoryboard instantiateViewControllerWithIdentifier:@"RateRevealViewController"];
+        NSLog(@"Current Restaurant name: %@, and ID %@", self.savedRestaurant.restName, self.savedRestaurant.restFoursquareID);
+        rateViewController.currentRestaurant = self.savedRestaurant;
+        [self.window makeKeyAndVisible];
+        [self.window setRootViewController:rateViewController];
+    }
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -167,6 +398,27 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - returner dudes
+
+- (RMUSavedUser*)fetchCurrentUser
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:self.managedObjectContext];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchedArray = [self.managedObjectContext executeFetchRequest:request error:&error];
+    return (RMUSavedUser*) fetchedArray[0];
+}
+
+
+- (NSString*)returnUserName
+{
+    NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
+    // For now save all test fields as substrings of ID, length 10
+    return [deviceId substringToIndex:10];
+
 }
 
 @end

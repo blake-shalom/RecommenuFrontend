@@ -7,10 +7,9 @@
 //
 #define NUMBER_OF_FALLBACK 15
 
-#import "RMULocateScreen.h"
+#define LOCAL_QUEUE dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
-#warning TODO implement push notifications
-#warning TODO Google Analytics
+#import "RMULocateScreen.h"
 
 @interface RMULocateScreen ()
 
@@ -48,25 +47,30 @@
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.screenName = @"Locate Screen";
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    dispatch_async(LOCAL_QUEUE, ^
+                   {
+                       [self performSelectorOnMainThread:@selector(loadMapElements) withObject:nil waitUntilDone:YES];
+                   });
+	// Do any additional setup after loading the view.
+}
+
+- (void)loadMapElements
+{
     self.hasDroppedPin =NO;
     self.fallbackRest = [[NSMutableArray alloc]init];
     
     // Deactivate dismiss button
     [self.dismissButton setUserInteractionEnabled:NO];
-    
-    // Add borders to buttons
-    self.yesButton.layer.borderWidth = 1.0;
-    self.yesButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.noButton.layer.borderWidth = 1.0;
-    self.noButton.layer.borderColor = [UIColor blackColor].CGColor;
-    
-    // Customize the Appearance of the TabBar
-    UITabBarController *tabBarVC = self.tabBarController;
-    UITabBar *tabBar = tabBarVC.tabBar;
-    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
     
     // Hide yo wife
     [self.popupView setHidden:YES];
@@ -87,7 +91,7 @@
     [self.locationManager startUpdatingLocation];
     self.restID = [[NSString alloc]init];
     self.restString = [[NSString alloc]init];
-
+    
     // Connfigure the buttons
     self.yesButton.isBlue = YES;
     self.noButton.isBlue = NO;
@@ -96,7 +100,6 @@
     [self.noButton setBackgroundColor:[UIColor whiteColor]];
     
     self.fallbackTable.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,16 +121,32 @@
     [self.mapView setCenterCoordinate:coord animated:YES];
     
     // Drop a pin
-#warning - TODO customized user annotation
+#warning  TODO cache map images
     if (!self.hasDroppedPin){
         RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView
-                                                                        coordinate:coord
-                                                                          andTitle:@"YOU ARE HERE"];
+                                                                            coordinate:coord
+                                                                              andTitle:@"YOU ARE HERE"];
         [self.mapView addAnnotation:userAnnotation];
         self.hasDroppedPin = YES;
     }
     [self findRestaurantWithRadius:10.0f];
 }
+
+/*
+ *  If location manager is off be sure to tell the user
+ */
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    if (error.code == kCLErrorDenied){
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"No Location Services"
+                                                      message:@"Sorry, the locate feature requires location services please adjust these in your iPhone's Settings < Privacy < Location Services"
+                                                     delegate:self cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil];
+        [alertView show];
+    }
+}
+
 
 #pragma mark - Networking
 
@@ -162,7 +181,6 @@
                      [self.restaurantLabel setText:self.restString];
                      [self.addressLabel setText:[[respArray[0] objectForKey:@"location"] objectForKey:@"address"]];
                      [self animateInGradient];
-                     
                  }
             }
          }
@@ -382,5 +400,10 @@
                          withCompletion:Nil
                              withBounce:YES];
 }
+
+
+#pragma mark - UIAlertView Delegate
+
+
 @end
 

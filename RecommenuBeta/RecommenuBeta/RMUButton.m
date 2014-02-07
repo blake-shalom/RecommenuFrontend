@@ -20,10 +20,17 @@
     return self;
 }
 
+/*
+ *  laysout the subview and sets the corner radius to 3
+ */
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     self.layer.cornerRadius = 3.0f;
+    self.layer.borderWidth = 0.5;
+    self.layer.borderColor = [UIColor blackColor].CGColor;
+
 }
 
 /*

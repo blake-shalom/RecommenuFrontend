@@ -26,6 +26,10 @@
     // Configure the view for the selected state
 }
 
+/*
+ *  Lays out the color of different interface elements
+ */
+
 - (void)layoutSubviews
 {
     [self.mealLabel setTextColor:[UIColor RMUTitleColor]];

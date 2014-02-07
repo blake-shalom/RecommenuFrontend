@@ -16,13 +16,13 @@
     if (self) {
         self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         [self setBackgroundColor:[UIColor whiteColor]];
-        [self.layer setCornerRadius:5.0f];
+        [self.layer setCornerRadius:3.0f];
         [self.layer setShadowColor:[UIColor blackColor].CGColor];
         [self.layer setShadowOpacity:0.8];
         [self.layer setShadowRadius:5.0];
         [self.layer setShadowOffset:CGSizeMake(1.0, 1.0)];
         self.layer.borderColor = [UIColor blackColor].CGColor;
-        self.layer.borderWidth = 1.0f;
+        self.layer.borderWidth = 0.5f;
         // Initialization code
     }
     return self;

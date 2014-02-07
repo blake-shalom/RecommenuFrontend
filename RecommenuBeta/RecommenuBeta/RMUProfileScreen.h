@@ -11,8 +11,15 @@
 #import "RMUSavedRecommendation.h"
 #import "RMUProfileRatingCell.h"
 #import "RMURevealViewController.h"
+#import "RMUOtherProfileScreen.h"
+#import "GAITrackedViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import "RMUSavedUserPhoto.h"
+#import "RMUProfileFriendCell.h"
 
-@interface RMUProfileScreen : UIViewController
+@interface RMUProfileScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate>
+
+- (void)fetchFriendsOfUser:(RMUSavedUser*)user;
 
 @end

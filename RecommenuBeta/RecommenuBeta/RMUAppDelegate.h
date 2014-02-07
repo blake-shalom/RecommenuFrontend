@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "AFNetworking.h"
 #import "RMUSavedUser.h"
+#import "RMURevealViewController.h"
 
 @interface RMUAppDelegate : UIResponder <UIApplicationDelegate>{
     NSManagedObjectModel *managedObjectModel;
@@ -23,7 +25,19 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+// Push notification properties
+@property BOOL shouldDelegateNotifyUser;
+@property BOOL shouldUserLoginFacebook;
+@property RMURestaurant *savedRestaurant;
+@property FBSession *session;
+
+// Used to save across multiple files
 - (NSManagedObjectContext *) managedObjectContext;
 
+// Handles changed state of FB
+- (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
+- (RMUSavedUser*)fetchCurrentUser;
+- (NSString*)returnUserName;
+- (void)showMessage:(NSString *)text withTitle:(NSString *)title;
 
 @end

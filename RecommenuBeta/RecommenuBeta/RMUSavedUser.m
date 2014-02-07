@@ -8,10 +8,11 @@
 
 #import "RMUSavedUser.h"
 #import "RMUSavedRecommendation.h"
-
+#import "RMUSavedUserPhoto.h"
 
 @implementation RMUSavedUser
 
+@dynamic userID;
 @dynamic hasLoggedIn;
 @dynamic userURI;
 @dynamic firstName;
@@ -22,5 +23,8 @@
 @dynamic city;
 @dynamic dateLogged;
 @dynamic ratingsForUser;
+@dynamic userName;
+@dynamic isFoodie;
+@dynamic savedPhotoForUser;
 
 @end

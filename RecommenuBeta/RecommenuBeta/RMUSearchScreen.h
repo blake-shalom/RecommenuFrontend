@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AFNetworking.h"
+#import "RMUSearchCell.h"
+#import "RMURevealViewController.h"
+#import "GAITrackedViewController.h"
 
-@interface RMUSearchScreen : UIViewController
+@interface RMUSearchScreen : GAITrackedViewController
+<UISearchBarDelegate, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @end

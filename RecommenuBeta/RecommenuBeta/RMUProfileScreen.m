@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
+
 #import "RMUProfileScreen.h"
 
 @interface RMUProfileScreen ()
@@ -18,9 +19,16 @@
 @property (weak, nonatomic) IBOutlet UIView *emptyView;
 @property (weak, nonatomic) IBOutlet UILabel *topEmptyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bottomEmptyLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *profilePic;
+@property (weak, nonatomic) IBOutlet UIView *profilePicView;
+@property (weak, nonatomic) IBOutlet UIView *hideNameView;
+@property (weak, nonatomic) IBOutlet UIImageView *foodieImage;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingActivity;
 
 @property NSMutableArray *ratingsArray;
+@property NSArray *friendsArray;
 @property BOOL isOnPastRatings;
+@property BOOL isUserOnFacebook;
 
 @end
 
@@ -39,7 +47,11 @@
 {
     [super viewDidLoad];
     
+    [self.loadingActivity setHidden:YES];
+    
     self.ratingsArray = [[NSMutableArray alloc]init];
+    self.friendsArray = [[NSArray alloc]init];
+    
     // Set the tableview's properties
     self.profileTable.delegate = self;
     self.profileTable.dataSource = self;
@@ -53,45 +65,73 @@
     [self.currentRatingsLabel setTextColor:[UIColor RMUNumRatingGray]];
     
     // Pull a user and sort his/her ratings
-    NSFetchRequest *request = [[NSFetchRequest alloc]init];
     RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"RMUSavedUser" inManagedObjectContext:delegate.managedObjectContext];
-    [request setEntity:entity];
-    NSError *error;
-    NSArray *fetchedArray = [delegate.managedObjectContext executeFetchRequest:request error:&error];
-    if (fetchedArray.count == 0){
-        NSLog(@"User was not created properly");
-        abort();
-    }
-    else {
-        RMUSavedUser *user = fetchedArray[0];
-        [self sortUserRatingsIntoRatingsArray:user];
-        
-    }
+    RMUSavedUser *user = [delegate fetchCurrentUser];
+    [self sortUserRatingsIntoRatingsArray:user];
     
+    [self loadUserElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
-	// Do any additional setup after loading the view.
+    
+    if (user.isFoodie)
+        [self.foodieImage setHidden:NO];
+    else
+        [self.foodieImage setHidden:YES];
+    
+    // Customize the Appearance of the TabBar
+    UITabBarController *tabBarVC = self.tabBarController;
+    UITabBar *tabBar = tabBarVC.tabBar;
+    [tabBar setTintColor:[UIColor RMULogoBlueColor]];
+
+    // If user has signed in with facebook start the loading screen
+    if (user.facebookID){
+        self.isUserOnFacebook = YES;
+        [self fetchFriendsOfUser:user];
+    }
+}
+
+/*
+ *  Queries the DB for friends of the current user
+ */
+
+- (void)fetchFriendsOfUser:(RMUSavedUser*)user
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/friend_list/%i"), user.userID.intValue]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"RESPONSE: %@", responseObject);
+             self.friendsArray = [responseObject objectForKey:@"response"];
+             if (!self.isOnPastRatings) {
+                 [self.profileTable setHidden:NO];
+                 [self.emptyView setHidden:YES];
+                 [self.profileTable reloadData];
+             }
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@, WITH RESPONSE STRING: %@",error, operation.responseString);
+         }];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    // SET the profile screen name for Google analytics
+    self.screenName = @"Profile Screen";
+    [super viewDidAppear:animated];
 }
 
 - (void)sortUserRatingsIntoRatingsArray: (RMUSavedUser*) user
 {
-    if (!user.facebookID) {
-        [self.nameLabel setText:@"Anonymous User"];
-        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
-#warning need to do generic picture
-    }
-    else {
-        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
-        
-#warning - TODO Facebook mapping for pic/name
-    }
-    
     // Handle rating storage
     if (user.ratingsForUser.count == 0) {
         [self.currentRatingsLabel setText:@"0 Ratings"];
+        [self showPastRatings:self];
     }
     else {
         // Set UI
+        [self.profileTable setHidden:NO];
         [self.currentRatingsLabel setText:[NSString stringWithFormat:@"%i Ratings", user.ratingsForUser.count]];
         
         // Sort ratings into containers
@@ -113,6 +153,55 @@
     }
 }
 
+/*
+ *  Set Up User elements
+ */
+
+- (void)loadUserElements
+{
+    RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+    if (appDelegate.shouldUserLoginFacebook) {
+        [self.nameLabel setText:@"Anonymous User"];
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
+    }
+    else {
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+        [self.facebookButton setUserInteractionEnabled:NO];
+        [self.hideNameView setHidden:NO];
+        
+        // Set some frames
+        CGRect profPicFrame = self.profilePic.frame;
+        CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
+        
+        // CACHED INFO!!!!!!!
+        if (NO) {
+            
+        }
+        else {
+            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    // Success! Include your code to handle the results here
+                    NSLog(@"user info: %@", result);
+                    [self.nameLabel setText:[result objectForKey:@"name"]];
+                    FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                    
+                    [profileView setFrame:modifiedProf];
+                    [self.profilePicView addSubview:profileView];
+                    UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+                    [circleView setFrame: profPicFrame];
+                    [self.profilePicView addSubview:circleView];
+                }
+                else {
+                    NSLog(@"error: %@", error);
+                    // An error occurred, we need to handle the error
+                }
+            }];
+        }
+
+        [self.hideNameView setHidden:YES];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -121,27 +210,50 @@
 
 #pragma mark - UITableView Data source
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.isOnPastRatings)
+        return 80.0;
+    else
+        return 67.0;
+}
+
 /*
- *
+ *  Cell for row uses Rating cells
  */
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"ratingCell";
-    RMUProfileRatingCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
-    RMUSavedRecommendation *rec = recArray[indexPath.row];
-    [cell.entreeLabel setText:rec.entreeName];
-    [cell.descriptionLabel setText:rec.entreeDesc];
-    if (rec.isRecommendPositive.boolValue)
-        [cell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_up_profile"]];
-    else
-        [cell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_down_profile"]];
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"MM/dd/yyy"];
-    [cell.dateLabel setText:[formatter stringFromDate:rec.timeRated]];
-    
+    UITableViewCell *cell;
+    if (self.isOnPastRatings) {
+        static NSString *CellIdentifier = @"ratingCell";
+        RMUProfileRatingCell *rateCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
+        RMUSavedRecommendation *rec = recArray[indexPath.row];
+        [rateCell.entreeLabel setText:rec.entreeName];
+        [rateCell.descriptionLabel setText:rec.entreeDesc];
+        if (rec.isRecommendPositive.boolValue)
+            [rateCell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_up_profile"]];
+        else
+            [rateCell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_down_profile"]];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setDateFormat:@"MM/dd/yyy"];
+        [rateCell.dateLabel setText:[formatter stringFromDate:rec.timeRated]];
+        cell = rateCell;
+    }
+    else {
+        static NSString *CellIdentifier = @"friendCell";
+        RMUProfileFriendCell *friendCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        NSDictionary *friendDict = self.friendsArray[indexPath.row];
+        NSString *nameOfFriend = [NSString stringWithFormat:(@"%@ %@"), [friendDict objectForKey:@"first_name"], [friendDict objectForKey:@"last_name"]];
+        [friendCell.friendnNameLabel setText:nameOfFriend];
+        FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[friendDict objectForKey:@"facebook_id"] pictureCropping:FBProfilePictureCroppingSquare];
+        [friendCell.numRatingsLabel setText:@""];
+        [profileView setFrame:friendCell.friendImage.frame];
+        [friendCell addSubview:profileView];
+        cell = friendCell;
+    }
     return cell;
 }
 
@@ -151,8 +263,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *rowArray = [self.ratingsArray[section] objectForKey:@"recArray"];
-    return rowArray.count;
+    if (self.isOnPastRatings) {
+        NSArray *rowArray = [self.ratingsArray[section] objectForKey:@"recArray"];
+        return rowArray.count;
+    }
+    else
+        return self.friendsArray.count;
 }
 
 /*
@@ -161,7 +277,10 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.ratingsArray.count;
+    if (self.isOnPastRatings)
+        return self.ratingsArray.count;
+    else
+        return 1;
 }
 
 /*
@@ -170,13 +289,17 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [self.ratingsArray[section] objectForKey:@"restName"];
+    if (self.isOnPastRatings)
+        return [self.ratingsArray[section] objectForKey:@"restName"];
+    else
+        return @"FRIENDS";
 }
+
 
 #pragma mark - segue methods
 
 /*
- *  Currently one segue is supported, profile to menu, that redirects a user to the menu of an item
+ *  Currently three segues is supported, profile to menu, that redirects a user to the menu of an item
  */
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -189,32 +312,141 @@
         NSLog(@"%@", rec.restFoursquareID);
         [nextScreen getRestaurantWithFoursquareID:rec.restFoursquareID andName:rec.restaurantName];
     }
+    else if ([segue.identifier isEqualToString:@"profToFoodie"]) {
+        RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
+        foodieProf.isFoodie = YES;
+    }
+    else if ([segue.identifier isEqualToString:@"profToFriend"]) {
+        RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
+        foodieProf.isFoodie = NO;
+    }
+    else {
+        NSLog(@"Unknown ID: %@", segue.identifier);
+    }
 }
 
 #pragma mark - interactivity
 
+/*
+ *  Logs in on Facebook
+ */
+
+- (IBAction)loginOnFaceBook:(id)sender
+{
+    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                       allowLoginUI:YES
+                                  completionHandler:
+     ^(FBSession *session, FBSessionState state, NSError *error) {
+         if (!error){
+             // Retrieve the app delegate
+             RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+             [appDelegate sessionStateChanged:session state:state error:error];
+             [self loadUserElements];
+             self.isUserOnFacebook = YES;
+             RMUSavedUser *user = [appDelegate fetchCurrentUser];
+             [self logFacebookUser:user intoRecommenuWithSession:session];
+         }
+         else
+             NSLog(@"ERRROR: %@", error);
+     }];
+}
+
+/*
+ *  Logs a user with Facebook into REcommenu's DB
+ */
+
+- (void)logFacebookUser:(RMUSavedUser*)user intoRecommenuWithSession:(FBSession*)session
+{
+    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            user.facebookID = [result objectForKey:@"id"];
+            user.firstName = [result objectForKey:@"first_name"];
+            user.lastName = [result objectForKey:@"last_name"];
+            NSLog(@"FACEBOOKID: %@", user.facebookID);
+            RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+            NSError *saveError;
+            if (![appDelegate.managedObjectContext save:&saveError])
+                NSLog(@"Error Saving %@", saveError);
+            
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            manager.requestSerializer = [AFJSONRequestSerializer serializer];
+            [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@"), user.userURI]
+              parameters:@{@"first_name": user.firstName,
+                           @"last_name" : user.lastName}
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSLog(@"RESPONSE : %@", responseObject);
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     NSLog(@"ERROR : %@",error);
+                 }];
+            [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/user_profile/%i/"), user.userID.intValue]
+              parameters:@{@"facebook_id": user.facebookID}
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSLog(@"SUCCESS FROM LOGGING: %@", responseObject);
+                     [self refreshFacebookFriendsListWithUser:user andSession:session];
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     NSLog(@"FAIL: %@ with response: %@", error, operation.responseString);
+                 }];
+        }
+        else
+            NSLog(@"ERRRRRRRR : %@", error);
+    }];
+}
+
+/*
+ *  Calls the Backend's script for sorting users and gets the profile model working
+ */
+
+- (void) refreshFacebookFriendsListWithUser:(RMUSavedUser*)user andSession:(FBSession*) session
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@"), user.facebookID, session.accessTokenData.accessToken]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"%@",responseObject);
+             [self fetchFriendsOfUser:user];
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@, with RESPONSE STRING: %@", error, operation.responseString);
+         }];
+}
+
+// State switchn
 - (IBAction)showFriendsRatings:(id)sender
 {
     [self.friendsButton setTintColor:[UIColor RMULogoBlueColor]];
     [self.pastRatingsButton setTintColor:[UIColor RMUDividingGrayColor]];
     self.isOnPastRatings = NO;
-    if (NO) {
-        // TODO make the conditional checkunderlying storage and reload the table and make another conditional check on if friends are on
+    if (self.friendsArray.count > 0) {
         [self.profileTable setHidden:NO];
         [self.emptyView setHidden:YES];
         [self.profileTable reloadData];
     }
     else {
+        if (self.isUserOnFacebook) {
+            [self.topEmptyLabel setHidden:YES];
+            [self.bottomEmptyLabel setHidden:YES];
+            [self.loadingActivity setHidden:NO];
+        }
         // Else hide the Table and show the empty view
-        [self.profileTable setHidden:YES];
-        [self.emptyView setHidden:NO];
-        [self.topEmptyLabel setText:@"You don't have any friends yet!"];
-        [self.bottomEmptyLabel setText:@"Connect through Facebook to search for friends and view their ratings."];
+        else {
+            [self.profileTable setHidden:YES];
+            [self.emptyView setHidden:NO];
+            [self.topEmptyLabel setText:@"You don't have any friends yet!"];
+            [self.bottomEmptyLabel setText:@"Connect through Facebook to search for friends and view their ratings."];
+        }
     }
 }
 
+// State switcherz
 - (IBAction)showPastRatings:(id)sender
 {
+    [self.topEmptyLabel setHidden:NO];
+    [self.bottomEmptyLabel setHidden:NO];
+    [self.loadingActivity setHidden:YES];
     [self.pastRatingsButton setTintColor:[UIColor RMULogoBlueColor]];
     [self.friendsButton setTintColor:[UIColor RMUDividingGrayColor]];
     self.isOnPastRatings = YES;
@@ -224,6 +456,7 @@
         [self.profileTable reloadData];
     }
     else {
+
         [self.profileTable setHidden:YES];
         [self.emptyView setHidden:NO];
         [self.topEmptyLabel setText:@"Rate more items to see them on your profile!"];
@@ -231,5 +464,6 @@
         // Show the correct headers on the missing view
     }
 }
+
 
 @end

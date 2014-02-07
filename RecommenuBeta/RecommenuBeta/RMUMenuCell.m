@@ -36,6 +36,10 @@
     // Configure the view for the selected state
 }
 
+/*
+ *  Laysout the correct configurations of the subviews
+ */
+
 - (void)layoutSubviews
 {
     [self.mealLabel setTextColor:[UIColor RMUTitleColor]];
