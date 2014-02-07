@@ -13,6 +13,7 @@
 @implementation RMUSavedUserPhoto
 
 @dynamic userPhoto;
+@dynamic userForSavedPhoto;
 
 - (void)storeUserImageAsPNG:(UIImage*)userImage
 {

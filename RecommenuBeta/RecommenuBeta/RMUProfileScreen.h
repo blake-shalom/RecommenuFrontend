@@ -20,4 +20,6 @@
 @interface RMUProfileScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate>
 
+- (void)fetchFriendsOfUser:(RMUSavedUser*)user;
+
 @end

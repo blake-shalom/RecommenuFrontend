@@ -7,16 +7,16 @@
 //
 //  Saved user model
 
-#warning TODO migrate data model and add userID number
-
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
 @class RMUSavedRecommendation;
+@class RMUSavedUserPhoto;
 
 @interface RMUSavedUser : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * hasLoggedIn;
+@property (nonatomic, retain) NSNumber * userID;
 @property (nonatomic, retain) NSString * userURI;
 @property (nonatomic, retain) NSString * firstName;
 @property (nonatomic, retain) NSString * lastName;
@@ -28,6 +28,8 @@
 @property (nonatomic, retain) NSSet *ratingsForUser;
 @property (nonatomic, retain) NSNumber * isFoodie;
 @property (nonatomic, retain) NSString * userName;
+@property (nonatomic, retain) RMUSavedUserPhoto * savedPhotoForUser;
+
 @end
 
 @interface RMUSavedUser (CoreDataGeneratedAccessors)

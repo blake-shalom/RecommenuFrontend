@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class RMUSavedUser;
 
 @interface RMUSavedUserPhoto : NSManagedObject
 
 @property (nonatomic, retain) NSData * userPhoto;
+@property (nonatomic, retain) RMUSavedUser * userForSavedPhoto;
 
 @end

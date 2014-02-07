@@ -138,6 +138,14 @@
         if (currentUser.hasLoggedIn) {
             // User was created and has logged in and obtained a user URI, do nothing but possibly refresh fb
             NSLog(@"USER OBTAINED URI: %@", currentUser.userURI);
+            NSRange range;
+            range.length = 1;
+            range.location = 6;
+            NSString *trimString = [currentUser.userURI stringByReplacingCharactersInRange:range withString:@""];
+            NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+            int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+            currentUser.userID = [NSNumber numberWithInt:value];
+            
         }
         else {
             // User was created and has not logged in, attempt to log in and obtain a user ID
@@ -145,27 +153,13 @@
         }
         
     }
+    NSError *saveError;
+    if (![self.managedObjectContext save:&saveError])
+        NSLog(@"Error Saving %@", saveError);
     [self handleInitialFacebookLoginWithUser:currentUser];
     return YES;
 }
 
-/*
- *  Calls the Backend's script for sorting users and gets the profile model working
- */
-
-- (void) refreshFacebookFriendsListWithUser:(RMUSavedUser*)user andSession:(FBSession*) session
-{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@"), user.facebookID, session.accessTokenData.accessToken]
-      parameters:nil
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             NSLog(@"%@",responseObject);
-         }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             NSLog(@"ERROR: %@, with RESPONSE STRING: %@", error, operation.responseString);
-         }];
-}
 
 /*
  *  Handles the initial login of a facebook user
@@ -203,10 +197,6 @@
     if (!error && state == FBSessionStateOpen){
         NSLog(@"Session opened");
         self.shouldUserLoginFacebook = NO;
-        RMUSavedUser *user = [self fetchCurrentUser];
-        NSLog(@"USER FACEBOOK ID: %@", user.facebookID);
-        if (!user.facebookID)
-            [self logFacebookUser:user intoRecommenuWithSession:session];
         return;
     }
     if (state == FBSessionStateClosed || state == FBSessionStateClosedLoginFailed){
@@ -258,46 +248,6 @@
     }
 }
 
-/*
- *  Logs a user with Facebook into REcommenu's DB
- */
-
-- (void)logFacebookUser:(RMUSavedUser*)user intoRecommenuWithSession:(FBSession*)session
-{
-    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-        user.facebookID = [result objectForKey:@"id"];
-        NSLog(@"FACEBOOKID: %@", user.facebookID);
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@"), user.userURI]
-          parameters:@{@"first_name": user.firstName,
-                       @"last_name" : user.lastName}
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"RESPONSE : %@", responseObject);
-                 NSError *saveError;
-                 if (![self.managedObjectContext save:&saveError])
-                     NSLog(@"Error Saving %@", saveError);
-             }
-             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 NSLog(@"ERROR : %@",error);
-             }];
-        NSRange range;
-        range.length = 1;
-        range.location = 6;
-        NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
-        NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
-        int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
-        [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/user_profile/%i/"), value]
-          parameters:@{@"facebook_id": user.facebookID}
-             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                 NSLog(@"SUCCESS FROM LOGGING: %@", responseObject);
-             }
-             failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 NSLog(@"FAIL: %@ with response: %@", error, operation.responseString);
-             }];
-        
-    }];
-}
 
 /*
  *  Using a user's username get an error message that states if the user needs to login with params
@@ -321,9 +271,13 @@
                  [self registerUser:user];
              else {
                  [user setUserURI:[responseObject objectForKey:@"resource_uri"]];
-                 NSError *saveError;
-                 if (![self.managedObjectContext save:&saveError])
-                     NSLog(@"Error Saving %@", saveError);
+                 NSRange range;
+                 range.length = 1;
+                 range.location = 6;
+                 NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
+                 NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+                 int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+                 user.userID = [NSNumber numberWithInt:value];
              }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -359,6 +313,13 @@
              NSLog(@"response : %@", responseObject);
              NSError *saveError;
              user.hasLoggedIn = [NSNumber numberWithBool:YES];
+             NSRange range;
+             range.length = 1;
+             range.location = 6;
+             NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
+             NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+             int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
+             user.userID = [NSNumber numberWithInt:value];
              if (![self.managedObjectContext save:&saveError])
                  NSLog(@"Error Saving %@", saveError);
          }

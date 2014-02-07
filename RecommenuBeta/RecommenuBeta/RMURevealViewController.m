@@ -66,7 +66,6 @@
 
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
-//    [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", @"4adcbcd2f964a520402f21e3"]
 
       parameters:@{@"VENUE_ID": [NSString stringWithFormat:@"%@", foursquareID],
                    @"client_id" : [[NSUserDefaults standardUserDefaults] stringForKey:@"foursquareID"],
@@ -106,7 +105,9 @@
 {
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), self.currentRestaurant.restFoursquareID]
+    RMUAppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    RMUSavedUser *user = [delegate fetchCurrentUser];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@/%i"), self.currentRestaurant.restFoursquareID, user.userID.intValue]
 //    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), @"4adcbcd2f964a520402f21e3"]
 
       parameters:nil
@@ -124,7 +125,6 @@
              [self setChildViewControllersUIWithCurrentRestaurant];
          }];
 }
-///data/menu/40fb0f00f964a520fc0a1fe3
 
 - (void)setChildViewControllersUIWithCurrentRestaurant
 {

@@ -97,23 +97,17 @@
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSRange range;
-    range.length = 1;
-    range.location = 6;
-    NSString *trimString = [user.userURI stringByReplacingCharactersInRange:range withString:@""];
-    NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
-    int value = [[trimString stringByTrimmingCharactersInSet:nonDigits] intValue];
     
-    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/friend_list/%i"), value]
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/friend_list/%i"), user.userID.intValue]
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"RESPONSE: %@", responseObject);
+             self.friendsArray = [responseObject objectForKey:@"response"];
              if (!self.isOnPastRatings) {
                  [self.profileTable setHidden:NO];
                  [self.emptyView setHidden:YES];
                  [self.profileTable reloadData];
              }
-             self.friendsArray = [responseObject objectForKey:@"response"];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"ERROR: %@, WITH RESPONSE STRING: %@",error, operation.responseString);
@@ -175,14 +169,11 @@
         [self.facebookButton setUserInteractionEnabled:NO];
         [self.hideNameView setHidden:NO];
         
-        // check if we need to go grab info from facebook
-        // if we do that start connection, otherwise use cached data
-        RMUSavedUser *user = [appDelegate fetchCurrentUser];
-        
         // Set some frames
         CGRect profPicFrame = self.profilePic.frame;
         CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
         
+        // CACHED INFO!!!!!!!
         if (NO) {
             
         }
@@ -191,13 +182,14 @@
                 if (!error) {
                     // Success! Include your code to handle the results here
                     NSLog(@"user info: %@", result);
-                    user.firstName = [result objectForKey:@"first_name"];
-                    user.lastName = [result objectForKey:@"last_name"];
                     [self.nameLabel setText:[result objectForKey:@"name"]];
                     FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
                     
                     [profileView setFrame:modifiedProf];
                     [self.profilePicView addSubview:profileView];
+                    UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+                    [circleView setFrame: profPicFrame];
+                    [self.profilePicView addSubview:circleView];
                 }
                 else {
                     NSLog(@"error: %@", error);
@@ -205,9 +197,7 @@
                 }
             }];
         }
-        UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
-        [circleView setFrame: profPicFrame];
-        [self.profilePicView addSubview:circleView];
+
         [self.hideNameView setHidden:YES];
     }
 }
@@ -347,15 +337,82 @@
                                        allowLoginUI:YES
                                   completionHandler:
      ^(FBSession *session, FBSessionState state, NSError *error) {
-         
-         // Retrieve the app delegate
-         RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-         // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-         [appDelegate sessionStateChanged:session state:state error:error];
-         [self loadUserElements];
+         if (!error){
+             // Retrieve the app delegate
+             RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+             [appDelegate sessionStateChanged:session state:state error:error];
+             [self loadUserElements];
+             self.isUserOnFacebook = YES;
+             RMUSavedUser *user = [appDelegate fetchCurrentUser];
+             [self logFacebookUser:user intoRecommenuWithSession:session];
+         }
+         else
+             NSLog(@"ERRROR: %@", error);
      }];
 }
 
+/*
+ *  Logs a user with Facebook into REcommenu's DB
+ */
+
+- (void)logFacebookUser:(RMUSavedUser*)user intoRecommenuWithSession:(FBSession*)session
+{
+    [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            user.facebookID = [result objectForKey:@"id"];
+            user.firstName = [result objectForKey:@"first_name"];
+            user.lastName = [result objectForKey:@"last_name"];
+            NSLog(@"FACEBOOKID: %@", user.facebookID);
+            RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+            NSError *saveError;
+            if (![appDelegate.managedObjectContext save:&saveError])
+                NSLog(@"Error Saving %@", saveError);
+            
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            manager.requestSerializer = [AFJSONRequestSerializer serializer];
+            [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@"), user.userURI]
+              parameters:@{@"first_name": user.firstName,
+                           @"last_name" : user.lastName}
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSLog(@"RESPONSE : %@", responseObject);
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     NSLog(@"ERROR : %@",error);
+                 }];
+            [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/user_profile/%i/"), user.userID.intValue]
+              parameters:@{@"facebook_id": user.facebookID}
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSLog(@"SUCCESS FROM LOGGING: %@", responseObject);
+                     [self refreshFacebookFriendsListWithUser:user andSession:session];
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     NSLog(@"FAIL: %@ with response: %@", error, operation.responseString);
+                 }];
+        }
+        else
+            NSLog(@"ERRRRRRRR : %@", error);
+    }];
+}
+
+/*
+ *  Calls the Backend's script for sorting users and gets the profile model working
+ */
+
+- (void) refreshFacebookFriendsListWithUser:(RMUSavedUser*)user andSession:(FBSession*) session
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@"), user.facebookID, session.accessTokenData.accessToken]
+      parameters:nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"%@",responseObject);
+             [self fetchFriendsOfUser:user];
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@, with RESPONSE STRING: %@", error, operation.responseString);
+         }];
+}
 
 // State switchn
 - (IBAction)showFriendsRatings:(id)sender
@@ -364,7 +421,6 @@
     [self.pastRatingsButton setTintColor:[UIColor RMUDividingGrayColor]];
     self.isOnPastRatings = NO;
     if (self.friendsArray.count > 0) {
-        // TODO make the conditional checkunderlying storage and reload the table and make another conditional check on if friends are on
         [self.profileTable setHidden:NO];
         [self.emptyView setHidden:YES];
         [self.profileTable reloadData];
