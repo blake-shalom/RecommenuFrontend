@@ -121,7 +121,6 @@
     [self.mapView setCenterCoordinate:coord animated:YES];
     
     // Drop a pin
-#warning - TODO customized user annotation
 #warning  TODO cache map images
     if (!self.hasDroppedPin){
         RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView

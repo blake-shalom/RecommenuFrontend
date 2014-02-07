@@ -1023,7 +1023,7 @@
                                             <segue destination="fSl-jZ-xSI" kind="modal" identifier="profileToMenu" id="cec-ZC-rvl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="friendCell" rowHeight="67" id="xWS-Zh-ENJ">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="friendCell" rowHeight="67" id="xWS-Zh-ENJ" customClass="RMUProfileFriendCell">
                                         <rect key="frame" x="0.0" y="135" width="320" height="67"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xWS-Zh-ENJ" id="c3v-KM-Ig5">
@@ -1048,6 +1048,11 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="friendImage" destination="45h-vl-NYW" id="Inx-ga-8pE"/>
+                                            <outlet property="friendnNameLabel" destination="tie-eD-df3" id="JPY-sy-dD4"/>
+                                            <outlet property="numRatingsLabel" destination="X5Z-oO-reH" id="cVS-Jb-hYK"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

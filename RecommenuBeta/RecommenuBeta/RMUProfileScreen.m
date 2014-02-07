@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingActivity;
 
 @property NSMutableArray *ratingsArray;
-@property NSMutableArray *friendsArray;
+@property NSArray *friendsArray;
 @property BOOL isOnPastRatings;
 @property BOOL isUserOnFacebook;
 
@@ -50,7 +50,7 @@
     [self.loadingActivity setHidden:YES];
     
     self.ratingsArray = [[NSMutableArray alloc]init];
-    self.friendsArray = [[NSMutableArray alloc]init];
+    self.friendsArray = [[NSArray alloc]init];
     
     // Set the tableview's properties
     self.profileTable.delegate = self;
@@ -113,7 +113,7 @@
                  [self.emptyView setHidden:YES];
                  [self.profileTable reloadData];
              }
-             [self.friendsArray addObject:@"boody"];
+             self.friendsArray = [responseObject objectForKey:@"response"];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"ERROR: %@, WITH RESPONSE STRING: %@",error, operation.responseString);
@@ -220,27 +220,50 @@
 
 #pragma mark - UITableView Data source
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.isOnPastRatings)
+        return 80.0;
+    else
+        return 67.0;
+}
+
 /*
  *  Cell for row uses Rating cells
  */
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"ratingCell";
-    RMUProfileRatingCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
-    RMUSavedRecommendation *rec = recArray[indexPath.row];
-    [cell.entreeLabel setText:rec.entreeName];
-    [cell.descriptionLabel setText:rec.entreeDesc];
-    if (rec.isRecommendPositive.boolValue)
-        [cell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_up_profile"]];
-    else
-        [cell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_down_profile"]];
-
-    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"MM/dd/yyy"];
-    [cell.dateLabel setText:[formatter stringFromDate:rec.timeRated]];
-    
+    UITableViewCell *cell;
+    if (self.isOnPastRatings) {
+        static NSString *CellIdentifier = @"ratingCell";
+        RMUProfileRatingCell *rateCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
+        RMUSavedRecommendation *rec = recArray[indexPath.row];
+        [rateCell.entreeLabel setText:rec.entreeName];
+        [rateCell.descriptionLabel setText:rec.entreeDesc];
+        if (rec.isRecommendPositive.boolValue)
+            [rateCell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_up_profile"]];
+        else
+            [rateCell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_down_profile"]];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setDateFormat:@"MM/dd/yyy"];
+        [rateCell.dateLabel setText:[formatter stringFromDate:rec.timeRated]];
+        cell = rateCell;
+    }
+    else {
+        static NSString *CellIdentifier = @"friendCell";
+        RMUProfileFriendCell *friendCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        NSDictionary *friendDict = self.friendsArray[indexPath.row];
+        NSString *nameOfFriend = [NSString stringWithFormat:(@"%@ %@"), [friendDict objectForKey:@"first_name"], [friendDict objectForKey:@"last_name"]];
+        [friendCell.friendnNameLabel setText:nameOfFriend];
+        FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[friendDict objectForKey:@"facebook_id"] pictureCropping:FBProfilePictureCroppingSquare];
+        [friendCell.numRatingsLabel setText:@""];
+        [profileView setFrame:friendCell.friendImage.frame];
+        [friendCell addSubview:profileView];
+        cell = friendCell;
+    }
     return cell;
 }
 
@@ -250,8 +273,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *rowArray = [self.ratingsArray[section] objectForKey:@"recArray"];
-    return rowArray.count;
+    if (self.isOnPastRatings) {
+        NSArray *rowArray = [self.ratingsArray[section] objectForKey:@"recArray"];
+        return rowArray.count;
+    }
+    else
+        return self.friendsArray.count;
 }
 
 /*
@@ -260,7 +287,10 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.ratingsArray.count;
+    if (self.isOnPastRatings)
+        return self.ratingsArray.count;
+    else
+        return 1;
 }
 
 /*
@@ -269,13 +299,17 @@
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [self.ratingsArray[section] objectForKey:@"restName"];
+    if (self.isOnPastRatings)
+        return [self.ratingsArray[section] objectForKey:@"restName"];
+    else
+        return @"FRIENDS";
 }
+
 
 #pragma mark - segue methods
 
 /*
- *  Currently one segue is supported, profile to menu, that redirects a user to the menu of an item
+ *  Currently three segues is supported, profile to menu, that redirects a user to the menu of an item
  */
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
