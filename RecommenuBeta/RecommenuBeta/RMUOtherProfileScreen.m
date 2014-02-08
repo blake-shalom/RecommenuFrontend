@@ -15,6 +15,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *profileTable;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numRatingsLabel;
+@property (weak, nonatomic) IBOutlet UIView *hideProfileView;
+@property (weak, nonatomic) IBOutlet UIView *profilePicView;
+@property (weak, nonatomic) IBOutlet UIView *topProfileView;
 
 @end
 
@@ -39,7 +42,28 @@
     else
         [self hideFoodieElements];
 
+    if (self.facebookID)
+        [self handleFacebookProfile];
+    if (self.nameOfOtherUser)
+        [self.nameLabel setText:self.nameOfOtherUser];
 	// Do any additional setup after loading the view.
+}
+
+- (void)handleFacebookProfile
+{
+    [self.hideProfileView setHidden:NO];
+    CGRect profPicFrame = self.profilePicView.frame;
+    CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
+    
+    // Success! Include your code to handle the results here
+    FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:self.facebookID pictureCropping:FBProfilePictureCroppingSquare];
+
+    [profileView setFrame:modifiedProf];
+    [self.topProfileView addSubview:profileView];
+    UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+    [circleView setFrame: profPicFrame];
+    [self.topProfileView addSubview:circleView];
+    [self.hideProfileView setHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated

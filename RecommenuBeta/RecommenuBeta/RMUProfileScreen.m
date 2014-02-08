@@ -210,6 +210,10 @@
 
 #pragma mark - UITableView Data source
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.isOnPastRatings)
@@ -319,6 +323,16 @@
     else if ([segue.identifier isEqualToString:@"profToFriend"]) {
         RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
         foodieProf.isFoodie = NO;
+    }
+    else if ([segue.identifier isEqualToString:@"profileToOtherProfile"]) {
+        RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
+        NSIndexPath *indexPath = [self.profileTable indexPathForSelectedRow];
+        NSDictionary *dict = self.friendsArray[indexPath.row];
+        foodieProf.isFoodie = NO;
+        foodieProf.RMUUsername = [dict objectForKey:@"username"];
+        foodieProf.facebookID = [dict objectForKey:@"facebook_id"];
+        NSString *nameOfFriend = [NSString stringWithFormat:(@"%@ %@"), [dict objectForKey:@"first_name"], [dict objectForKey:@"last_name"]];
+        foodieProf.nameOfOtherUser = nameOfFriend;
     }
     else {
         NSLog(@"Unknown ID: %@", segue.identifier);

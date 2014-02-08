@@ -1023,11 +1023,11 @@
                                             <segue destination="fSl-jZ-xSI" kind="modal" identifier="profileToMenu" id="cec-ZC-rvl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="friendCell" rowHeight="67" id="xWS-Zh-ENJ" customClass="RMUProfileFriendCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="friendCell" rowHeight="67" id="xWS-Zh-ENJ" customClass="RMUProfileFriendCell">
                                         <rect key="frame" x="0.0" y="135" width="320" height="67"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xWS-Zh-ENJ" id="c3v-KM-Ig5">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="45h-vl-NYW">
@@ -1052,6 +1052,7 @@
                                             <outlet property="friendImage" destination="45h-vl-NYW" id="Inx-ga-8pE"/>
                                             <outlet property="friendnNameLabel" destination="tie-eD-df3" id="JPY-sy-dD4"/>
                                             <outlet property="numRatingsLabel" destination="X5Z-oO-reH" id="cVS-Jb-hYK"/>
+                                            <segue destination="nPB-js-U8b" kind="push" identifier="profileToOtherProfile" id="k7B-Te-j8Z"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1189,7 +1190,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MEg-Sg-XhO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1046" y="32"/>
+            <point key="canvasLocation" x="1079" y="555"/>
         </scene>
         <!--Rating Screen-->
         <scene sceneID="uOw-Z0-tW0">
@@ -1479,6 +1480,17 @@
                                         <rect key="frame" x="254" y="11" width="52" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <view hidden="YES" alpha="0.94999999999999996" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bkg-bG-76N">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="D0t-0V-Xhc">
+                                                <rect key="frame" x="150" y="40" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </activityIndicatorView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -1520,9 +1532,12 @@
                     <connections>
                         <outlet property="blogButton" destination="Cfa-u1-Afk" id="Jl5-EI-e2P"/>
                         <outlet property="foodieBadge" destination="P6k-5W-kbO" id="RXc-kL-CE1"/>
+                        <outlet property="hideProfileView" destination="bkg-bG-76N" id="91u-c3-JSu"/>
                         <outlet property="nameLabel" destination="nMb-2i-LWh" id="CkF-Pp-Rm9"/>
                         <outlet property="numRatingsLabel" destination="jjt-Tx-qce" id="v9w-TI-Lfp"/>
+                        <outlet property="profilePicView" destination="gwY-I8-DAK" id="UvD-FA-YTP"/>
                         <outlet property="profileTable" destination="9Tg-TN-w0p" id="AwS-2E-vvf"/>
+                        <outlet property="topProfileView" destination="Gdo-y8-dNM" id="G58-CK-QCy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NAL-6v-ROd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1562,8 +1577,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="cec-ZC-rvl"/>
         <segue reference="qTF-6T-aZv"/>
+        <segue reference="cec-ZC-rvl"/>
         <segue reference="1ex-Vq-BDP"/>
     </inferredMetricsTieBreakers>
 </document>

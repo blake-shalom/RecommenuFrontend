@@ -293,7 +293,7 @@
 		9D419C011854E1640097C6CA /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
 		9D5A3C6818A4A66100A99B32 /* RMUProfileFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUProfileFriendCell.h; sourceTree = "<group>"; };
 		9D5A3C6918A4A66100A99B32 /* RMUProfileFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUProfileFriendCell.m; sourceTree = "<group>"; };
-		9D5A3C6B18A57FB900A99B32 /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
+		9D5A3C6B18A57FB900A99B32 /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
 		9D6B943E1898029E00492335 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		9D6B943F1898029E00492335 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
 		9D6B94401898029E00492335 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
@@ -1194,7 +1194,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Blake Ellingham (K32XSJCV9L)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1239,7 +1239,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Blake Ellingham (K32XSJCV9L)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/blakeellingham/Documents/Recommenu/RecommenuBeta/RecommenuBeta,
@@ -1253,7 +1253,7 @@
 					/Users/blakeellingham/Documents/Recommenu/RecommenuBeta/RecommenuBeta,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "F9AB2E47-A58B-4D61-9481-0EF13AD35B2B";
+				PROVISIONING_PROFILE = "A6988139-5D88-4CE4-8C7A-AF6AF02FC529";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
