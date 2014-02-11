@@ -184,12 +184,12 @@
                     NSLog(@"user info: %@", result);
                     [self.nameLabel setText:[result objectForKey:@"name"]];
                     FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
-                    
                     [profileView setFrame:modifiedProf];
                     [self.profilePicView addSubview:profileView];
                     UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
                     [circleView setFrame: profPicFrame];
                     [self.profilePicView addSubview:circleView];
+                    [self.hideNameView setHidden:YES];
                 }
                 else {
                     NSLog(@"error: %@", error);
@@ -198,7 +198,6 @@
             }];
         }
 
-        [self.hideNameView setHidden:YES];
     }
 }
 

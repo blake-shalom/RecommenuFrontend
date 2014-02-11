@@ -55,6 +55,7 @@
     CGRect profPicFrame = self.profilePicView.frame;
     CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
     
+    
     // Success! Include your code to handle the results here
     FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:self.facebookID pictureCropping:FBProfilePictureCroppingSquare];
 
