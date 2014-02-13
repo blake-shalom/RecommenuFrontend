@@ -82,11 +82,30 @@
     UITabBar *tabBar = tabBarVC.tabBar;
     [tabBar setTintColor:[UIColor RMULogoBlueColor]];
 
+//    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+//                                       allowLoginUI:YES
+//                                  completionHandler:
+//     ^(FBSession *session, FBSessionState state, NSError *error) {
+//         if (!error){
+//             // Retrieve the app delegate
+//             RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+//             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+//             [appDelegate sessionStateChanged:session state:state error:error];
+//             [self loadUserElements];
+//             self.isUserOnFacebook = YES;
+//             RMUSavedUser *user = [appDelegate fetchCurrentUser];
+//             [self logFacebookUser:user intoRecommenuWithSession:session];
+//         }
+//         else
+//             NSLog(@"ERRROR: %@", error);
+//     }];
+    
     // If user has signed in with facebook start the loading screen
     if (user.facebookID){
         self.isUserOnFacebook = YES;
         [self fetchFriendsOfUser:user];
     }
+    
 }
 
 /*

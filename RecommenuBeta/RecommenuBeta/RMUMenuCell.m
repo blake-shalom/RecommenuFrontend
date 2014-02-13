@@ -14,8 +14,9 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
+        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+
     }
     return self;
 }
@@ -24,6 +25,7 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
+        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
@@ -48,6 +50,16 @@
     [self.crowdLikeLabel setTextColor:[UIColor RMULikeBlueColor]];
     [self.friendLikeLabel setTextColor:[UIColor RMULikeBlueColor]];
     [self.expertLikeLabel setTextColor:[UIColor RMULikeBlueColor]];
+    CGRect oldDescFrame = self.descriptionLabel.frame;
+    NSString *descText = self.descriptionLabel.text;
+    CGSize maxSize = CGSizeMake(224.0f, CGFLOAT_MAX);
+    UIFont *currentFont = [UIFont fontWithName:@"Avenir-Roman" size:10.0f];
+    CGRect textRect = [descText boundingRectWithSize:maxSize
+                                             options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                          attributes:@{NSFontAttributeName:currentFont}
+                                             context:nil];
+    oldDescFrame.size = textRect.size;
+    [self.descriptionLabel setFrame:oldDescFrame];
 }
 
 @end

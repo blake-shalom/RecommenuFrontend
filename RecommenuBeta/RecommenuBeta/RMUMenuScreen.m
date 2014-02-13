@@ -151,6 +151,33 @@
 #pragma mark - interactivity
 
 /*
+ *  Pops up the friend popup
+ */
+
+-(void) viewFriendRecsForItem:(UIButton*)sender
+{
+    NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
+}
+
+/*
+ *  Pops up the friend popup
+ */
+
+-(void) viewFoodieRecsForItem:(UIButton*)sender
+{
+    NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
+}
+
+/*
+ *  Pops up the friend popup
+ */
+
+-(void) viewCrowdRecsForItem:(UIButton*)sender
+{
+    NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
+}
+
+/*
  *  Reports the menu as invalid baddy bad bad
  */
 
@@ -201,12 +228,22 @@
 #pragma mark - UITableViewDelagate
 
 /*
- *  Returns appropriate height for individual rows, depdning on text etc
+ *  Returns appropriate height for individual rows, depending on description text
  */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 118.0f;
+    NSInteger index = tableView.tag;
+    RMUCourse *course = self.currentMenu.courses[index];
+    RMUMeal *currentMeal = course.meals[indexPath.row];
+    NSString *descText = currentMeal.mealDescription;
+    CGSize maxSize = CGSizeMake(221.0f, CGFLOAT_MAX);
+    UIFont *currentFont = [UIFont fontWithName:@"Avenir-Roman" size:10.0f];
+    CGRect textRect = [descText boundingRectWithSize:maxSize
+                                             options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                          attributes:@{NSFontAttributeName:currentFont}
+                                             context:nil];
+    return ceilf(textRect.size.height) + 70.0f;
 }
 
 /*
@@ -258,6 +295,21 @@
     [cell.donutGraph displayLikes:[currentMeal.crowdLikes integerValue] dislikes:[currentMeal.crowdDislikes integerValue]];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    // Assign the Cell a tag for later uses
+    cell.tag = indexPath.row;
+    
+    // Configure the Cell's various buttons
+    [cell.friendsButton addTarget:self
+                           action:@selector(viewFriendRecsForItem:)
+                 forControlEvents:UIControlEventTouchUpInside];
+    [cell.foodieButton addTarget:self
+                           action:@selector(viewFoodieRecsForItem:)
+                 forControlEvents:UIControlEventTouchUpInside];
+    [cell.crowdButton addTarget:self
+                           action:@selector(viewCrowdRecsForItem:)
+                 forControlEvents:UIControlEventTouchUpInside];
+    
     return cell;
 }
 
@@ -308,6 +360,10 @@
     }
     return view;
 }
+
+/*
+ *  If the carousel index changed, switch the label's text
+ */
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
 {
@@ -376,5 +432,6 @@
         [self.menuButton setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
     }
 }
+
 
 @end
