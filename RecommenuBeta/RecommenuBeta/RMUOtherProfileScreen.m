@@ -8,6 +8,8 @@
 
 #import "RMUOtherProfileScreen.h"
 
+#warning TODO, work out the damn black screen error
+
 @interface RMUOtherProfileScreen ()
 
 @property (weak, nonatomic) IBOutlet RMUButton *blogButton;
@@ -18,6 +20,9 @@
 @property (weak, nonatomic) IBOutlet UIView *hideProfileView;
 @property (weak, nonatomic) IBOutlet UIView *profilePicView;
 @property (weak, nonatomic) IBOutlet UIView *topProfileView;
+//@property (weak, nonatomic) IBOutlet UIView *loadView;
+//@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadIndicator;
+//@property (weak, nonatomic) IBOutlet UILabel *noRatingsLabel;
 
 @end
 
@@ -37,15 +42,22 @@
     [super viewDidLoad];
     self.blogButton.isBlue = YES;
     [self.blogButton setBackgroundColor:[UIColor RMULogoBlueColor]];
+    
+    //Handle foodie elements
     if (self.isFoodie)
         [self showFoodieElements];
     else
         [self hideFoodieElements];
 
+    // Handle facebook elements
     if (self.facebookID)
         [self handleFacebookProfile];
     if (self.nameOfOtherUser)
         [self.nameLabel setText:self.nameOfOtherUser];
+    
+    // Load Recommendations
+    [self loadRecommendations];
+    
 	// Do any additional setup after loading the view.
 }
 
@@ -71,6 +83,19 @@
 {
     self.screenName = @"Other Profile Screen";
     [super viewDidAppear:animated];
+}
+
+- (void)loadRecommendations
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/rating/?user__username=%@"), self.RMUUsername]
+      parameters:Nil
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             NSLog(@"SUCCESS GETTING RATINGS RESPONSE OBJECT: %@", responseObject);
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             NSLog(@"ERROR: %@ with response string: %@", error, operation.responseString);
+         }];
 }
 
 - (void)didReceiveMemoryWarning

@@ -78,6 +78,7 @@
 		9D419C081854E1640097C6CA /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419BFD1854E1640097C6CA /* AFURLRequestSerialization.m */; };
 		9D419C091854E1640097C6CA /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419BFF1854E1640097C6CA /* AFURLResponseSerialization.m */; };
 		9D419C0A1854E1640097C6CA /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D419C011854E1640097C6CA /* AFURLSessionManager.m */; };
+		9D4335B018ADD6BA005D9B4F /* RMUFoodieFriendPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4335AF18ADD6BA005D9B4F /* RMUFoodieFriendPopup.m */; };
 		9D5A3C6A18A4A66100A99B32 /* RMUProfileFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D5A3C6918A4A66100A99B32 /* RMUProfileFriendCell.m */; };
 		9D6B9445189802AD00492335 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6B9444189802AD00492335 /* libGoogleAnalyticsServices.a */; };
 		9D6B9449189804B700492335 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6B9448189804B700492335 /* libz.dylib */; };
@@ -291,6 +292,8 @@
 		9D419BFF1854E1640097C6CA /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		9D419C001854E1640097C6CA /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		9D419C011854E1640097C6CA /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		9D4335AE18ADD6BA005D9B4F /* RMUFoodieFriendPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUFoodieFriendPopup.h; sourceTree = "<group>"; };
+		9D4335AF18ADD6BA005D9B4F /* RMUFoodieFriendPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUFoodieFriendPopup.m; sourceTree = "<group>"; };
 		9D5A3C6818A4A66100A99B32 /* RMUProfileFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUProfileFriendCell.h; sourceTree = "<group>"; };
 		9D5A3C6918A4A66100A99B32 /* RMUProfileFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMUProfileFriendCell.m; sourceTree = "<group>"; };
 		9D5A3C6B18A57FB900A99B32 /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
@@ -675,6 +678,8 @@
 				9DC086E8188AF01D005949D3 /* RMUSearchCell.m */,
 				9D5A3C6818A4A66100A99B32 /* RMUProfileFriendCell.h */,
 				9D5A3C6918A4A66100A99B32 /* RMUProfileFriendCell.m */,
+				9D4335AE18ADD6BA005D9B4F /* RMUFoodieFriendPopup.h */,
+				9D4335AF18ADD6BA005D9B4F /* RMUFoodieFriendPopup.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1054,6 +1059,7 @@
 				9D419C051854E1640097C6CA /* AFNetworkReachabilityManager.m in Sources */,
 				9D275A23186681C3003BF004 /* RMUDonutGraph.m in Sources */,
 				9DC2C4D7186FFA99001BF7DA /* RMURatingScreen.m in Sources */,
+				9D4335B018ADD6BA005D9B4F /* RMUFoodieFriendPopup.m in Sources */,
 				9DC2C4D4186FF9B7001BF7DA /* RMURatingCell.m in Sources */,
 				9D419BD218493C1E0097C6CA /* RMULocateScreen.m in Sources */,
 				9D419C071854E1640097C6CA /* AFURLConnectionOperation.m in Sources */,

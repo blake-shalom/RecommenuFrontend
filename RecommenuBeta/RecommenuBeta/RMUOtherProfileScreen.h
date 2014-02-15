@@ -6,10 +6,14 @@
 //  Copyright (c) 2014 Blake Ellingham. All rights reserved.
 //
 
+#import <FacebookSDK/FacebookSDK.h>
 #import <UIKit/UIKit.h>
 #import "RMUButton.h"
 #import "GAITrackedViewController.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import "RMUSavedUser.h"
+#import "RMUAppDelegate.h"
+#import "AFNetworking.h"
+
 
 @interface RMUOtherProfileScreen : GAITrackedViewController
 

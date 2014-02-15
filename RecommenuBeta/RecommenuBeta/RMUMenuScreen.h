@@ -15,6 +15,8 @@
 #import "RMURevealViewController.h"
 #import "RMUButton.h"
 #import "GAITrackedViewController.h"
+#import "RMUFoodieFriendPopup.h"
+#import "RMUAnimationClass.h"
 
 @interface RMUMenuScreen : GAITrackedViewController
 <UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate, UIAlertViewDelegate>

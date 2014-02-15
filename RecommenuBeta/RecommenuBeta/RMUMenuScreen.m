@@ -27,7 +27,8 @@
 @property (weak, nonatomic) IBOutlet UIView *missingMenuView;
 @property (weak, nonatomic) IBOutlet RMUButton *reportMenuButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadIndicator;
-
+@property (weak, nonatomic) IBOutlet UIView *shroudView;
+@property (weak, nonatomic) IBOutlet RMUFoodieFriendPopup *popup;
 
 @end
 
@@ -73,7 +74,8 @@
     // Spin Load Indicator
     [self.loadIndicator startAnimating];
 	// Do any additional setup after loading the view.
-    
+    [self.shroudView setHidden:YES];
+    [self.popup setHidden:YES];
 }
 
 
@@ -157,24 +159,27 @@
 -(void) viewFriendRecsForItem:(UIButton*)sender
 {
     NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
+    [self animateInGradient];
 }
 
 /*
- *  Pops up the friend popup
+ *  Pops up the tastemaker popup
  */
 
 -(void) viewFoodieRecsForItem:(UIButton*)sender
 {
-    NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
+    NSLog(@"YOU TAPPED Foodie AT INDEX %i", sender.tag);
+    [self animateInGradient];
 }
 
 /*
- *  Pops up the friend popup
+ *  Pops up the crowd popup
  */
 
 -(void) viewCrowdRecsForItem:(UIButton*)sender
 {
-    NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
+    NSLog(@"YOU TAPPED Crowd AT INDEX %i", sender.tag);
+    [self animateInGradient];
 }
 
 /*
@@ -184,10 +189,23 @@
 
 - (IBAction)reportMenu:(id)sender
 {
-    NSLog(@"You is sooooo reported");
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Menu Reported!" message:@"Thanks for reporting this menu!" delegate:self cancelButtonTitle:@"Return Home" otherButtonTitles:nil];
     
     [alert show];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
+    
+    RMUSavedUser *user = [delegate fetchCurrentUser];
+    [manager GET:@"http://glacial-ravine-3577.herokuapp.com/api/v1/missingmenu/schema/?format=json"
+       parameters:@{@"foursquare_venue_id": self.currentRestaurant.restFoursquareID,
+                    @"id" : user.userID,
+                    @"resource_uri" : user.userURI}
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSLog(@"Success reporting, response %@", responseObject);
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              NSLog(@"Failure reporting with error: %@, response string %@", error, operation.responseString);
+          }];
 }
 
 /*
@@ -224,6 +242,11 @@
     }
 }
 
+- (IBAction)hideShroudView:(id)sender
+{
+    [self.popup setHidden:YES];
+    [self animateOutGradient];
+}
 
 #pragma mark - UITableViewDelagate
 
@@ -297,18 +320,23 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     // Assign the Cell a tag for later uses
-    cell.tag = indexPath.row;
     
     // Configure the Cell's various buttons
     [cell.friendsButton addTarget:self
                            action:@selector(viewFriendRecsForItem:)
                  forControlEvents:UIControlEventTouchUpInside];
+    cell.friendsButton.tag = indexPath.row;
+
     [cell.foodieButton addTarget:self
                            action:@selector(viewFoodieRecsForItem:)
                  forControlEvents:UIControlEventTouchUpInside];
+    cell.foodieButton.tag = indexPath.row;
+
     [cell.crowdButton addTarget:self
                            action:@selector(viewCrowdRecsForItem:)
                  forControlEvents:UIControlEventTouchUpInside];
+    cell.crowdButton.tag = indexPath.row;
+
     
     return cell;
 }
@@ -431,6 +459,56 @@
         [self.carousel setUserInteractionEnabled:NO];
         [self.menuButton setImage:[UIImage imageNamed:@"icon_list_select"] forState:UIControlStateNormal];
     }
+}
+
+
+#pragma mark - Animation Methods
+
+/*
+ *  Animates in the gradient and then calls animate popup
+ */
+
+- (void)animateInGradient
+{
+    [self.shroudView setAlpha:0.0f];
+    [self.shroudView setHidden:NO];
+    [UIView animateWithDuration:0.3f
+                          delay:0.5f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         [self.shroudView setAlpha:1.0f];
+                     } completion:^(BOOL finished) {
+                         [self animatePopup];
+                     }];
+}
+
+- (void)animateOutGradient
+{
+    [self.shroudView setAlpha:1.0f];
+    [self.shroudView setHidden:NO];
+    [UIView animateWithDuration:0.3f
+                          delay:0.2f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         [self.shroudView setAlpha:0.0f];
+                     } completion:^(BOOL finished) {
+                         [self.shroudView setHidden:YES];
+                     }];
+}
+
+/*
+ *  Animates in the popup to the right location
+ */
+
+- (void)animatePopup
+{
+    [self.popup setHidden:NO];
+    [RMUAnimationClass animateFlyInView:self.popup
+                           withDuration:0.1f
+                              withDelay:0.0f
+                          fromDirection:buttonAnimationDirectionTop
+                         withCompletion:Nil
+                             withBounce:YES];
 }
 
 

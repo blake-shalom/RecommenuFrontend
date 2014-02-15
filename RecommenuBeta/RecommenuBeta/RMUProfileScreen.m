@@ -103,7 +103,14 @@
     // If user has signed in with facebook start the loading screen
     if (user.facebookID){
         self.isUserOnFacebook = YES;
-        [self fetchFriendsOfUser:user];
+        [FBSession openActiveSessionWithReadPermissions:NO
+                                           allowLoginUI:NO
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          if (!error)
+                                              [self refreshFacebookFriendsListWithUser:user andSession:session];
+                                          else
+                                              NSLog(@"FACEBOOK ERROR : %@", error);
+                                      }];
     }
     
 }
@@ -179,7 +186,8 @@
 - (void)loadUserElements
 {
     RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    if (appDelegate.shouldUserLoginFacebook) {
+    RMUSavedUser *user = [appDelegate fetchCurrentUser];
+    if (!user.facebookID) {
         [self.nameLabel setText:@"Anonymous User"];
         [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
     }
@@ -459,6 +467,7 @@
     }
     else {
         if (self.isUserOnFacebook) {
+            [self.profileTable setHidden:YES];
             [self.topEmptyLabel setHidden:YES];
             [self.bottomEmptyLabel setHidden:YES];
             [self.loadingActivity setHidden:NO];
@@ -496,6 +505,7 @@
         // Show the correct headers on the missing view
     }
 }
+
 
 
 @end

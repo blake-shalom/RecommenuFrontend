@@ -46,7 +46,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gtx-pJ-ooO">
-                        <rect key="frame" x="47" y="70" width="246" height="47"/>
+                        <rect key="frame" x="47" y="70" width="273" height="47"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDX-j0-uJU">
@@ -108,7 +108,7 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="Gtx-pJ-ooO" secondAttribute="trailing" constant="27" id="Etd-Gw-Mog"/>
+                    <constraint firstAttribute="trailing" secondItem="Gtx-pJ-ooO" secondAttribute="trailing" id="Etd-Gw-Mog"/>
                     <constraint firstAttribute="bottom" secondItem="Gtx-pJ-ooO" secondAttribute="bottom" id="QNo-Qk-n40"/>
                     <constraint firstItem="Gtx-pJ-ooO" firstAttribute="leading" secondItem="hFb-o1-Xn8" secondAttribute="leading" constant="47" id="bR1-tf-RDb"/>
                 </constraints>

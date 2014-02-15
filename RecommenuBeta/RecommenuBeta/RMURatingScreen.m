@@ -296,7 +296,8 @@
                                @"user" : self.user.userURI,
                                @"foursquare_venue_id" : self.currentRestaurant.restFoursquareID,
                                @"foursquare_menu_id" : self.currentMenu.menuFoursquareID,
-                               @"review": @""}}
+                               @"review": @"",
+                               @"restaurant" : recommendation.restaurantName}}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   // Succeeded, Log the response
                   NSLog(@"SUCCESS POSTING RATING: %@", responseObject);
