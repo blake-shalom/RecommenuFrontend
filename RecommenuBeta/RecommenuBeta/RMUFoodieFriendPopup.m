@@ -8,6 +8,13 @@
 
 #import "RMUFoodieFriendPopup.h"
 
+@interface RMUFoodieFriendPopup()
+
+@property NSArray *likeArray;
+@property NSArray *dislikeArray;
+
+@end
+
 @implementation RMUFoodieFriendPopup
 
 - (id)initWithFrame:(CGRect)frame
@@ -19,9 +26,17 @@
     return self;
 }
 
+- (void)populateWithFriendsLikeArray:(NSArray*)likeArray withFriendsDislikeArray: (NSArray*)dislikeArray
+{
+    
+}
+
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    if (section)
+        return self.dislikeArray.count;
+    else
+        return self.dislikeArray.count;
 }
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -36,7 +51,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"";
+    if (section)
+        return @"DISLIKE";
+    else
+        return @"LIKE";
 }
 
 /*

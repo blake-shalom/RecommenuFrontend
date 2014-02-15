@@ -81,29 +81,11 @@
     UITabBarController *tabBarVC = self.tabBarController;
     UITabBar *tabBar = tabBarVC.tabBar;
     [tabBar setTintColor:[UIColor RMULogoBlueColor]];
-
-//    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
-//                                       allowLoginUI:YES
-//                                  completionHandler:
-//     ^(FBSession *session, FBSessionState state, NSError *error) {
-//         if (!error){
-//             // Retrieve the app delegate
-//             RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-//             // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-//             [appDelegate sessionStateChanged:session state:state error:error];
-//             [self loadUserElements];
-//             self.isUserOnFacebook = YES;
-//             RMUSavedUser *user = [appDelegate fetchCurrentUser];
-//             [self logFacebookUser:user intoRecommenuWithSession:session];
-//         }
-//         else
-//             NSLog(@"ERRROR: %@", error);
-//     }];
     
     // If user has signed in with facebook start the loading screen
     if (user.facebookID){
         self.isUserOnFacebook = YES;
-        [FBSession openActiveSessionWithReadPermissions:NO
+        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                           if (!error)
@@ -205,24 +187,29 @@
             
         }
         else {
-            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if (!error) {
-                    // Success! Include your code to handle the results here
-                    NSLog(@"user info: %@", result);
-                    [self.nameLabel setText:[result objectForKey:@"name"]];
-                    FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
-                    [profileView setFrame:modifiedProf];
-                    [self.profilePicView addSubview:profileView];
-                    UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
-                    [circleView setFrame: profPicFrame];
-                    [self.profilePicView addSubview:circleView];
-                    [self.hideNameView setHidden:YES];
-                }
-                else {
-                    NSLog(@"error: %@", error);
-                    // An error occurred, we need to handle the error
-                }
-            }];
+            [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                               allowLoginUI:NO
+                                          completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                              [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                  if (!error) {
+                                                      // Success! Include your code to handle the results here
+                                                      NSLog(@"user info: %@", result);
+                                                      [self.nameLabel setText:[result objectForKey:@"name"]];
+                                                      FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                                                      [profileView setFrame:modifiedProf];
+                                                      [self.profilePicView addSubview:profileView];
+                                                      UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+                                                      [circleView setFrame: profPicFrame];
+                                                      [self.profilePicView addSubview:circleView];
+                                                      [self.hideNameView setHidden:YES];
+                                                  }
+                                                  else {
+                                                      NSLog(@"error: %@", error);
+                                                      // An error occurred, we need to handle the error
+                                                  }
+                                              }];
+                                          }];
+            
         }
 
     }

@@ -288,7 +288,6 @@
         else {
             isPositive = @"False";
         }
-        NSLog(@"YOO WHAT ARE YOU PASSING!?!? %@", isPositive);
         [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_rating/")]
            parameters:@{@"rating":
                             @{ @"foursquare_entry_id": recommendation.entreeFoursquareID,

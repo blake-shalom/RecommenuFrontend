@@ -13,9 +13,10 @@
 #import "RMUSavedUser.h"
 #import "RMUAppDelegate.h"
 #import "AFNetworking.h"
-
+#import "RMUProfileRatingCell.h"
 
 @interface RMUOtherProfileScreen : GAITrackedViewController
+<UITableViewDataSource, UITableViewDelegate>
 
 - (void)hideFoodieElements;
 - (void)showFoodieElements;
