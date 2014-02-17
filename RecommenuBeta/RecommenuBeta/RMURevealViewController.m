@@ -24,6 +24,10 @@
     return self;
 }
 
+/*
+ *  Override viewDidAppear to set custom subviews
+ */
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -60,10 +64,12 @@
 
 - (void)getRestaurantWithFoursquareID:(NSString *)foursquareID andName:(NSString *)name
 {
+    // Set uploading of menu screen
     RMUMenuScreen *menuScreen = (RMUMenuScreen*) self.frontViewController;
     [menuScreen.indicator setHidden:NO];
     [menuScreen.indicator startAnimating];
 
+    // Use networking to get menu
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     [manager GET:[NSString stringWithFormat:@"https://api.foursquare.com/v2/venues/%@/menu", foursquareID]
 
@@ -73,7 +79,7 @@
                    @"v" : @20131017}
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              [self.view setHidden:NO];
-             NSLog(@"%@", responseObject);
+             NSLog(@"MENU : %@", responseObject);
              self.currentRestaurant = [[RMURestaurant alloc]initWithDictionary:[responseObject objectForKey:@"response"]
                                                              andRestaurantName:name];
              self.currentRestaurant.restFoursquareID = foursquareID;
@@ -103,13 +109,12 @@
 
 - (void)gatherRatingsForMenu
 {
+    // Start networking with our database to gather our proprietary ratings
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     RMUAppDelegate *delegate = [UIApplication sharedApplication].delegate;
     RMUSavedUser *user = [delegate fetchCurrentUser];
     [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@/%i"), self.currentRestaurant.restFoursquareID, user.userID.intValue]
-//    [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/menu/%@"), @"4adcbcd2f964a520402f21e3"]
-
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
              NSLog(@"response : %@",responseObject);
@@ -126,6 +131,10 @@
          }];
 }
 
+/*
+ *  After networking, set all of the child view controllers
+ */
+
 - (void)setChildViewControllersUIWithCurrentRestaurant
 {
     // Handles menu "front" screen
@@ -139,6 +148,11 @@
     [sideMenu loadCurrentRestaurant:self.currentRestaurant];
     sideMenu.delegate = self;
 }
+
+
+/*
+ *  simply loads each rating into a restaurant object (simple search algorithm)
+ */
 
 - (void)loadMenuWithRatingsWithDictionary: (NSDictionary*)respDictionary
 {

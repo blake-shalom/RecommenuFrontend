@@ -74,11 +74,7 @@
     [self.hideProfileView setHidden:NO];
     CGRect profPicFrame = self.profilePicView.frame;
     CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
-    
-    
-    // Success! Include your code to handle the results here
     FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:self.facebookID pictureCropping:FBProfilePictureCroppingSquare];
-
     [profileView setFrame:modifiedProf];
     [self.topProfileView addSubview:profileView];
     UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
@@ -96,7 +92,7 @@
 #pragma mark - Networking
 
 /*
- *  Loads Recommendations for user
+ *  Loads Recommendations for user picked
  */
 
 - (void)loadRecommendations
@@ -116,6 +112,10 @@
              NSLog(@"ERROR: %@ with response string: %@", error, operation.responseString);
          }];
 }
+
+/*
+ *  After networking events load the objects into storage to display ratings
+ */
 
 - (void)loadIntoBackStorageWithResponse: (NSArray*) response
 {
@@ -177,11 +177,19 @@
 
 #pragma mark - Table Data source
 
+/*
+ *  Look into the back storage at the certain restaurant and determine the number of recommendations
+ */
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSArray *rowArray = [self.ratingsArray[section] objectForKey:@"recArray"];
     return rowArray.count;
 }
+
+/*
+ *  Cell for row looks at each recommendation and sets labels appropriately
+ */
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

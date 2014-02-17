@@ -27,8 +27,12 @@
     return self;
 }
 
+#pragma mark - populate methods
 
-// TODO add foodie switch
+/*
+ *  adds the friend identification into the popup that allows for a friend to be viewed sets state to friend state
+ */
+
 - (void)populateWithFriendsLikeArray:(NSArray*)likeArray withFriendsDislikeArray: (NSArray*)dislikeArray withNameofEntree:(NSString*)entreeName
 {
     NSInteger likes = likeArray.count;
@@ -43,6 +47,10 @@
     [self.friendfoodTable reloadData];
 }
 
+/*
+ *  Populates with recommendation from the crowd and sets the subviews
+ */
+
 - (void)populateWithCrowdLikes:(NSInteger) likes withCrowdDislikes:(NSInteger)dislikes withNameOfEntree:(NSString*)entreeName
 {
     [self.likeLabel setText:[NSString stringWithFormat:(@"%i Likes"), likes]];
@@ -52,6 +60,12 @@
     self.state = popupStateCrowdState;
 }
 
+#pragma mark - UITable View methods
+
+/*
+ *  Number of rows determined from the underlying arrays that keep track of id's
+ */
+
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section)
@@ -59,6 +73,10 @@
     else
         return self.likeArray.count;
 }
+
+/*
+ *  If crowd, then no table. If friend then present their fb photo. IF foodie link to their special profile
+ */
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -71,8 +89,10 @@
         friendArray = self.likeArray;
 
     switch (self.state) {
+        // Crowd popup, nothing to do
         case popupStateCrowdState:
             break;
+        // Friend popup, load profile view
         case popupStateFriendState: {
             FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:friendArray[indexPath.row] pictureCropping:FBProfilePictureCroppingSquare];
             NSLog(@"friend: %@", friendArray[indexPath.row]);
@@ -82,6 +102,7 @@
             [friendCell addSubview:profileView];
             break;
         }
+        // Foodie popup, eiuther load profile or standard foodie pic
         case popupStateFoodieState: {
             //TODO check for facebookID
             if (NO) {
@@ -99,10 +120,18 @@
     return friendCell;
 }
 
+/*
+ *  Always just like and dislike sections
+ */
+
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
 }
+
+/*
+ *  Titles either dislike or like
+ */
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {

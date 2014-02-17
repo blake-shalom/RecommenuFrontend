@@ -11,6 +11,8 @@
 
 #import "RMULocateScreen.h"
 
+#warning TODO loading screen on the press of "NO"
+
 @interface RMULocateScreen ()
 
 // IBOutlets

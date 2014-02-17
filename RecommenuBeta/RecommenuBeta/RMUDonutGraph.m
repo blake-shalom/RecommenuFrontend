@@ -48,14 +48,19 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
+
+/*
+ *  Draw Rect overridden to draw a circular graph that shows likes and dislikes proportionally
+ */
+
 - (void)drawRect:(CGRect)rect
 {
-//    CGPoint arcCenter = CGPointMake((rect.origin.x + rect.size.width / 2), (rect.origin.y + rect.size.height / 2));
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGFloat likesToRadians = 2 * M_PI * ( self.likes / (self.likes + self.dislikes));
     if (likesToRadians == 0)
         likesToRadians = 2 * M_PI;
     float extraSpace = 0.0;
+    // Draw like portion and add spacing
     if (self.likes != 0) {
         CGContextSaveGState(context);
         CGMutablePathRef likePath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - WIDTH_OF_GRAPH, - likesToRadians, 1);
@@ -66,7 +71,7 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
         CFRelease(likePath);
         extraSpace = 0.05;
     }
-    
+    // Draw Dislike portion and draw spacing
     if (self.dislikes != 0) {
         CGContextSaveGState(context);
         CGMutablePathRef dislikePath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - WIDTH_OF_GRAPH, -likesToRadians - extraSpace, 0);
@@ -85,6 +90,7 @@ CGMutablePathRef createHoopPathFromCenterOfView(CGRect view, CGFloat outerRadius
         CFRelease(blankPath);
             
     }
+    // Else draw a circular gray graph
     else if (self.likes == 0){
         CGContextSaveGState(context);
         CGMutablePathRef dislikePath = createHoopPathFromCenterOfView(rect, rect.size.width/2.0f, rect.size.width/2.0f - WIDTH_OF_GRAPH, M_PI * 2, 0);
