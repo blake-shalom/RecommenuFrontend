@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadIndicator;
 @property (weak, nonatomic) IBOutlet UIView *shroudView;
 @property (weak, nonatomic) IBOutlet RMUFoodieFriendPopup *popup;
+@property (weak, nonatomic) IBOutlet RMUFoodieFriendPopup *crowdPopup;
 
 @end
 
@@ -76,6 +77,7 @@
 	// Do any additional setup after loading the view.
     [self.shroudView setHidden:YES];
     [self.popup setHidden:YES];
+    [self.crowdPopup setHidden:YES];
 }
 
 
@@ -159,7 +161,11 @@
 -(void) viewFriendRecsForItem:(UIButton*)sender
 {
     NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
-    [self animateInGradient];
+    [self animateInGradientBeforePopupView:self.popup];
+    RMUMeal *selectedMeal = self.currentCourse.meals[sender.tag];
+    [self.popup populateWithFriendsLikeArray:selectedMeal.facebookLikeID
+                     withFriendsDislikeArray:selectedMeal.facebookDislikeID
+                            withNameofEntree:selectedMeal.mealName];
 }
 
 /*
@@ -169,7 +175,7 @@
 -(void) viewFoodieRecsForItem:(UIButton*)sender
 {
     NSLog(@"YOU TAPPED Foodie AT INDEX %i", sender.tag);
-    [self animateInGradient];
+    [self animateInGradientBeforePopupView:self.popup];
 }
 
 /*
@@ -179,7 +185,11 @@
 -(void) viewCrowdRecsForItem:(UIButton*)sender
 {
     NSLog(@"YOU TAPPED Crowd AT INDEX %i", sender.tag);
-    [self animateInGradient];
+    [self animateInGradientBeforePopupView:self.crowdPopup];
+    RMUMeal *selectedMeal = self.currentCourse.meals[sender.tag];
+    [self.crowdPopup populateWithCrowdLikes:selectedMeal.crowdLikes.integerValue
+                           withCrowdDislikes:selectedMeal.crowdDislikes.integerValue
+                            withNameOfEntree:selectedMeal.mealName];
 }
 
 /*
@@ -245,6 +255,7 @@
 - (IBAction)hideShroudView:(id)sender
 {
     [self.popup setHidden:YES];
+    [self.crowdPopup setHidden:YES];
     [self animateOutGradient];
 }
 
@@ -396,6 +407,7 @@
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
 {
     NSInteger index = carousel.currentItemView.tag;
+    self.currentCourse = self.currentMenu.courses[index];
     RMUCourse *course = self.currentMenu.courses[index];
     [self.currSectionLabel setText:course.courseName];
     if (index > 0) {
@@ -468,7 +480,7 @@
  *  Animates in the gradient and then calls animate popup
  */
 
-- (void)animateInGradient
+- (void)animateInGradientBeforePopupView:(UIView*)popup
 {
     [self.shroudView setAlpha:0.0f];
     [self.shroudView setHidden:NO];
@@ -478,7 +490,7 @@
                      animations:^{
                          [self.shroudView setAlpha:1.0f];
                      } completion:^(BOOL finished) {
-                         [self animatePopup];
+                         [self animatePopupView:popup];
                      }];
 }
 
@@ -500,10 +512,10 @@
  *  Animates in the popup to the right location
  */
 
-- (void)animatePopup
+- (void)animatePopupView: (UIView*)popup
 {
-    [self.popup setHidden:NO];
-    [RMUAnimationClass animateFlyInView:self.popup
+    [popup setHidden:NO];
+    [RMUAnimationClass animateFlyInView:popup
                            withDuration:0.1f
                               withDelay:0.0f
                           fromDirection:buttonAnimationDirectionTop

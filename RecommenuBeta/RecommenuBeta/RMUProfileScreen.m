@@ -69,7 +69,7 @@
     RMUSavedUser *user = [delegate fetchCurrentUser];
     [self sortUserRatingsIntoRatingsArray:user];
     
-    [self loadUserElements];
+//    [self loadUserElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
     
     if (user.isFoodie)
@@ -86,13 +86,44 @@
     if (user.facebookID){
         self.isUserOnFacebook = YES;
         [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
-                                           allowLoginUI:NO
+                                           allowLoginUI:YES
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                          if (!error)
+                                          if (!error){
+                                              [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+                                              [self.facebookButton setUserInteractionEnabled:NO];
+                                              [self.hideNameView setHidden:NO];
+                                              
+                                              // Set some frames
+                                              CGRect profPicFrame = self.profilePic.frame;
+                                              CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
+                                              [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                  if (!error) {
+                                                      // Success! Include your code to handle the results here
+                                                      NSLog(@"user info: %@", result);
+                                                      [self.nameLabel setText:[result objectForKey:@"name"]];
+                                                      FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                                                      [profileView setFrame:modifiedProf];
+                                                      [self.profilePicView addSubview:profileView];
+                                                      UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+                                                      [circleView setFrame: profPicFrame];
+                                                      [self.profilePicView addSubview:circleView];
+                                                      [self.hideNameView setHidden:YES];
+                                                  }
+                                                  else {
+                                                      NSLog(@"error: %@", error);
+                                                      // An error occurred, we need to handle the error
+                                                  }
+                                              }];
                                               [self refreshFacebookFriendsListWithUser:user andSession:session];
+                                              
+                                          }
                                           else
                                               NSLog(@"FACEBOOK ERROR : %@", error);
                                       }];
+    }
+    else {
+        [self.nameLabel setText:@"Anonymous User"];
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
     }
     
 }
