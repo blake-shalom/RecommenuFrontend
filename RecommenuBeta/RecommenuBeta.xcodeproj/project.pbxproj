@@ -82,6 +82,7 @@
 		9D5A3C6A18A4A66100A99B32 /* RMUProfileFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D5A3C6918A4A66100A99B32 /* RMUProfileFriendCell.m */; };
 		9D635CA618B05FC400301910 /* overlay_crowd.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D635CA418B05FC400301910 /* overlay_crowd.png */; };
 		9D635CA718B05FC400301910 /* overlay_crowd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D635CA518B05FC400301910 /* overlay_crowd@2x.png */; };
+		9D635CAB18B3DE4F00301910 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D635CAA18B3DE4F00301910 /* Reachability.m */; };
 		9D6B9445189802AD00492335 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6B9444189802AD00492335 /* libGoogleAnalyticsServices.a */; };
 		9D6B9449189804B700492335 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6B9448189804B700492335 /* libz.dylib */; };
 		9D7736F11857A4C700A84E14 /* RMUMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D7736F01857A4C700A84E14 /* RMUMenu.m */; };
@@ -301,6 +302,8 @@
 		9D5A3C6B18A57FB900A99B32 /* Model 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 5.xcdatamodel"; sourceTree = "<group>"; };
 		9D635CA418B05FC400301910 /* overlay_crowd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_crowd.png; sourceTree = "<group>"; };
 		9D635CA518B05FC400301910 /* overlay_crowd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay_crowd@2x.png"; sourceTree = "<group>"; };
+		9D635CA918B3DE4F00301910 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		9D635CAA18B3DE4F00301910 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		9D6B943E1898029E00492335 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		9D6B943F1898029E00492335 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
 		9D6B94401898029E00492335 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
@@ -670,6 +673,15 @@
 			name = "RMU Table Cells";
 			sourceTree = "<group>";
 		};
+		9D635CAC18B3DE5400301910 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				9D635CA918B3DE4F00301910 /* Reachability.h */,
+				9D635CAA18B3DE4F00301910 /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
 		9D6B9447189802BD00492335 /* Google Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -787,6 +799,7 @@
 				9DF1ABF218370702006DF0B3 /* RMUAppDelegate.h */,
 				9DF1ABF318370702006DF0B3 /* RMUAppDelegate.m */,
 				9DB9C285186D15F8003CD478 /* Reveal View Controller */,
+				9D635CAC18B3DE5400301910 /* Reachability */,
 				9D275A16186206A3003BF004 /* iCarousel */,
 				9D7736EE18562BFB00A84E14 /* Objects */,
 				9D7736EC18562BDE00A84E14 /* Views */,
@@ -1097,6 +1110,7 @@
 				9DC086E9188AF01D005949D3 /* RMUSearchCell.m in Sources */,
 				9D419BDB18493DDC0097C6CA /* RMUSettingsScreen.m in Sources */,
 				9D419C091854E1640097C6CA /* AFURLResponseSerialization.m in Sources */,
+				9D635CAB18B3DE4F00301910 /* Reachability.m in Sources */,
 				9D419BE4184EE1B40097C6CA /* UIColor+RMUColors.m in Sources */,
 				9D7736F41857A59200A84E14 /* RMUMeal.m in Sources */,
 				9DB9C27F186A03A5003CD478 /* RMUMenuTable.m in Sources */,
