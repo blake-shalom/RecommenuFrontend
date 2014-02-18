@@ -207,10 +207,18 @@
     return  rateCell;
 }
 
+/*
+ *  Number of sections is equal to the number of restaurants in the backend store
+ */
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.ratingsArray.count;
 }
+
+/*
+ *  Return the restaurant's name for each title
+ */
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {

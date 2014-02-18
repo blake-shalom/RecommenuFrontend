@@ -153,13 +153,16 @@
          }];
 }
 
-
 - (void)viewDidAppear:(BOOL)animated
 {
     // SET the profile screen name for Google analytics
     self.screenName = @"Profile Screen";
     [super viewDidAppear:animated];
 }
+
+/*
+ *  Sorts a user's ratings into an object for the table storage
+ */
 
 - (void)sortUserRatingsIntoRatingsArray: (RMUSavedUser*) user
 {
@@ -254,9 +257,9 @@
 
 #pragma mark - UITableView Data source
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
+/*
+ *  Return the right height, depending on the selected index
+ */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -306,7 +309,7 @@
 }
 
 /*
- *
+ *  Number of rows checks the backend sotrage and return depending on state
  */
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -320,7 +323,7 @@
 }
 
 /*
- *
+ *  If you are on friends aray, return one section, else return appropriate number from backend storage
  */
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -332,7 +335,7 @@
 }
 
 /*
- *
+ *  Title is rest name if on past ratings, "Friends" otherwise
  */
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -347,7 +350,7 @@
 #pragma mark - segue methods
 
 /*
- *  Currently three segues is supported, profile to menu, that redirects a user to the menu of an item
+ *  Currently three segues is supported, profile to menu, that redirects a user to the menu of an item, and to other user
  */
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -411,7 +414,7 @@
 }
 
 /*
- *  Logs a user with Facebook into REcommenu's DB
+ *  Logs a user with Facebook into Recommenu's DB
  */
 
 - (void)logFacebookUser:(RMUSavedUser*)user intoRecommenuWithSession:(FBSession*)session
@@ -472,7 +475,10 @@
          }];
 }
 
-// State switchn
+/*
+ *  toggles between past ratings to friends
+ */
+
 - (IBAction)showFriendsRatings:(id)sender
 {
     [self.friendsButton setTintColor:[UIColor RMULogoBlueColor]];
@@ -500,7 +506,10 @@
     }
 }
 
-// State switcherz
+/*
+ *  Toggles between friends to past ratings
+ */
+
 - (IBAction)showPastRatings:(id)sender
 {
     [self.topEmptyLabel setHidden:NO];

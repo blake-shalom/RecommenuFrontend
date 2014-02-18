@@ -88,6 +88,17 @@
                                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="11"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <view alpha="0.74999999999999978" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fdG-Ni-j6Y">
+                                                <rect key="frame" x="2" y="2" width="260" height="197"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="mz0-J1-Nun">
+                                                        <rect key="frame" x="122" y="91" width="20" height="20"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </activityIndicatorView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -209,6 +220,7 @@
                         <outlet property="fallbackPopup" destination="bOm-Y7-Zed" id="dkV-tN-vNY"/>
                         <outlet property="fallbackTable" destination="lg9-Uv-S1Q" id="nQz-Re-RI1"/>
                         <outlet property="gradientImage" destination="Pos-um-Q4p" id="z5J-Z8-F8g"/>
+                        <outlet property="loadingFallbackView" destination="fdG-Ni-j6Y" id="ud8-Uf-g5C"/>
                         <outlet property="mapFrameView" destination="dE4-jx-lZL" id="yZd-gR-GYz"/>
                         <outlet property="noButton" destination="bFa-xI-4SM" id="c9b-QW-dbN"/>
                         <outlet property="popupView" destination="45m-f4-5eF" id="MQg-W6-Atb"/>
@@ -264,16 +276,16 @@
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="agm-ds-r55">
-                                        <rect key="frame" x="6" y="26" width="50" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="agm-ds-r55">
+                                        <rect key="frame" x="0.0" y="9" width="38" height="46"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
-                                        <state key="normal" title="Home">
+                                        <state key="normal" image="button_back.png">
                                             <color key="titleColor" red="0.17254901960784313" green="0.79607843137254897" blue="0.80392156862745101" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="MhZ-4q-dlO" kind="modal" identifier="menuToHome" id="qTF-6T-aZv"/>
+                                            <action selector="popBackScreen:" destination="Aa8-Db-N0V" eventType="touchUpInside" id="KHd-bd-MVf"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -581,11 +593,12 @@
                         <outlet property="restNameLabel" destination="iv2-go-pNV" id="yDz-Qu-HQU"/>
                         <outlet property="rightSectionLabel" destination="ERq-iB-iYO" id="anw-pt-A9f"/>
                         <outlet property="shroudView" destination="9hK-IC-2ex" id="ujW-Ec-8OS"/>
+                        <segue destination="MhZ-4q-dlO" kind="modal" identifier="menuToHome" id="owa-kF-TAU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UM4-ek-pxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2262" y="835"/>
+            <point key="canvasLocation" x="2262" y="868"/>
         </scene>
         <!--Reveal View Controller-->
         <scene sceneID="dXs-1p-X4l">
@@ -723,7 +736,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j3E-Ji-0XA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-290" y="1084"/>
+            <point key="canvasLocation" x="-132" y="868"/>
         </scene>
         <!--Search Screen - Search-->
         <scene sceneID="zkj-KK-SV0">
@@ -852,12 +865,12 @@
                         <outlet property="searchResultsTable" destination="agC-8e-hPk" id="3WA-Ki-twk"/>
                         <outlet property="stopEditingButton" destination="lO1-on-rJX" id="Q6g-0l-Oaf"/>
                         <outlet property="underBoldLabel" destination="THH-Si-GhV" id="YAH-ch-2ct"/>
-                        <segue destination="fSl-jZ-xSI" kind="modal" identifier="searchToMenu" id="xfv-IL-cqR"/>
+                        <segue destination="fSl-jZ-xSI" kind="push" identifier="searchToMenu" id="xfv-IL-cqR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RxM-hS-265" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1061" y="1581"/>
+            <point key="canvasLocation" x="1043" y="1566"/>
         </scene>
         <!--Settings Screen - Settings-->
         <scene sceneID="2F2-LR-3s1">
@@ -889,10 +902,10 @@
                                     <rect key="frame" x="0.0" y="66" width="320" height="100"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ARE YOU A FOODIE?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcR-nv-x44">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ARE YOU A TASTEMAKER?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OcR-nv-x44">
                                             <rect key="frame" x="20" y="39" width="180" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="14"/>
                                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1750,8 +1763,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="qTF-6T-aZv"/>
-        <segue reference="cec-ZC-rvl"/>
+        <segue reference="owa-kF-TAU"/>
+        <segue reference="xfv-IL-cqR"/>
         <segue reference="1ex-Vq-BDP"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -72,7 +72,7 @@
 {
     [self.foodieSignInButton setHidden:YES];
     [self.foodieOnImage setHidden:NO];
-    [self.foodieLoginLabel setText:@"Signed in as a Foodie!"];
+    [self.foodieLoginLabel setText:@"Signed in as a Tastemaker!"];
 }
 
 /*
@@ -83,7 +83,7 @@
 {
     [self.foodieSignInButton setHidden:NO];
     [self.foodieOnImage setHidden:YES];
-    [self.foodieLoginLabel setText:@"Are you a Foodie?"];
+    [self.foodieLoginLabel setText:@"Are you a Tastemaker?"];
 }
 
 #pragma mark - TableView Datasource methods
@@ -111,19 +111,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 0;
 }
 
 #pragma mark - Interactivity
+
+/*
+ *  Drops popup to prompt foodie to connect
+ */
 
 - (IBAction)connectFoodie:(id)sender
 {
     //Animate in gradient + popup
     [self animateInGradient];
 }
+
+/*
+ *  After popup sign in a foodie with the entered code
+ */
+
 - (IBAction)signInFoodie:(id)sender
 {
-    NSLog(@"EXECUTING....");
     RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -163,6 +171,9 @@
     [self animateOutGradient];
 }
 
+/*
+ *  Dismiss the keyboard if back button is clicked
+ */
 
 - (IBAction)dismissKeyboard:(id)sender
 {
@@ -188,6 +199,10 @@
                          [self animatePopup];
                      }];
 }
+
+/*
+ *  Dismisses the gradient and return to "normal" mode
+ */
 
 - (void)animateOutGradient
 {

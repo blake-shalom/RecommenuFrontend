@@ -219,6 +219,20 @@
 }
 
 /*
+ *  Goes back to home or search
+ */
+
+- (IBAction)popBackScreen:(id)sender
+{
+    if (self.revealViewController.navigationController)
+        [self.revealViewController.navigationController popViewControllerAnimated:YES];
+    else
+        [self performSegueWithIdentifier:@"menuToHome"
+                                  sender:self];
+}
+
+
+/*
  *  Views other avalable menus at the restaurant
  */
 
