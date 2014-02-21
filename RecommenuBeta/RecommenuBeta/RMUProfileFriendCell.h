@@ -11,7 +11,7 @@
 @interface RMUProfileFriendCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *friendImage;
-@property (weak, nonatomic) IBOutlet UILabel *friendnNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *friendNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numRatingsLabel;
 
 @end

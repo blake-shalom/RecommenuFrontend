@@ -296,6 +296,7 @@
                                @"foursquare_venue_id" : self.currentRestaurant.restFoursquareID,
                                @"foursquare_menu_id" : self.currentMenu.menuFoursquareID,
                                @"review": @"",
+                               @"dish_name" : recommendation.entreeName,
                                @"restaurant" : recommendation.restaurantName}}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   // Succeeded, Log the response

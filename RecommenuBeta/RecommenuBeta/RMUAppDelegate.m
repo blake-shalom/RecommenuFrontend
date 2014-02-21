@@ -282,6 +282,7 @@
              }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             // Error establishing user, just silently try again later
              NSLog(@"ERROR: %@", error);
          }];
 }
@@ -379,7 +380,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    
     // If notified user, present rate VC
     if (self.shouldDelegateNotifyUser) {
         UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -389,7 +389,6 @@
         [self.window makeKeyAndVisible];
         [self.window setRootViewController:rateViewController];
     }
-
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

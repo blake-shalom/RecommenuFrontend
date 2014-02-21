@@ -69,7 +69,6 @@
     RMUSavedUser *user = [delegate fetchCurrentUser];
     [self sortUserRatingsIntoRatingsArray:user];
     
-//    [self loadUserElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
     
     if (user.isFoodie)
@@ -99,15 +98,29 @@
                                               [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                                                   if (!error) {
                                                       // Success! Include your code to handle the results here
-                                                      NSLog(@"user info: %@", result);
                                                       [self.nameLabel setText:[result objectForKey:@"name"]];
-                                                      FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
-                                                      [profileView setFrame:modifiedProf];
-                                                      [self.profilePicView addSubview:profileView];
+                                                      if (!user.savedPhotoForUser){
+                                                          FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                                                          [profileView setFrame:modifiedProf];
+                                                          [self.profilePicView addSubview:profileView];
+
+                                                          
+                                                          NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=normal", user.facebookID]];
+                                                          NSData *data = [NSData dataWithContentsOfURL:url];
+                                                          RMUSavedUserPhoto *photo = (RMUSavedUserPhoto*)[NSEntityDescription insertNewObjectForEntityForName:@"RMUSavedUserPhoto"
+                                                                                                                                       inManagedObjectContext:delegate.managedObjectContext];
+                                                          photo.userPhoto = data;
+                                                          user.savedPhotoForUser = photo;
+                                                      }
+                                                      else {
+                                                          UIImage *image = [user.savedPhotoForUser imageForPhotoData];
+                                                          [self.profilePic setImage:image];
+                                                      }
                                                       UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
                                                       [circleView setFrame: profPicFrame];
                                                       [self.profilePicView addSubview:circleView];
                                                       [self.hideNameView setHidden:YES];
+                                                      
                                                   }
                                                   else {
                                                       NSLog(@"error: %@", error);
@@ -150,6 +163,12 @@
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"ERROR: %@, WITH RESPONSE STRING: %@",error, operation.responseString);
+             self.friendsArray = [[NSArray alloc]init];
+             if (!self.isOnPastRatings) {
+                 [self.profileTable setHidden:NO];
+                 [self.emptyView setHidden:YES];
+                 [self.profileTable reloadData];
+             }
          }];
 }
 
@@ -298,7 +317,7 @@
         RMUProfileFriendCell *friendCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         NSDictionary *friendDict = self.friendsArray[indexPath.row];
         NSString *nameOfFriend = [NSString stringWithFormat:(@"%@ %@"), [friendDict objectForKey:@"first_name"], [friendDict objectForKey:@"last_name"]];
-        [friendCell.friendnNameLabel setText:nameOfFriend];
+        [friendCell.friendNameLabel setText:nameOfFriend];
         FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[friendDict objectForKey:@"facebook_id"] pictureCropping:FBProfilePictureCroppingSquare];
         [friendCell.numRatingsLabel setText:@""];
         [profileView setFrame:friendCell.friendImage.frame];
@@ -464,13 +483,15 @@
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    NSLog(@"URL QUERIED:  http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@", user.facebookID, session.accessTokenData.accessToken);
     [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/update_friends/%@/%@"), user.facebookID, session.accessTokenData.accessToken]
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             NSLog(@"%@",responseObject);
+             NSLog(@"Response from update_fb: %@",responseObject);
              [self fetchFriendsOfUser:user];
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             [self fetchFriendsOfUser:user];
              NSLog(@"ERROR: %@, with RESPONSE STRING: %@", error, operation.responseString);
          }];
 }

@@ -16,4 +16,6 @@
 @property (nonatomic, retain) NSData * userPhoto;
 @property (nonatomic, retain) RMUSavedUser * userForSavedPhoto;
 
+-(UIImage*)imageForPhotoData;
+
 @end

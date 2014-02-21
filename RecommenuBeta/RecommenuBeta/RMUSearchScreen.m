@@ -241,6 +241,7 @@
 {
     if ([segue.identifier isEqualToString:@"searchToMenu"]) {
         RMURevealViewController *nextScreen = (RMURevealViewController*) segue.destinationViewController;
+        nextScreen.hidesBottomBarWhenPushed = YES;
         [nextScreen getRestaurantWithFoursquareID:self.restID andName:self.restString];
     }
     else {
