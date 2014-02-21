@@ -5,6 +5,8 @@
 //  Created by Blake Ellingham on 1/28/14.
 //  Copyright (c) 2014 Blake Ellingham. All rights reserved.
 //
+//  CURRENTLY UNUSED
+
 
 #import "RMULocationCell.h"
 
@@ -36,6 +38,7 @@
         [self.locationSwitch setOn:YES];
     
 }
+
 - (IBAction)locationPreferenceChanged:(UISwitch *)sender
 {
     if (sender.on) {

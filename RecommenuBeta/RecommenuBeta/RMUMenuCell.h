@@ -21,5 +21,8 @@
 @property (weak, nonatomic) IBOutlet RMUDonutGraph *donutGraph;
 @property (weak, nonatomic) IBOutlet UIView *likeView;
 @property (weak, nonatomic) IBOutlet UIView *descView;
+@property (weak, nonatomic) IBOutlet UIButton *friendsButton;
+@property (weak, nonatomic) IBOutlet UIButton *foodieButton;
+@property (weak, nonatomic) IBOutlet UIButton *crowdButton;
 
 @end

@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
 
-#warning TODO Loading on each of the API CALLS
-#warning TODO IF user has signed in with facebook, then refresh fb friends
 
 #define SECS_IN_MIN 60
 #define MINS_TIL_NOTIFICATION 30
@@ -95,6 +93,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [self logAvailableFontNames]; // UNCOMMENT TO LOG FONT NAMES
     // Optional: automatically send uncaught exceptions to Google Analytics.
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     
@@ -162,7 +161,7 @@
 
 
 /*
- *  Handles the initial login of a facebook user
+ *  Handles the initial login of facebook and sets if the user has logged in and has an
  */
 
 - (void)handleInitialFacebookLoginWithUser:(RMUSavedUser*)currentUser
@@ -175,10 +174,12 @@
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
                                           // Handler for session state changes
-                                          // This method will be called EACH time the session state changes,
-                                          // also for intermediate states and NOT just when the session open
-                                          [self sessionStateChanged:session state:state error:error];
-                                          // Refresh friends list on sign in
+                                          if (!error)
+                                              [self sessionStateChanged:session state:state error:error];
+                                              // This method will be called EACH time the session state changes,
+                                              // also for intermediate states and NOT just when the session open
+                                          else
+                                              NSLog(@"FACEBOOK ERROR: %@", error);
                                       }];
     }
     else {
@@ -351,11 +352,12 @@
 }
 
 /*
- *  Saves state when entering background
+ *  Saves state and updates notifications when entering background
  */
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    //If the user needs to bet notified with time that they need to rate
     if (self.shouldDelegateNotifyUser) {
         // Notification needs to be set up
         UILocalNotification *notification = [[UILocalNotification alloc]init];
@@ -369,7 +371,7 @@
     else {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
     }
-    
+    // Regardless save state
     NSError *saveError;
     if (![self.managedObjectContext save:&saveError])
         NSLog(@"Error Saving %@", saveError);
@@ -402,6 +404,10 @@
 
 #pragma mark - returner dudes
 
+/*
+ *  Returns the current user saved
+ */
+
 - (RMUSavedUser*)fetchCurrentUser
 {
     NSFetchRequest *request = [[NSFetchRequest alloc]init];
@@ -412,13 +418,42 @@
     return (RMUSavedUser*) fetchedArray[0];
 }
 
+/*
+ *  Return the username aka the device id
+ */
 
-- (NSString*)returnUserName
+- (NSString*)returnDeviceID
 {
     NSString *deviceId = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     // For now save all test fields as substrings of ID, length 10
     return [deviceId substringToIndex:10];
 
 }
+
+/*
+ *  Logs available font names for testing
+ */
+
+-(void)logAvailableFontNames{
+    
+    //------- testing only -------------
+    //print available fonts
+    NSArray *familyNames = [[NSArray alloc] initWithArray:[UIFont familyNames]];
+    NSArray *fontNames;
+    NSInteger indFamily, indFont;
+    for (indFamily=0; indFamily<[familyNames count]; ++indFamily)
+    {
+        NSLog(@"Family name: %@", [familyNames objectAtIndex:indFamily]);
+        fontNames = [[NSArray alloc] initWithArray:
+                     [UIFont fontNamesForFamilyName:
+                      [familyNames objectAtIndex:indFamily]]];
+        for (indFont=0; indFont<[fontNames count]; ++indFont)
+        {
+            NSLog(@"    Font name: %@", [fontNames objectAtIndex:indFont]);
+        }
+    }
+    //------ testing only --------------
+}
+
 
 @end

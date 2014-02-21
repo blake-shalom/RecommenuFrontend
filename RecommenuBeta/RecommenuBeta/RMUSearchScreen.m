@@ -156,6 +156,10 @@
 
 #pragma mark - Location 
 
+/*
+ *  Override location with first location when location updates
+ */
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     self.location = locations[0];
@@ -191,7 +195,7 @@
 #pragma mark - Table View
 
 /*
- *  CELL FOR ROW BECHEZ
+ *  CELL FOR ROW BECHEZ, cells are rather boring
  */
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -69,7 +69,7 @@
     RMUSavedUser *user = [delegate fetchCurrentUser];
     [self sortUserRatingsIntoRatingsArray:user];
     
-    [self loadUserElements];
+//    [self loadUserElements];
     [self.emptyView setBackgroundColor:[UIColor RMUSelectGrayColor]];
     
     if (user.isFoodie)
@@ -81,12 +81,51 @@
     UITabBarController *tabBarVC = self.tabBarController;
     UITabBar *tabBar = tabBarVC.tabBar;
     [tabBar setTintColor:[UIColor RMULogoBlueColor]];
-
+    
     // If user has signed in with facebook start the loading screen
     if (user.facebookID){
         self.isUserOnFacebook = YES;
-        [self fetchFriendsOfUser:user];
+        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                           allowLoginUI:YES
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          if (!error){
+                                              [self.facebookButton setImage:[UIImage imageNamed:@"facebook_on"] forState:UIControlStateNormal];
+                                              [self.facebookButton setUserInteractionEnabled:NO];
+                                              [self.hideNameView setHidden:NO];
+                                              
+                                              // Set some frames
+                                              CGRect profPicFrame = self.profilePic.frame;
+                                              CGRect modifiedProf = CGRectMake(profPicFrame.origin.x, profPicFrame.origin.y, profPicFrame.size.width - 5.0f, profPicFrame.size.height);
+                                              [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                  if (!error) {
+                                                      // Success! Include your code to handle the results here
+                                                      NSLog(@"user info: %@", result);
+                                                      [self.nameLabel setText:[result objectForKey:@"name"]];
+                                                      FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                                                      [profileView setFrame:modifiedProf];
+                                                      [self.profilePicView addSubview:profileView];
+                                                      UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+                                                      [circleView setFrame: profPicFrame];
+                                                      [self.profilePicView addSubview:circleView];
+                                                      [self.hideNameView setHidden:YES];
+                                                  }
+                                                  else {
+                                                      NSLog(@"error: %@", error);
+                                                      // An error occurred, we need to handle the error
+                                                  }
+                                              }];
+                                              [self refreshFacebookFriendsListWithUser:user andSession:session];
+                                              
+                                          }
+                                          else
+                                              NSLog(@"FACEBOOK ERROR : %@", error);
+                                      }];
     }
+    else {
+        [self.nameLabel setText:@"Anonymous User"];
+        [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
+    }
+    
 }
 
 /*
@@ -114,13 +153,16 @@
          }];
 }
 
-
 - (void)viewDidAppear:(BOOL)animated
 {
     // SET the profile screen name for Google analytics
     self.screenName = @"Profile Screen";
     [super viewDidAppear:animated];
 }
+
+/*
+ *  Sorts a user's ratings into an object for the table storage
+ */
 
 - (void)sortUserRatingsIntoRatingsArray: (RMUSavedUser*) user
 {
@@ -160,7 +202,8 @@
 - (void)loadUserElements
 {
     RMUAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-    if (appDelegate.shouldUserLoginFacebook) {
+    RMUSavedUser *user = [appDelegate fetchCurrentUser];
+    if (!user.facebookID) {
         [self.nameLabel setText:@"Anonymous User"];
         [self.facebookButton setImage:[UIImage imageNamed:@"facebook_off"] forState:UIControlStateNormal];
     }
@@ -178,27 +221,31 @@
             
         }
         else {
-            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if (!error) {
-                    // Success! Include your code to handle the results here
-                    NSLog(@"user info: %@", result);
-                    [self.nameLabel setText:[result objectForKey:@"name"]];
-                    FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
-                    
-                    [profileView setFrame:modifiedProf];
-                    [self.profilePicView addSubview:profileView];
-                    UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
-                    [circleView setFrame: profPicFrame];
-                    [self.profilePicView addSubview:circleView];
-                }
-                else {
-                    NSLog(@"error: %@", error);
-                    // An error occurred, we need to handle the error
-                }
-            }];
+            [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+                                               allowLoginUI:NO
+                                          completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                              [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                                  if (!error) {
+                                                      // Success! Include your code to handle the results here
+                                                      NSLog(@"user info: %@", result);
+                                                      [self.nameLabel setText:[result objectForKey:@"name"]];
+                                                      FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[result objectForKey:@"id"] pictureCropping:FBProfilePictureCroppingSquare];
+                                                      [profileView setFrame:modifiedProf];
+                                                      [self.profilePicView addSubview:profileView];
+                                                      UIImageView *circleView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"profile_circle_user"]];
+                                                      [circleView setFrame: profPicFrame];
+                                                      [self.profilePicView addSubview:circleView];
+                                                      [self.hideNameView setHidden:YES];
+                                                  }
+                                                  else {
+                                                      NSLog(@"error: %@", error);
+                                                      // An error occurred, we need to handle the error
+                                                  }
+                                              }];
+                                          }];
+            
         }
 
-        [self.hideNameView setHidden:YES];
     }
 }
 
@@ -209,6 +256,10 @@
 }
 
 #pragma mark - UITableView Data source
+
+/*
+ *  Return the right height, depending on the selected index
+ */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -258,7 +309,7 @@
 }
 
 /*
- *
+ *  Number of rows checks the backend sotrage and return depending on state
  */
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -272,7 +323,7 @@
 }
 
 /*
- *
+ *  If you are on friends aray, return one section, else return appropriate number from backend storage
  */
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -284,7 +335,7 @@
 }
 
 /*
- *
+ *  Title is rest name if on past ratings, "Friends" otherwise
  */
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -299,7 +350,7 @@
 #pragma mark - segue methods
 
 /*
- *  Currently three segues is supported, profile to menu, that redirects a user to the menu of an item
+ *  Currently three segues is supported, profile to menu, that redirects a user to the menu of an item, and to other user
  */
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -319,6 +370,16 @@
     else if ([segue.identifier isEqualToString:@"profToFriend"]) {
         RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
         foodieProf.isFoodie = NO;
+    }
+    else if ([segue.identifier isEqualToString:@"profileToOtherProfile"]) {
+        RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
+        NSIndexPath *indexPath = [self.profileTable indexPathForSelectedRow];
+        NSDictionary *dict = self.friendsArray[indexPath.row];
+        foodieProf.isFoodie = NO;
+        foodieProf.RMUUsername = [dict objectForKey:@"username"];
+        foodieProf.facebookID = [dict objectForKey:@"facebook_id"];
+        NSString *nameOfFriend = [NSString stringWithFormat:(@"%@ %@"), [dict objectForKey:@"first_name"], [dict objectForKey:@"last_name"]];
+        foodieProf.nameOfOtherUser = nameOfFriend;
     }
     else {
         NSLog(@"Unknown ID: %@", segue.identifier);
@@ -353,7 +414,7 @@
 }
 
 /*
- *  Logs a user with Facebook into REcommenu's DB
+ *  Logs a user with Facebook into Recommenu's DB
  */
 
 - (void)logFacebookUser:(RMUSavedUser*)user intoRecommenuWithSession:(FBSession*)session
@@ -414,7 +475,10 @@
          }];
 }
 
-// State switchn
+/*
+ *  toggles between past ratings to friends
+ */
+
 - (IBAction)showFriendsRatings:(id)sender
 {
     [self.friendsButton setTintColor:[UIColor RMULogoBlueColor]];
@@ -427,6 +491,7 @@
     }
     else {
         if (self.isUserOnFacebook) {
+            [self.profileTable setHidden:YES];
             [self.topEmptyLabel setHidden:YES];
             [self.bottomEmptyLabel setHidden:YES];
             [self.loadingActivity setHidden:NO];
@@ -441,7 +506,10 @@
     }
 }
 
-// State switcherz
+/*
+ *  Toggles between friends to past ratings
+ */
+
 - (IBAction)showPastRatings:(id)sender
 {
     [self.topEmptyLabel setHidden:NO];
@@ -464,6 +532,7 @@
         // Show the correct headers on the missing view
     }
 }
+
 
 
 @end

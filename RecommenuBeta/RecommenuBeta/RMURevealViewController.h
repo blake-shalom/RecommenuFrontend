@@ -5,6 +5,7 @@
 //  Created by Blake Ellingham on 12/27/13.
 //  Copyright (c) 2013 Blake Ellingham. All rights reserved.
 //
+//  Subclass of SWReveal to handle networking
 
 #import "SWRevealViewController.h"
 #import "RMURestaurant.h"

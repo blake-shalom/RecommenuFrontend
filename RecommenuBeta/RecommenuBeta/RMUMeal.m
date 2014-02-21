@@ -40,13 +40,14 @@
     self.crowdLikes = [rateDictionary objectForKey:@"likes"];
     self.crowdDislikes = [rateDictionary objectForKey:@"dislikes"];
     
-    // Handle foodie objects
+    // Handle foodie data
     NSDictionary *foodieDict = [rateDictionary objectForKey:@"foodie"];
     self.expertLikes = [foodieDict objectForKey:@"flikes"];
     self.expertDislikes = [foodieDict objectForKey:@"fdislikes"];
     self.foodieLikeID = [foodieDict objectForKey:@"like_ids"];
     self.foodieDislikeID = [foodieDict objectForKey:@"dislike_ids"];
     
+    // Handle facebook data
     NSDictionary *friendDict = [rateDictionary objectForKey:@"facebook"];
     self.friendLikes = [friendDict objectForKey:@"likes"];
     self.friendDislikes = [friendDict objectForKey:@"dislikes"];

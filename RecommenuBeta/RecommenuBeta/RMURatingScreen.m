@@ -288,7 +288,6 @@
         else {
             isPositive = @"False";
         }
-        NSLog(@"YOO WHAT ARE YOU PASSING!?!? %@", isPositive);
         [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_rating/")]
            parameters:@{@"rating":
                             @{ @"foursquare_entry_id": recommendation.entreeFoursquareID,
@@ -296,7 +295,8 @@
                                @"user" : self.user.userURI,
                                @"foursquare_venue_id" : self.currentRestaurant.restFoursquareID,
                                @"foursquare_menu_id" : self.currentMenu.menuFoursquareID,
-                               @"review": @""}}
+                               @"review": @"",
+                               @"restaurant" : recommendation.restaurantName}}
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   // Succeeded, Log the response
                   NSLog(@"SUCCESS POSTING RATING: %@", responseObject);

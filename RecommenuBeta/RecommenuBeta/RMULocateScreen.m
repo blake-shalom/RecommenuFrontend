@@ -11,6 +11,7 @@
 
 #import "RMULocateScreen.h"
 
+
 @interface RMULocateScreen ()
 
 // IBOutlets
@@ -24,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIView *fallbackPopup;
 @property (weak, nonatomic) IBOutlet UITableView *fallbackTable;
 @property (weak, nonatomic) IBOutlet UIButton *dismissButton;
+@property (weak, nonatomic) IBOutlet UIView *loadingFallbackView;
 
 // Regular properties
 @property (strong,nonatomic) NSMutableArray *fallbackRest;
@@ -56,6 +58,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // hide loading screen
+    [self.loadingFallbackView setHidden:YES];
     
     dispatch_async(LOCAL_QUEUE, ^
                    {
@@ -218,13 +223,14 @@
                      [self.fallbackRest addObject:respArray[i]];
                  }
                  [self.fallbackPopup setHidden:NO];
+                 [self.loadingFallbackView setHidden:YES];
                  [self animateFallbackPopup];
                  [self.fallbackTable reloadData];
-                 
              }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
              NSLog(@"error: %@", error);
+             [self.loadingFallbackView setHidden:YES];
          }];
 }
 
@@ -260,6 +266,7 @@
 {
     [self.noButton setUserInteractionEnabled:NO];
     [self.yesButton setUserInteractionEnabled:NO];
+    [self.loadingFallbackView setHidden:NO];
     [self findFallbacksWithRadius:25];
 }
 

@@ -19,6 +19,7 @@ typedef enum  {
 
 @interface RMUAnimationClass : NSObject
 
+// Used to animate in a view
 + (void)animateFlyInView:(UIView *) view withDuration:(CGFloat) duration
                withDelay:(CGFloat)delay fromDirection:(buttonAnimationDirection)direction
           withCompletion:(void (^)(BOOL))completion withBounce:(BOOL)doesBounce;
