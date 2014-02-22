@@ -98,6 +98,9 @@
 - (void)loadRecommendations
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                     forHTTPHeaderField:@"Authorization: ApiKey"];
+
     [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/rating/?user__username=%@"), self.RMUUsername]
       parameters:Nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -121,7 +124,8 @@
 {
     for (NSDictionary *recommendation in response) {
         NSString *restaurant = [recommendation objectForKey:@"restaurant"];
-        if (![restaurant isEqualToString:@""]) {
+        NSString *entreeName = [recommendation objectForKey:@"dish_name"];
+        if (![restaurant isEqualToString:@""] && ![entreeName isEqualToString:@""]) {
             BOOL doesRestExist = NO;
             for (NSDictionary *recDict in self.ratingsArray) {
                 if ([restaurant isEqualToString:[recDict objectForKey:@"restName"]]) {
@@ -151,7 +155,11 @@
 
 - (IBAction)backScreen:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.navigationController)
+        [self.navigationController popViewControllerAnimated:YES];
+    else
+        [self performSegueWithIdentifier:@"otherProfileToHome"
+                                  sender:self];
 }
 
 /*
@@ -197,7 +205,7 @@
     RMUProfileRatingCell *rateCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
     NSDictionary *rec = recArray[indexPath.row];
-    [rateCell.entreeLabel setText:[rec objectForKey:@""]];
+    [rateCell.entreeLabel setText:[rec objectForKey:@"dish_name"]];
     [rateCell.descriptionLabel setText:[rec objectForKey:@""]];
     if ([[rec objectForKey:@"positive"] isEqualToNumber:[NSNumber numberWithBool:YES]])
         [rateCell.likeDislikeImage setImage:[UIImage imageNamed:@"thumbs_up_profile"]];
@@ -223,6 +231,27 @@
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return [self.ratingsArray[section] objectForKey:@"restName"];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"otherProfileToMenu"
+                              sender:self];
+}
+
+#pragma mark - Segue methods
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"otherProfileToMenu"]) {
+        RMURevealViewController *nextScreen = (RMURevealViewController*) segue.destinationViewController;
+        NSIndexPath *indexPath = [self.profileTable indexPathForSelectedRow];
+        NSArray *recArray = [self.ratingsArray[indexPath.section] objectForKey:@"recArray"];
+        NSString *foursquareID = [recArray[indexPath.row] objectForKey:@"foursquare_venue_id"];
+        NSString *restaurant = [recArray [indexPath.row] objectForKey:@"restaurant"];
+        NSLog(@"4[] ID: %@", foursquareID);
+        [nextScreen getRestaurantWithFoursquareID:foursquareID andName:restaurant];
+    }
 }
 
 @end

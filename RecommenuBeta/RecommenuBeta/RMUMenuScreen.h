@@ -17,9 +17,12 @@
 #import "GAITrackedViewController.h"
 #import "RMUFoodieFriendPopup.h"
 #import "RMUAnimationClass.h"
+#import "RMUOtherProfileScreen.h"
 
 @interface RMUMenuScreen : GAITrackedViewController
-<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, SWRevealViewControllerDelegate, UIAlertViewDelegate>
+<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource,
+iCarouselDelegate, SWRevealViewControllerDelegate, UIAlertViewDelegate,
+RMUFoodieFriendPopupDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 

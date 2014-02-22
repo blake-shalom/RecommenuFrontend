@@ -8,7 +8,6 @@
 
 #import "RMUSavedUserPhoto.h"
 
-#warning TODO update the photo semi-regularly
 
 @implementation RMUSavedUserPhoto
 
@@ -18,6 +17,11 @@
 - (void)storeUserImageAsPNG:(UIImage*)userImage
 {
     self.userPhoto = UIImagePNGRepresentation(userImage);
+}
+
+-(UIImage*)imageForPhotoData
+{
+    return [UIImage imageWithData:self.userPhoto];
 }
 
 @end

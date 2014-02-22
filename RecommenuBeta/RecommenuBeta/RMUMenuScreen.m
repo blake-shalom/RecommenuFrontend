@@ -31,6 +31,11 @@
 @property (weak, nonatomic) IBOutlet RMUFoodieFriendPopup *popup;
 @property (weak, nonatomic) IBOutlet RMUFoodieFriendPopup *crowdPopup;
 
+// Properties for displaying users
+@property NSString *friendUsername;
+@property NSString *friendFBID;
+@property NSString *friendName;
+
 @end
 
 @implementation RMUMenuScreen
@@ -43,6 +48,7 @@
     }
     return self;
 }
+
 
 - (void)viewDidLoad
 {
@@ -78,6 +84,8 @@
     [self.shroudView setHidden:YES];
     [self.popup setHidden:YES];
     [self.crowdPopup setHidden:YES];
+    
+    self.popup.delegate = self;
 }
 
 
@@ -86,7 +94,6 @@
     // Google Analytics screen name
     self.screenName = @"Menu Screen";
     [super viewDidAppear:animated];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -115,7 +122,7 @@
     [self.carousel reloadData];
     
     // Menu visited, set notifications
-    if (self.currentRestaurant.menus.count > 0){
+    if (self.currentRestaurant.menus.count > 0 && !self.navigationController){
         RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
         delegate.savedRestaurant = self.currentRestaurant;
         delegate.shouldDelegateNotifyUser = YES;
@@ -161,21 +168,32 @@
 -(void) viewFriendRecsForItem:(UIButton*)sender
 {
     NSLog(@"YOU TAPPED FRIEND AT INDEX %i", sender.tag);
-    [self animateInGradientBeforePopupView:self.popup];
+    
     RMUMeal *selectedMeal = self.currentCourse.meals[sender.tag];
-    [self.popup populateWithFriendsLikeArray:selectedMeal.facebookLikeID
-                     withFriendsDislikeArray:selectedMeal.facebookDislikeID
-                            withNameofEntree:selectedMeal.mealName];
+    if (selectedMeal.friendDislikes.intValue + selectedMeal.friendLikes.intValue != 0) {
+        
+        [self animateInGradientBeforePopupView:self.popup];
+        [self.popup populatePopupWithLikeArray:selectedMeal.facebookLikeID
+                              withDislikeArray:selectedMeal.facebookDislikeID
+                              withNameofEntree:selectedMeal.mealName
+                      areFoodieRecommendations:NO];
+    }
 }
-
 /*
  *  Pops up the tastemaker popup
  */
 
 -(void) viewFoodieRecsForItem:(UIButton*)sender
 {
-    NSLog(@"YOU TAPPED Foodie AT INDEX %i", sender.tag);
-    [self animateInGradientBeforePopupView:self.popup];
+    RMUMeal *selectedMeal = self.currentCourse.meals[sender.tag];
+    if (selectedMeal.expertDislikes.intValue + selectedMeal.expertLikes.intValue != 0) {
+        [self animateInGradientBeforePopupView:self.popup];
+        [self.popup populatePopupWithLikeArray:selectedMeal.facebookLikeID
+                              withDislikeArray:selectedMeal.facebookDislikeID
+                              withNameofEntree:selectedMeal.mealName
+                      areFoodieRecommendations:YES];
+    }
+
 }
 
 /*
@@ -184,12 +202,13 @@
 
 -(void) viewCrowdRecsForItem:(UIButton*)sender
 {
-    NSLog(@"YOU TAPPED Crowd AT INDEX %i", sender.tag);
-    [self animateInGradientBeforePopupView:self.crowdPopup];
     RMUMeal *selectedMeal = self.currentCourse.meals[sender.tag];
-    [self.crowdPopup populateWithCrowdLikes:selectedMeal.crowdLikes.integerValue
-                           withCrowdDislikes:selectedMeal.crowdDislikes.integerValue
-                            withNameOfEntree:selectedMeal.mealName];
+    if (selectedMeal.crowdDislikes.intValue + selectedMeal.crowdLikes.intValue != 0) {
+        [self animateInGradientBeforePopupView:self.crowdPopup];
+        [self.crowdPopup populateWithCrowdLikes:selectedMeal.crowdLikes.integerValue
+                              withCrowdDislikes:selectedMeal.crowdDislikes.integerValue
+                               withNameOfEntree:selectedMeal.mealName];
+    }
 }
 
 /*
@@ -203,13 +222,11 @@
     
     [alert show];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    RMUAppDelegate *delegate = (RMUAppDelegate*) [UIApplication sharedApplication].delegate;
-    
-    RMUSavedUser *user = [delegate fetchCurrentUser];
-    [manager GET:@"http://glacial-ravine-3577.herokuapp.com/api/v1/missingmenu/schema/?format=json"
-       parameters:@{@"foursquare_venue_id": self.currentRestaurant.restFoursquareID,
-                    @"id" : user.userID,
-                    @"resource_uri" : user.userURI}
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                     forHTTPHeaderField:@"Authorization: ApiKey"];
+    [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/missingmenu/"
+       parameters:@{@"foursquare_venue_id": self.currentRestaurant.restFoursquareID}
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSLog(@"Success reporting, response %@", responseObject);
           }
@@ -294,24 +311,6 @@
     return ceilf(textRect.size.height) + 70.0f;
 }
 
-/*
- *  Manages Selection of cells by checkbox
- */
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-}
-
-/*
- *  Deselection of cells by unchecking checkbox
- */
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
-
 #pragma mark - UITableViewDataSource
 
 /*
@@ -325,9 +324,7 @@
     RMUCourse *course = self.currentMenu.courses[index];
     [tableView registerNib:[UINib nibWithNibName:@"menuTableCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:CellIdentifier];
     RMUMenuCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    if (cell == nil) {
-        cell = [[RMUMenuCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+    
     RMUMeal *currentMeal = course.meals[indexPath.row];
     [cell.mealLabel setText:currentMeal.mealName];
     [cell.descriptionLabel setText:currentMeal.mealDescription];
@@ -365,6 +362,7 @@
     
     return cell;
 }
+
 
 /*
  *  Returns the number of rows in each section of the table
@@ -414,6 +412,7 @@
     return view;
 }
 
+
 /*
  *  If the carousel index changed, switch the label's text
  */
@@ -437,7 +436,8 @@
     }
     else
         [self.rightSectionLabel setText:@""];
-    
+    RMUMenuTable *table = (RMUMenuTable*) carousel.currentItemView;
+    [table reloadData];
 }
 
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
@@ -466,6 +466,15 @@
     if ([segue.identifier isEqualToString:@"menuToRating"]){
         RMURevealViewController  *ratingScreen = (RMURevealViewController*)segue.destinationViewController;
         ratingScreen.currentRestaurant = self.currentRestaurant;
+    }
+    else if ([segue.identifier isEqualToString:@"menuToOtherProfile"] ||
+             [segue.identifier isEqualToString:@"menuToOtherProfilePush"]) {
+        RMUOtherProfileScreen *foodieProf = (RMUOtherProfileScreen*) segue.destinationViewController;
+        foodieProf.isFoodie = NO;
+        foodieProf.RMUUsername = self.friendUsername;
+        foodieProf.facebookID = self.friendFBID;
+        foodieProf.nameOfOtherUser = self.friendName;
+
     }
 }
 
@@ -537,5 +546,42 @@
                              withBounce:YES];
 }
 
+#pragma mark - RMUFoodieFriend popup delegate
+
+/*
+ *  Presents a segue to a friend's profile with given params
+ */
+
+- (void)presentFriendSegueWithRMUUsername:(NSString*)username withName:(NSString*)name withFacebookID:(NSString*)fbID
+{
+    self.friendFBID = fbID;
+    self.friendName = name;
+    self.friendUsername = username;
+    if (self.navigationController)
+        [self performSegueWithIdentifier:@"menuToOtherProfilePush" sender:self];
+    else
+        [self performSegueWithIdentifier:@"menuToOtherProfile" sender:self];
+}
+
+/*
+ *  Presents a segue to a foodie's profile with given params
+ */
+
+- (void)presentFoodieSegueWithRMUUsername:(NSString*)username withName:(NSString*)name withFacebookID:(NSString*)fbID
+{
+    
+}
+
 
 @end
+
+
+
+
+
+
+
+
+
+
+

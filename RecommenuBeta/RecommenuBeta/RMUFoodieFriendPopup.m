@@ -33,7 +33,7 @@
  *  adds the friend identification into the popup that allows for a friend to be viewed sets state to friend state
  */
 
-- (void)populateWithFriendsLikeArray:(NSArray*)likeArray withFriendsDislikeArray: (NSArray*)dislikeArray withNameofEntree:(NSString*)entreeName
+- (void)populatePopupWithLikeArray:(NSArray*)likeArray withDislikeArray: (NSArray*)dislikeArray withNameofEntree:(NSString*)entreeName areFoodieRecommendations:(BOOL)isFoodie
 {
     NSInteger likes = likeArray.count;
     NSInteger dislikes = dislikeArray.count;
@@ -41,10 +41,13 @@
     [self.dislikeLabel setText:[NSString stringWithFormat:(@"%i Dislikes"), dislikes]];
     [self.headLabel setText:[NSString stringWithFormat:(@"People who like %@"), entreeName]];
     [self.donutGraph displayLikes:likes dislikes:dislikes];
-    self.state = popupStateFriendState;
     self.likeArray = [NSArray arrayWithArray:likeArray];
     self.dislikeArray = [NSArray arrayWithArray:dislikeArray];
     [self.friendfoodTable reloadData];
+    if (isFoodie)
+        self.state = popupStateFoodieState;
+    else
+        self.state = popupStateFriendState;
 }
 
 /*
@@ -61,6 +64,26 @@
 }
 
 #pragma mark - UITable View methods
+
+/*
+ *  After selection, use the right segue method
+ */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"TOUCHED FRIEND AT INDEX: %@", indexPath);
+    NSArray *friendArray;
+    if (indexPath.section)
+        friendArray = self.dislikeArray;
+    else
+        friendArray = self.likeArray;
+
+    NSDictionary *selectedFriend = friendArray[indexPath.row];
+    NSString *name = [NSString stringWithFormat:(@"%@ %@"), [selectedFriend objectForKey:@"first_name"], [selectedFriend objectForKey:@"last_name"]];
+    [self.delegate presentFriendSegueWithRMUUsername:[selectedFriend objectForKey:@"username"]
+                                            withName:name
+                                      withFacebookID:[selectedFriend objectForKey:@"facebook_id"]];
+}
 
 /*
  *  Number of rows determined from the underlying arrays that keep track of id's
@@ -87,6 +110,10 @@
         friendArray = self.dislikeArray;
     else
         friendArray = self.likeArray;
+    NSDictionary *selectedFriend = friendArray[indexPath.row];
+    [friendCell.numRatingsLabel setText:@""];
+    NSString *name = [NSString stringWithFormat:(@"%@ %@"), [selectedFriend objectForKey:@"first_name"], [selectedFriend objectForKey:@"last_name"]];
+    [friendCell.friendNameLabel setText:name];
 
     switch (self.state) {
         // Crowd popup, nothing to do
@@ -94,10 +121,9 @@
             break;
         // Friend popup, load profile view
         case popupStateFriendState: {
-            FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:friendArray[indexPath.row] pictureCropping:FBProfilePictureCroppingSquare];
+            FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:[selectedFriend objectForKey:@"facebook_id"]
+                                                                                                           pictureCropping:FBProfilePictureCroppingSquare];
             NSLog(@"friend: %@", friendArray[indexPath.row]);
-            [friendCell.numRatingsLabel setText:@""];
-            [friendCell.friendnNameLabel setText:@""];
             [profileView setFrame:friendCell.friendImage.frame];
             [friendCell addSubview:profileView];
             break;
@@ -105,7 +131,8 @@
         // Foodie popup, eiuther load profile or standard foodie pic
         case popupStateFoodieState: {
             //TODO check for facebookID
-            if (NO) {
+            NSString *fbID = [selectedFriend objectForKey:@"facebook_id"];
+            if (![fbID isEqualToString:@""]) {
                 FBProfilePictureView *profileView = [[FBProfilePictureView alloc]initWithProfileID:friendArray[indexPath.row] pictureCropping:FBProfilePictureCroppingSquare];
                 [profileView setFrame:friendCell.friendImage.frame];
                 [friendCell addSubview:profileView];

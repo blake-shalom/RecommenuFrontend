@@ -10,7 +10,6 @@
 #define SECS_IN_MIN 60
 #define MINS_TIL_NOTIFICATION 30
 
-#import "GAI.h"
 #import "RMUAppDelegate.h"
 
 @implementation RMUAppDelegate
@@ -107,6 +106,8 @@
     id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-47533709-1"];
 #pragma unused(tracker)
 
+    // Google maps registration of API key
+    [GMSServices provideAPIKey:@"AIzaSyB6XNhzk84c2OvaphAorLIMhFV6xFH7Epk"];
     
     // Save some user defaults for Foursquare
     NSString *idString = @"YZVWMVDV1AFEHQ5N5DX4KFLCSVPXEC1L0KUQI45NQTF3IPXT";
@@ -282,6 +283,7 @@
              }
          }
          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+             // Error establishing user, just silently try again later
              NSLog(@"ERROR: %@", error);
          }];
 }
@@ -301,6 +303,8 @@
     NSString *testFields = [deviceId substringToIndex:10];
     user.userName = testFields;
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                     forHTTPHeaderField:@"Authorization: ApiKey"];
     [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_user/"
       parameters:@{@"device_id": deviceId,
                    @"user" : @{@"email" : testFields,
@@ -379,7 +383,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    
     // If notified user, present rate VC
     if (self.shouldDelegateNotifyUser) {
         UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -389,7 +392,6 @@
         [self.window makeKeyAndVisible];
         [self.window setRootViewController:rateViewController];
     }
-
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

@@ -44,6 +44,8 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
+    
     [self.mealLabel setTextColor:[UIColor RMUTitleColor]];
     [self.descriptionLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
     [self.priceLabel setTextColor:[UIColor RMUDescriptionGrayColor]];
@@ -60,6 +62,10 @@
                                              context:nil];
     oldDescFrame.size = textRect.size;
     [self.descriptionLabel setFrame:oldDescFrame];
+    [self.descriptionLabel updateConstraints];
+//    if ([self.descriptionLabel.text isEqualToString:@"Grilled banana with hot chocolate, caramel & almonds atop ice cream"])
+//        NSLog(@"created frame size- H: %f W: %f. Actual size- H: %f, %f", oldDescFrame.size.height, oldDescFrame.size.width, self.descriptionLabel.frame.size.height, self.descriptionLabel.frame.size.width);
+
 }
 
 @end

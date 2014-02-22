@@ -533,7 +533,7 @@
                                                         </tableViewCellContentView>
                                                         <connections>
                                                             <outlet property="friendImage" destination="au3-DU-5gs" id="a5g-z0-3dh"/>
-                                                            <outlet property="friendnNameLabel" destination="zeH-HG-gzD" id="5Ub-9W-XY4"/>
+                                                            <outlet property="friendNameLabel" destination="zeH-HG-gzD" id="WGr-8v-yFO"/>
                                                             <outlet property="numRatingsLabel" destination="Z5Y-El-aMt" id="jIY-u2-TtM"/>
                                                         </connections>
                                                     </tableViewCell>
@@ -594,6 +594,8 @@
                         <outlet property="rightSectionLabel" destination="ERq-iB-iYO" id="anw-pt-A9f"/>
                         <outlet property="shroudView" destination="9hK-IC-2ex" id="ujW-Ec-8OS"/>
                         <segue destination="MhZ-4q-dlO" kind="modal" identifier="menuToHome" id="owa-kF-TAU"/>
+                        <segue destination="nPB-js-U8b" kind="modal" identifier="menuToOtherProfile" id="plp-gg-ybT"/>
+                        <segue destination="nPB-js-U8b" kind="push" identifier="menuToOtherProfilePush" id="hBb-60-GB1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UM4-ek-pxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -613,6 +615,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="RIq-3m-oj1"/>
                     <connections>
                         <segue destination="Aa8-Db-N0V" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegue" id="SBN-Pf-dka"/>
                         <segue destination="d2G-sg-s9V" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegue" id="bjM-Sb-f3i"/>
@@ -1216,7 +1219,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="friendImage" destination="45h-vl-NYW" id="Inx-ga-8pE"/>
-                                            <outlet property="friendnNameLabel" destination="tie-eD-df3" id="JPY-sy-dD4"/>
+                                            <outlet property="friendNameLabel" destination="tie-eD-df3" id="ubJ-D3-EVY"/>
                                             <outlet property="numRatingsLabel" destination="X5Z-oO-reH" id="cVS-Jb-hYK"/>
                                             <segue destination="nPB-js-U8b" kind="push" identifier="profileToOtherProfile" id="k7B-Te-j8Z"/>
                                         </connections>
@@ -1356,7 +1359,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MEg-Sg-XhO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1079" y="555"/>
+            <point key="canvasLocation" x="979" y="441"/>
         </scene>
         <!--Rating Screen-->
         <scene sceneID="uOw-Z0-tW0">
@@ -1722,11 +1725,13 @@
                         <outlet property="profileTable" destination="9Tg-TN-w0p" id="AwS-2E-vvf"/>
                         <outlet property="ratingTable" destination="9Tg-TN-w0p" id="hCV-re-e1M"/>
                         <outlet property="topProfileView" destination="Gdo-y8-dNM" id="G58-CK-QCy"/>
+                        <segue destination="fSl-jZ-xSI" kind="modal" identifier="otherProfileToMenu" id="rFS-ke-nUk"/>
+                        <segue destination="MhZ-4q-dlO" kind="modal" identifier="otherProfileToHome" id="x0D-xH-USx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NAL-6v-ROd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1660" y="1267"/>
+            <point key="canvasLocation" x="1704" y="1405"/>
         </scene>
     </scenes>
     <resources>
@@ -1764,7 +1769,8 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="owa-kF-TAU"/>
-        <segue reference="xfv-IL-cqR"/>
-        <segue reference="1ex-Vq-BDP"/>
+        <segue reference="cec-ZC-rvl"/>
+        <segue reference="bjM-Sb-f3i"/>
+        <segue reference="hBb-60-GB1"/>
     </inferredMetricsTieBreakers>
 </document>
