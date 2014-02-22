@@ -223,6 +223,8 @@
     [alert show];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                     forHTTPHeaderField:@"Authorization: ApiKey"];
     [manager POST:@"http://glacial-ravine-3577.herokuapp.com/api/v1/missingmenu/"
        parameters:@{@"foursquare_venue_id": self.currentRestaurant.restFoursquareID}
           success:^(AFHTTPRequestOperation *operation, id responseObject) {

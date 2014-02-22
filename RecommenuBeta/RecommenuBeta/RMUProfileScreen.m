@@ -153,7 +153,7 @@
     [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/data/friend_list/%i"), user.userID.intValue]
       parameters:nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             NSLog(@"RESPONSE: %@", responseObject);
+             NSLog(@"RESPONSE FROM GET FRIENDS LIST: %@", responseObject);
              self.friendsArray = [responseObject objectForKey:@"response"];
              if (!self.isOnPastRatings) {
                  [self.profileTable setHidden:NO];
@@ -451,6 +451,8 @@
             
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             manager.requestSerializer = [AFJSONRequestSerializer serializer];
+            [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                             forHTTPHeaderField:@"Authorization: ApiKey"];
             [manager PUT:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/%@"), user.userURI]
               parameters:@{@"first_name": user.firstName,
                            @"last_name" : user.lastName}

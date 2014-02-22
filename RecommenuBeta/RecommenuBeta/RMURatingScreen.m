@@ -288,6 +288,8 @@
         else {
             isPositive = @"False";
         }
+        [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                         forHTTPHeaderField:@"Authorization: ApiKey"];
         [manager POST:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/create_rating/")]
            parameters:@{@"rating":
                             @{ @"foursquare_entry_id": recommendation.entreeFoursquareID,

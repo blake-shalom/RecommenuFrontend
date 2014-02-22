@@ -72,6 +72,9 @@
     // Use networking to get menu
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     
+    [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                     forHTTPHeaderField:@"Authorization: ApiKey"];
+
     // First Query our DB
     [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/venue_map/?bad_foursquare_venue_id=%@"), foursquareID]
       parameters:nil

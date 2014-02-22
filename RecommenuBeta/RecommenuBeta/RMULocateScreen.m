@@ -38,7 +38,9 @@
 
 @end
 
-@implementation RMULocateScreen
+@implementation RMULocateScreen {
+    GMSMapView *mapView_;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -81,12 +83,14 @@
     [self.popupView setHidden:YES];
     [self.gradientImage setHidden:YES];
     
-    // Make the mapBox View
-    RMMapBoxSource *tileSource = [[RMMapBoxSource alloc]initWithMapID:@"recommenu.gd0lbham"];
-    self.mapView = [[RMMapView alloc]initWithFrame:self.mapFrameView.bounds andTilesource:tileSource];
-    [self.view addSubview:self.mapView];
-    [self.view sendSubviewToBack:self.mapView];
-    self.mapView.draggingEnabled = NO;
+    // Configure the Google Map
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
+                                                            longitude:151.20
+                                                                 zoom:8];
+    mapView_ = [GMSMapView mapWithFrame:self.mapFrameView.bounds camera:camera];
+    [self.view addSubview:mapView_];
+    [self.view sendSubviewToBack:mapView_];
+
     
     // Center the view around your location
     self.locationManager = [[CLLocationManager alloc]init];
@@ -123,15 +127,19 @@
     [self.locationManager stopUpdatingLocation];
     self.location = locations[0];
     CLLocationCoordinate2D coord = self.location.coordinate;
-    [self.mapView setCenterCoordinate:coord animated:YES];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:coord.latitude
+                                                            longitude:coord.longitude
+                                                                 zoom:16];
+    [mapView_ animateToCameraPosition:camera];
+
     
     // Drop a pin
     if (!self.hasDroppedPin){
-        RMPointAnnotation *userAnnotation = [[RMPointAnnotation alloc] initWithMapView:self.mapView
-                                                                            coordinate:coord
-                                                                              andTitle:@"YOU ARE HERE"];
-        [self.mapView addAnnotation:userAnnotation];
         self.hasDroppedPin = YES;
+        GMSMarker *marker = [[GMSMarker alloc] init];
+        marker.position = coord;
+        marker.map = mapView_;
+
     }
     [self findRestaurantWithRadius:10.0f];
 }
@@ -242,6 +250,8 @@
 
 - (IBAction)dismissPopups:(id)sender
 {
+    self.hasDroppedPin = NO;
+    [mapView_ clear];
     [self.popupView setHidden:YES];
     [self.fallbackPopup setHidden:YES];
     [self animateOutGradient];

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GoogleMaps/GoogleMaps.h>
 #import "MapBox/MapBox.h"
 #import "RMUButton.h"
 #import "RMUAnimationClass.h"
@@ -15,6 +16,7 @@
 #import "RMUMenuScreen.h"
 #import "RMURevealViewController.h"
 #import "GAITrackedViewController.h"
+
 
 @interface RMULocateScreen : GAITrackedViewController
 <CLLocationManagerDelegate, UIAlertViewDelegate, UIAlertViewDelegate>

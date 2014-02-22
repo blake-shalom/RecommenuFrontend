@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
+#import <GoogleMaps/GoogleMaps.h>
+
 #import "AFNetworking.h"
 #import "RMUSavedUser.h"
 #import "RMURevealViewController.h"
+#import "GAI.h"
 
 @interface RMUAppDelegate : UIResponder <UIApplicationDelegate>{
     NSManagedObjectModel *managedObjectModel;

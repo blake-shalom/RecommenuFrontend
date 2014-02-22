@@ -98,6 +98,9 @@
 - (void)loadRecommendations
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager.requestSerializer setValue:@"recommenumaster:5767146e19ab6cbcf843ad3ab162dc59e428156a"
+                     forHTTPHeaderField:@"Authorization: ApiKey"];
+
     [manager GET:[NSString stringWithFormat:(@"http://glacial-ravine-3577.herokuapp.com/api/v1/rating/?user__username=%@"), self.RMUUsername]
       parameters:Nil
          success:^(AFHTTPRequestOperation *operation, id responseObject) {
