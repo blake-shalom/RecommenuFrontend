@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C5BFA129-0D5F-4C46-ACF7-621EF187A553</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RecommenuBeta</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>8873C507-EB6C-45DB-B198-4C0236A96814</key>
+		<string>https://bitbucket.org/recommenuinc/recommenuconsumer.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RecommenuBeta/RecommenuBeta.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>8873C507-EB6C-45DB-B198-4C0236A96814</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/recommenuinc/recommenuconsumer.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>8873C507-EB6C-45DB-B198-4C0236A96814</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8873C507-EB6C-45DB-B198-4C0236A96814</string>
+			<key>IDESourceControlWCCName</key>
+			<string>recommenuconsumer</string>
+		</dict>
+	</array>
+</dict>
+</plist>
